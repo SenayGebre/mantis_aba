@@ -215,7 +215,6 @@ set_capability_row( 'private_bugnote_threshold' );
 set_capability_row( 'bugnote_user_change_view_state_threshold' );
 
 # Tags
-
 set_capability_row( 'tag_view_threshold' );
 set_capability_row( 'tag_attach_threshold' );
 set_capability_row( 'tag_detach_threshold' );
@@ -223,6 +222,15 @@ set_capability_row( 'tag_detach_own_threshold' );
 set_capability_row( 'tag_create_threshold' );
 set_capability_row( 'tag_edit_threshold' );
 set_capability_row( 'tag_edit_own_threshold' );
+
+# Tags
+set_capability_row( 'atm_view_threshold' );
+set_capability_row( 'atm_attach_threshold' );
+set_capability_row( 'atm_detach_threshold' );
+set_capability_row( 'atm_detach_own_threshold' );
+set_capability_row( 'atm_create_threshold' );
+set_capability_row( 'atm_edit_threshold' );
+set_capability_row( 'atm_edit_own_threshold' );
 
 # Attachments
 if( config_get( 'allow_file_upload' ) == ON ) {

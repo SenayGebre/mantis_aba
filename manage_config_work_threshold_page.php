@@ -430,6 +430,17 @@ get_capability_row( lang_get( 'edit_tags' ), 'tag_edit_threshold' );
 get_capability_row( lang_get( 'edit_own_tags' ), 'tag_edit_own_threshold' );
 get_section_end();
 
+# ATMs
+get_section_begin_mcwt( lang_get( 'atms' ) );
+get_capability_row( lang_get( 'view_atms' ), 'atm_view_threshold' );
+get_capability_row( lang_get( 'attach_atms' ), 'atm_attach_threshold' );
+get_capability_row( lang_get( 'detach_atms' ), 'atm_detach_threshold' );
+get_capability_row( lang_get( 'detach_own_atms' ), 'atm_detach_own_threshold' );
+get_capability_row( lang_get( 'create_new_atms' ), 'atm_create_threshold' );
+get_capability_row( lang_get( 'edit_atms' ), 'atm_edit_threshold' );
+get_capability_row( lang_get( 'edit_own_atms' ), 'atm_edit_own_threshold' );
+get_section_end();
+
 # Attachments
 if( config_get( 'allow_file_upload' ) == ON ) {
 	get_section_begin_mcwt( lang_get( 'attachments' ) );

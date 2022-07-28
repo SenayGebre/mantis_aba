@@ -131,6 +131,7 @@ function columns_get_standard( $p_enabled_columns_only = true ) {
 	$t_columns['edit'] = null;
 	$t_columns['notes'] = null;
 	$t_columns['tags'] = null;
+	$t_columns['atms'] = null;
 
 	# Overdue icon column (icons appears if an issue is beyond due_date)
 	$t_columns['overdue'] = null;
@@ -320,6 +321,7 @@ function column_is_sortable( $p_column ) {
 		case 'bugnotes_count':
 		case 'attachment_count':
 		case 'tags':
+		case 'atms':
 		case 'overdue':
 		case 'additional_information':
 		case 'description':
@@ -699,6 +701,10 @@ function print_column_title_fixed_in_version( $p_sort, $p_dir, $p_columns_target
  */
 function print_column_title_tags( $p_sort, $p_dir, $p_columns_target = COLUMNS_TARGET_VIEW_PAGE ) {
 	echo '<th class="column-tags">' . lang_get('tags') . '</th>';
+}
+
+function print_column_title_atms( $p_sort, $p_dir, $p_columns_target = COLUMNS_TARGET_VIEW_PAGE ) {
+	echo '<th class="column-atms">' . lang_get('atms') . '</th>';
 }
 
 /**
@@ -1096,6 +1102,7 @@ function print_column_selection( BugData $p_bug, $p_columns_target = COLUMNS_TAR
 		access_has_project_level( config_get( 'change_view_status_threshold', null, null, $p_bug->project_id ), $p_bug->project_id ) ||
 		access_has_project_level( config_get( 'add_bugnote_threshold', null, null, $p_bug->project_id ), $p_bug->project_id ) ||
 		access_has_project_level( config_get( 'tag_attach_threshold', null, null, $p_bug->project_id ), $p_bug->project_id ) ||
+		access_has_project_level( config_get( 'atm_attach_threshold', null, null, $p_bug->project_id ), $p_bug->project_id ) ||
 		access_has_project_level( config_get( 'roadmap_update_threshold', null, null, $p_bug->project_id ), $p_bug->project_id ) ) {
 		$g_checkboxes_exist = true;
 		echo '<div class="checkbox no-padding no-margin"><label>';
@@ -1625,6 +1632,16 @@ function print_column_tags( BugData $p_bug, $p_columns_target = COLUMNS_TARGET_V
 
 	if( access_has_bug_level( config_get( 'tag_view_threshold' ), $p_bug->id ) ) {
 		echo string_display_line( tag_bug_get_all( $p_bug->id ) );
+	}
+
+	echo '</td>';
+}
+
+function print_column_atms( BugData $p_bug, $p_columns_target = COLUMNS_TARGET_VIEW_PAGE ) {
+	echo '<td class="column-atms">';
+
+	if( access_has_bug_level( config_get( 'atm_view_threshold' ), $p_bug->id ) ) {
+		echo string_display_line( atm_bug_get_all( $p_bug->id ) );
 	}
 
 	echo '</td>';

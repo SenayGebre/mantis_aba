@@ -110,6 +110,25 @@ if( !empty( $t_tags ) ) {
 	}
 }
 
+$t_atm_string = '';
+$f_atm_select = gpc_get_int( 'atm_select', 0 );
+if( $f_atm_select != 0 ) {
+	$t_atm_string = atm_get_name( $f_atm_select );
+}
+
+$f_atm_string = gpc_get_string( 'atm_string', '' );
+if( !is_blank( $f_atm_string ) ) {
+	$t_atm_string = is_blank( $t_atm_string ) ? $f_atm_string : ',' . $f_atm_string;
+}
+
+$t_atms = atm_parse_string( $t_atm_string );
+if( !empty( $t_atms ) ) {
+	$t_issue['atms'] = array();
+	foreach( $t_atms as $t_atm ) {
+		$t_issue['atms'][] = array( 'name' => $t_atm['name'] );
+	}
+}
+
 $f_files = gpc_get_file( 'ufile', null );
 if( $f_files !== null && !empty( $f_files ) ) {
 	$t_issue['files'] = helper_array_transpose( $f_files );

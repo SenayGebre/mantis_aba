@@ -69,6 +69,8 @@ $g_soap_api_to_filter_names = array(
 	'last_update_end_year' => FILTER_PROPERTY_LAST_UPDATED_END_YEAR,
 	'tag_string' => FILTER_PROPERTY_TAG_STRING,
 	'tag_select' => FILTER_PROPERTY_TAG_SELECT,
+	'atm_string' => FILTER_PROPERTY_ATM_STRING,
+	'atm_select' => FILTER_PROPERTY_ATM_SELECT,
 );
 
 

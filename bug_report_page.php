@@ -218,6 +218,12 @@ $t_show_tags =
 		config_get( 'tag_attach_threshold', /* default */ null, /* user */ null, $t_project_id ),
 		$t_project_id );
 
+$t_show_atms =
+	in_array( 'atms', $t_fields ) &&
+	access_has_project_level(
+		config_get( 'atm_attach_threshold', /* default */ null, /* user */ null, $t_project_id ),
+		$t_project_id );
+
 $t_show_versions = version_should_show_product_version( $t_project_id );
 $t_show_product_version = $t_show_versions && in_array( 'product_version', $t_fields );
 $t_show_product_build = $t_show_versions && in_array( 'product_build', $t_fields ) && config_get( 'enable_product_build' ) == ON;
@@ -605,6 +611,32 @@ if( $t_show_attachments ) {
 		</td>
 	</tr>
 <?php } ?>
+<?php if( $t_show_atms ) { ?>
+	<tr>
+		<th class="category">
+			<label for="attach_atm"><?php echo lang_get( 'atm_attach_long' ) ?></label>
+		</th>
+		<td>
+			<?php
+				if( $f_master_bug_id > 0 ) {
+					# pre-fill atm string when cloning from master bug
+					$t_atms = [];
+					foreach( atm_bug_get_attached( $f_master_bug_id ) as $t_atm ) {
+						array_push( $t_atms, $t_atm["name"] );
+					}
+					$t_atm_string = implode(
+						config_get( 'atm_separator' ), $t_atms
+					);
+					print_atm_input( 0, $t_atm_string );
+				} else {
+					# otherwise show just the default empty string
+					print_atm_input();
+				}
+			?>
+		</td>
+	</tr>
+<?php } ?>
+
 <?php if( $t_show_tags ) { ?>
 	<tr>
 		<th class="category">

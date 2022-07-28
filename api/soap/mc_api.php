@@ -241,6 +241,10 @@ class ApiObjectFactory {
 			case ERROR_TAG_NAME_INVALID:
 			case ERROR_TAG_NOT_ATTACHED:
 			case ERROR_TAG_ALREADY_ATTACHED:
+			case ERROR_ATM_DUPLICATE:
+			case ERROR_ATM_NAME_INVALID:
+			case ERROR_ATM_NOT_ATTACHED:
+			case ERROR_ATM_ALREADY_ATTACHED:
 			case ERROR_COLUMNS_DUPLICATE:
 			case ERROR_COLUMNS_INVALID:
 			case ERROR_API_TOKEN_NAME_NOT_UNIQUE:
@@ -268,6 +272,7 @@ class ApiObjectFactory {
 			case ERROR_RELATIONSHIP_NOT_FOUND:
 			case ERROR_FILTER_NOT_FOUND:
 			case ERROR_TAG_NOT_FOUND:
+			case ERROR_ATM_NOT_FOUND:
 			case ERROR_TOKEN_NOT_FOUND:
 				return ApiObjectFactory::faultNotFound( $p_exception->getMessage() );
 				

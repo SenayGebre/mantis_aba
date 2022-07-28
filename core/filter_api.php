@@ -79,6 +79,7 @@ require_api( 'relationship_api.php' );
 require_api( 'session_api.php' );
 require_api( 'string_api.php' );
 require_api( 'tag_api.php' );
+require_api( 'atm_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
@@ -2089,6 +2090,8 @@ function filter_gpc_get( array $p_filter = null ) {
 
 	$f_tag_string			= gpc_get_string( FILTER_PROPERTY_TAG_STRING, $t_filter[FILTER_PROPERTY_TAG_STRING] );
 	$f_tag_select			= gpc_get_int( FILTER_PROPERTY_TAG_SELECT, $t_filter[FILTER_PROPERTY_TAG_SELECT] );
+	$f_atm_string			= gpc_get_string( FILTER_PROPERTY_ATM_STRING, $t_filter[FILTER_PROPERTY_ATM_STRING] );
+	$f_atm_select			= gpc_get_int( FILTER_PROPERTY_ATM_SELECT, $t_filter[FILTER_PROPERTY_ATM_SELECT] );
 
 	# plugin filter updates
 	$t_plugin_filters = filter_get_plugin_filters();
@@ -2278,6 +2281,8 @@ function filter_gpc_get( array $p_filter = null ) {
 	$t_filter_input[FILTER_PROPERTY_OS_BUILD] 				= $f_os_build;
 	$t_filter_input[FILTER_PROPERTY_TAG_STRING] 				= $f_tag_string;
 	$t_filter_input[FILTER_PROPERTY_TAG_SELECT] 				= $f_tag_select;
+	$t_filter_input[FILTER_PROPERTY_ATM_STRING] 				= $f_atm_string;
+	$t_filter_input[FILTER_PROPERTY_ATM_SELECT] 				= $f_atm_select;
 	$t_filter_input[FILTER_PROPERTY_NOTE_USER_ID] 			= $f_note_user_id;
 	$t_filter_input[FILTER_PROPERTY_MATCH_TYPE] 				= $f_match_type;
 

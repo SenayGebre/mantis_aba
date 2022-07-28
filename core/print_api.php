@@ -48,6 +48,7 @@
  * @uses project_hierarchy_api.php
  * @uses string_api.php
  * @uses tag_api.php
+ * @uses atm_api.php
  * @uses user_api.php
  * @uses utility_api.php
  * @uses version_api.php
@@ -78,6 +79,7 @@ require_api( 'project_api.php' );
 require_api( 'project_hierarchy_api.php' );
 require_api( 'string_api.php' );
 require_api( 'tag_api.php' );
+require_api( 'atm_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
@@ -362,6 +364,18 @@ function print_tag_attach_form( $p_bug_id, $p_string = '' ) {
 	return true;
 }
 
+function print_atm_attach_form( $p_bug_id, $p_string = '' ) {
+?>
+	<form method="post" action="atm_attach.php" class="form-inline">
+	<?php echo form_security_field( 'atm_attach' )?>
+	<input type="hidden" name="bug_id" value="<?php echo $p_bug_id?>" class="input-sm" />
+	<?php print_atm_input( $p_bug_id, $p_string ); ?>
+	<input type="submit" value="<?php echo lang_get( 'atm_attach' )?>" class="btn btn-primary btn-sm btn-white btn-round" />
+	</form>
+<?php
+	return true;
+}
+
 /**
  * Print the separator comment, input box, and existing tag dropdown menu.
  *
@@ -380,6 +394,17 @@ function print_tag_input( $p_bug_id = 0, $p_string = '' ) {
 	<input type="text" name="tag_string" id="tag_string" class="input-sm" size="40" value="<?php echo string_attribute( $p_string )?>" />
 	<select class="input-sm" <?php echo helper_get_tab_index()?> name="tag_select" id="tag_select" class="input-sm">
 		<?php print_tag_option_list( $p_bug_id );?>
+	</select>
+<?php
+}
+
+function print_atm_input( $p_bug_id = 0, $p_string = '' ) {
+?>
+	<label class="inline small"><?php printf( lang_get( 'atm_separate_by' ), config_get( 'atm_separator' ) )?></label>
+	<input type="hidden" id="atm_separator" value="<?php echo config_get( 'atm_separator' )?>" />
+	<input type="text" name="atm_string" id="atm_string" class="input-sm" size="40" value="<?php echo string_attribute( $p_string )?>" />
+	<select class="input-sm" <?php echo helper_get_tab_index()?> name="atm_select" id="atm_select" class="input-sm">
+		<?php print_atm_option_list( $p_bug_id );?>
 	</select>
 <?php
 }
@@ -416,6 +441,32 @@ function print_tagging_errors_table( $p_tags_failed ) {
 	<?php
 }
 
+function print_atm_adding_errors_table( $p_atms_failed ) {
+	?>
+	<div id="manage-user-div" class="form-container">
+		<h2><?php echo lang_get( 'atm_attach_failed' ) ?></h2>
+		<table><tbody>
+		<?php
+		foreach( $p_atms_failed as $t_atm_row ) {
+			echo '<tr>';
+
+			echo '<td>', string_html_specialchars( $t_atm_row['name'] ), '</td>';
+
+			if( -1 == $t_atm_row['id'] ) {
+				$t_error = lang_get( 'atm_create_denied' );
+			} else if( -2 == $t_atm_row['id'] ) {
+				$t_error = lang_get( 'atm_invalid_name' );
+			}
+
+			echo '<td>', $t_error, '</td>';
+			echo '</tr>';
+		}
+		?>
+		</tbody></table>
+	</div>
+	<?php
+}
+
 /**
  * Print the drop-down combo-box of existing tags.
  * When passed a bug ID, the option list will not contain any tags attached to the given bug.
@@ -426,6 +477,16 @@ function print_tag_option_list( $p_bug_id = 0 ) {
 	$t_rows = tag_get_candidates_for_bug( $p_bug_id );
 
 	echo '<option value="0">', string_html_specialchars( lang_get( 'tag_existing' ) ), '</option>';
+	foreach ( $t_rows as $t_row ) {
+		echo '<option value="', $t_row['id'], '" title="', string_attribute( $t_row['description'] );
+		echo '">', string_attribute( $t_row['name'] ), '</option>';
+	}
+}
+
+function print_atm_option_list( $p_bug_id = 0 ) {
+	$t_rows = atm_get_candidates_for_bug( $p_bug_id );
+
+	echo '<option value="0">', string_html_specialchars( lang_get( 'atm_existing' ) ), '</option>';
 	foreach ( $t_rows as $t_row ) {
 		echo '<option value="', $t_row['id'], '" title="', string_attribute( $t_row['description'] );
 		echo '">', string_attribute( $t_row['name'] ), '</option>';

@@ -54,7 +54,7 @@ auth_reauthenticate();
 access_ensure_global_level( config_get( 'manage_custom_fields_threshold' ) );
 
 $f_field_id	= gpc_get_int( 'field_id' );
-$f_return	= strip_tags( gpc_get_string( 'return', 'manage_custom_field_page.php' ) );
+$f_return	= strip_tags( gpc_get_string( 'return', 'manage_cusztom_field_page.php' ) );
 
 custom_field_ensure_exists( $f_field_id );
 
