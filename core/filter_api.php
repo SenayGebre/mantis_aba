@@ -353,6 +353,14 @@ function filter_get_url( array $p_custom_filter ) {
 		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_TAG_SELECT, $p_custom_filter[FILTER_PROPERTY_TAG_SELECT] );
 	}
 
+	if( !filter_field_is_any( $p_custom_filter[FILTER_PROPERTY_ATM_STRING] ) ) {
+		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_ATM_STRING, $p_custom_filter[FILTER_PROPERTY_ATM_STRING] );
+	}
+
+	if( !filter_field_is_any( $p_custom_filter[FILTER_PROPERTY_ATM_SELECT] ) ) {
+		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_ATM_SELECT, $p_custom_filter[FILTER_PROPERTY_ATM_SELECT] );
+	}
+
 	$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_MATCH_TYPE, $p_custom_filter[FILTER_PROPERTY_MATCH_TYPE] );
 
 	if( isset( $p_custom_filter['custom_fields'] ) ) {
@@ -904,6 +912,8 @@ function filter_get_default_array( $p_view_type = null ) {
 		FILTER_PROPERTY_VIEW_STATE => META_FILTER_ANY,
 		FILTER_PROPERTY_TAG_STRING => '',
 		FILTER_PROPERTY_TAG_SELECT => 0,
+		FILTER_PROPERTY_ATM_STRING => '',
+		FILTER_PROPERTY_ATM_SELECT => 0,
 		FILTER_PROPERTY_RELATIONSHIP_TYPE => BUG_REL_ANY,
 		FILTER_PROPERTY_RELATIONSHIP_BUG => META_FILTER_ANY,
 	);
