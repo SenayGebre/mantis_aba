@@ -369,6 +369,16 @@ function excel_format_tags( BugData $p_bug ) {
 	return excel_prepare_string( $t_value );
 }
 
+function excel_format_atms( BugData $p_bug ) {
+	$t_value = '';
+
+	if( access_has_bug_level( config_get( 'atm_view_threshold' ), $p_bug->id ) ) {
+		$t_value = atm_bug_get_all( $p_bug->id );
+	}
+
+	return excel_prepare_string( $t_value );
+}
+
 /**
  * Gets the formatted target version.
  * @param BugData $p_bug A bug object.

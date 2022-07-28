@@ -201,6 +201,9 @@ define( 'BUG_PAID_SPONSORSHIP', 24 );
 define( 'TAG_ATTACHED', 25 );
 define( 'TAG_DETACHED', 26 );
 define( 'TAG_RENAMED', 27 );
+define( 'ATM_ATTACHED', 25 );
+define( 'ATM_DETACHED', 26 );
+define( 'ATM_RENAMED', 27 );
 define( 'BUG_REVISION_DROPPED', 28 );
 define( 'BUGNOTE_REVISION_DROPPED', 29 );
 define( 'PLUGIN_HISTORY', 100 );
@@ -406,6 +409,13 @@ define( 'ERROR_TAG_DUPLICATE', 2201 );
 define( 'ERROR_TAG_NAME_INVALID', 2202 );
 define( 'ERROR_TAG_NOT_ATTACHED', 2203 );
 define( 'ERROR_TAG_ALREADY_ATTACHED', 2204 );
+
+# ERROR_ATM_*
+define( 'ERROR_ATM_NOT_FOUND', 2200 );
+define( 'ERROR_ATM_DUPLICATE', 2201 );
+define( 'ERROR_ATM_NAME_INVALID', 2202 );
+define( 'ERROR_ATM_NOT_ATTACHED', 2203 );
+define( 'ERROR_ATM_ALREADY_ATTACHED', 2204 );
 
 # ERROR_TOKEN_*
 define( 'ERROR_TOKEN_NOT_FOUND', 2300 );

@@ -131,6 +131,7 @@ class FilterConverter {
 		$this->convertStringArrayToJson( $t_criteria, FILTER_PROPERTY_OS_BUILD );
 
 		$this->convertTagsToJson( $t_criteria );
+		$this->convertATMsToJson( $t_criteria );
 		$this->convertCustomFieldsArrayToJson( $t_criteria );
 		$this->convertTextSearchToJson( $t_criteria );
 		$this->convertRelationshipToJson( $t_criteria );
@@ -458,6 +459,35 @@ class FilterConverter {
 
 			unset( $p_criteria[$t_field ] );
 			$p_criteria['tags'] = $t_result;
+		}
+	}
+
+	private function convertATMsToJson( &$p_criteria ) {
+		# TODO: not sure what this field is used for
+		if( isset( $p_criteria['atm_select'] ) ) {
+			unset( $p_criteria['atm_select'] );
+		}
+
+		$t_field = 'atm_string';
+		if( isset( $p_criteria[$t_field] ) ) {
+			if( empty( $p_criteria[$t_field ] ) ) {
+				unset( $p_criteria[$t_field] );
+				return;
+			}
+
+			$t_elements = explode( ',', $p_criteria[$t_field] );
+			$t_result = array();
+			foreach( $t_elements as $t_element ) {
+				$t_element = trim( $t_element );
+				$t_atm_row = atm_get_by_name( $t_element );
+				$t_result[] = array(
+					'id' => $t_atm_row['id'],
+					'name' => $t_atm_row['name'],
+					'owner' => mci_account_get_array_by_id( $t_atm_row['user_id'] ) );
+			}
+
+			unset( $p_criteria[$t_field ] );
+			$p_criteria['atms'] = $t_result;
 		}
 	}
 

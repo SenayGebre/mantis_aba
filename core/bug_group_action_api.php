@@ -295,6 +295,11 @@ function bug_group_action_get_commands( array $p_project_ids = null ) {
 			$t_commands['EXT_ATTACH_TAGS'] = lang_get( 'actiongroup_menu_attach_tags' );
 		}
 
+		if( !isset( $t_commands['EXT_ATTACH_ATMS'] ) &&
+			access_has_project_level( config_get( 'atm_attach_threshold', null, $t_user_id, $t_project_id ), $t_project_id ) ) {
+			$t_commands['EXT_ATTACH_ATMS'] = lang_get( 'actiongroup_menu_attach_atms' );
+		}
+
 		if( !isset( $t_commands['UP_DUE_DATE'] ) &&
 			access_has_project_level( config_get( 'due_date_update_threshold', null, $t_user_id, $t_project_id ), $t_project_id ) ) {
 			$t_commands['UP_DUE_DATE'] = lang_get( 'actiongroup_menu_update_due_date' );

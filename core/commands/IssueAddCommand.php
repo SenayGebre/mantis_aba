@@ -232,6 +232,20 @@ class IssueAddCommand extends Command {
 			}
 		}
 
+		# Validate atms and make sure user is allowed to create them if needed
+		if( isset( $t_issue['atms'] ) && is_array( $t_issue['atms'] ) ) {
+			foreach( $t_issue['atms'] as $t_atm ) {
+				$t_atm_id = $this->get_atm_id( $t_atm );
+				if( $t_atm_id === false && !atm_can_create( $this->user_id ) ) {
+					throw new ClientException(
+						sprintf( "User '%d' can't create atm '%s'.", $this->user_id, $t_atm['name'] ),
+						ERROR_ATM_NOT_FOUND,
+						array( $t_atm['name'] )
+					);
+				}
+			}
+		}
+
 		$t_category = isset( $t_issue['category'] ) ? $t_issue['category'] : null;
 		$t_category_id = mci_get_category_id( $t_category, $t_project_id );
 
@@ -374,6 +388,24 @@ class IssueAddCommand extends Command {
 			# @TODO should this be replaced by TagAttachCommand, as suggested in #24441 ?
 			mci_tag_set_for_issue( $t_issue_id, $t_tags, $this->user_id );
 		}
+		
+		# Add ATMs
+		if( isset( $t_issue['atms'] ) && is_array( $t_issue['atms'] ) ) {
+			$t_atms = array();
+			foreach( $t_issue['atms'] as $t_atm ) {
+				if( $this->get_atm_id( $t_atm ) === false ) {
+					$t_atm['id'] = atm_create( $t_atm['name'], $this->user_id );
+					log_event( LOG_WEBSERVICE,
+						"created new atm '" . $t_atm['name'] . "' id '" . $t_atm['id'] . "'"
+					);
+				}
+
+				$t_atms[] = $t_atm;
+			}
+
+			# @TODO should this be replaced by TagAttachCommand, as suggested in #24441 ?
+			mci_atm_set_for_issue( $t_issue_id, $t_atms, $this->user_id );
+		}
 
 		# Handle the file upload
 		file_attach_files( $t_issue_id, $this->files, /* bugnote_id */ null );
@@ -515,6 +547,36 @@ class IssueAddCommand extends Command {
 			);
 		}
 		return $t_tag_id;
+	}
+
+	private function get_atm_id( array $p_atm ) {
+		if( isset( $p_atm['id'] ) ) {
+			$t_atm_id = $p_atm['id'];
+			if( !atm_exists( $t_atm_id ) ) {
+				throw new ClientException(
+					"ATM with id $t_atm_id not found.",
+					ERROR_ATM_NOT_FOUND,
+					array( $t_atm_id )
+				);
+			}
+		} elseif( isset( $p_atm['name'] ) ) {
+			$t_matches = array();
+			if( !atm_name_is_valid( $p_atm['name'], $t_matches )) {
+				throw new ClientException(
+					"ATM name '{$p_atm['name']}' is not valid.",
+					ERROR_ATM_NAME_INVALID,
+					array( $p_atm['name'] )
+				);
+			}
+			$t_existing_atm = atm_get_by_name( $p_atm['name'] );
+			$t_atm_id = $t_existing_atm === false ? false : $t_existing_atm['id'];
+		} else {
+			throw new ClientException(
+				'ATM without id or name.',
+				ERROR_ATM_NAME_INVALID
+			);
+		}
+		return $t_atm_id;
 	}
 }
 

@@ -895,6 +895,51 @@ $g_upgrade[210] = array( 'AddColumnSQL', array( db_get_table( 'bug_file' ), "
 $g_upgrade[211] = array( 'AlterColumnSQL', array( db_get_table( 'email' ), "
 	email					C(191)	$t_notnull DEFAULT \" '' \"" ) );
 
+# ATM
+
+$g_upgrade[212] = array( 'CreateTableSQL', array( db_get_table( 'atm' ), "
+	id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
+	user_id					I		UNSIGNED NOTNULL DEFAULT '0',
+	name					C(100)	NOTNULL PRIMARY DEFAULT \" '' \",
+	description				XL		$t_notnull,
+	date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
+	date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "' ",
+	$t_table_options
+	) );
+$g_upgrade[213] = array( 'CreateTableSQL', array( db_get_table( 'bug_atm' ), "
+	bug_id					I		UNSIGNED NOTNULL PRIMARY DEFAULT '0',
+	atm_id					I		UNSIGNED NOTNULL PRIMARY DEFAULT '0',
+	user_id					I		UNSIGNED NOTNULL DEFAULT '0',
+	date_attached			T		NOTNULL DEFAULT '" . db_null_date() . "'",
+	$t_table_options
+	) );
+	
+$g_upgrade[214] = array( 'AddColumnSQL', array( db_get_table( 'atm' ), "
+date_created_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+
+$g_upgrade[215] = array( 'AddColumnSQL', array( db_get_table( 'atm' ), "
+	date_updated_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+
+$g_upgrade[216] = array( 'UpdateFunction', 'date_migrate', array( db_get_table( 'atm' ), 'id', array( 'date_created', 'date_updated' ), array( 'date_created_int', 'date_updated_int' ) ) );
+
+$g_upgrade[217] = array( 'DropColumnSQL', array( db_get_table( 'atm' ), 'date_created' ) );
+$g_upgrade[218] = array( 'RenameColumnSQL', array( db_get_table( 'atm' ), 'date_created_int', 'date_created', "
+	date_created_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+$g_upgrade[219] = array( 'DropColumnSQL', array( db_get_table( 'atm' ), 'date_updated' ) );
+$g_upgrade[220] = array( 'RenameColumnSQL', array( db_get_table( 'atm' ), 'date_updated_int', 'date_updated', "
+	date_updated_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+
+$g_upgrade[221] = array( 'AddColumnSQL', array( db_get_table( 'bug_atm' ), "
+	date_attached_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+$g_upgrade[222] = array( 'UpdateFunction', 'date_migrate', array( db_get_table( 'bug_atm' ), 'bug_id', 'date_attached', 'date_attached_int' ) );
+$g_upgrade[223] = array( 'DropColumnSQL', array( db_get_table( 'bug_atm' ), 'date_attached' ) );
+$g_upgrade[224] = array( 'RenameColumnSQL', array( db_get_table( 'bug_atm' ), 'date_attached_int', 'date_attached', "
+	date_attached_int		I		UNSIGNED NOTNULL DEFAULT '1' " ) );
+
+
+$g_upgrade[225] = array( 'CreateIndexSQL', array( 'idx_atm_name', db_get_table( 'atm' ), 'name' ) );
+$g_upgrade[226] = array( 'CreateIndexSQL', array( 'idx_bug_atm_atm_id', db_get_table( 'bug_atm' ), 'atm_id' ) );
+
 # Release marker: 2.25.0
 
 # ----------------------------------------------------------------------------

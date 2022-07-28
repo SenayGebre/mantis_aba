@@ -33,7 +33,7 @@
  * @uses helper_api.php
  * @uses logging_api.php
  * @uses project_api.php
- * @uses tag_api.php
+ * @uses atm_api.php
  * @uses user_api.php
  * @uses utility_api.php
  */
@@ -50,6 +50,7 @@ require_api( 'gpc_api.php' );
 require_api( 'helper_api.php' );
 require_api( 'logging_api.php' );
 require_api( 'project_api.php' );
+require_api( 'atm_api.php' );
 require_api( 'tag_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
@@ -482,6 +483,10 @@ class BugFilterQuery extends DbQuery {
 		if( isset( $this->filter[FILTER_PROPERTY_TAG_STRING] )
 				|| isset( $this->filter[FILTER_PROPERTY_TAG_SELECT] ) ) {
 			$this->build_prop_tags();
+		}
+		if( isset( $this->filter[FILTER_PROPERTY_ATM_STRING] )
+				|| isset( $this->filter[FILTER_PROPERTY_ATM_SELECT] ) ) {
+			$this->build_prop_atms();
 		}
 		if( isset( $this->filter['custom_fields'] ) ) {
 			$this->build_prop_custom_fields();
@@ -1383,6 +1388,106 @@ class BugFilterQuery extends DbQuery {
 				. $t_tag_projects_clause;
 			$this->add_join( $t_join_exc );
 			$t_where[] = $t_tag_alias . '.tag_id IS NULL';
+		}
+
+		if( !empty( $t_where ) ) {
+			$this->add_where( implode( ' AND ', $t_where ) );
+		}
+	}
+
+	protected function build_prop_atms() {
+		$c_atm_string = trim( $this->filter[FILTER_PROPERTY_ATM_STRING] );
+		$c_atm_select = (int)$this->filter[FILTER_PROPERTY_ATM_SELECT];
+		if( is_blank( $c_atm_string ) && $c_atm_select == 0 ) {
+			# shortcut exit
+			return;
+		}
+
+		$t_atms = atm_parse_filters( $c_atm_string );
+		if( empty( $t_atms ) && $c_atm_select == 0 ) {
+			# shortcut exit
+			return;
+		}
+
+		$t_projects_can_view_atms = $this->helper_filter_projects_using_access( 'atm_view_threshold' );
+		if( ALL_PROJECTS == $t_projects_can_view_atms ) {
+			$t_atm_projects_clause = '';
+		} else {
+			if( empty( $t_projects_can_view_atms ) ) {
+				# if can't view atms in any project, exit
+				log_event( LOG_FILTERING, 'atms query, no accessible projects ' );
+				return;
+			} else {
+				$t_atm_projects_clause = ' AND ' . $this->sql_in( '{bug}.project_id', $t_projects_can_view_atms );
+				log_event( LOG_FILTERING, 'atms query, accessible projects =  @P' . implode( ', @P', $t_projects_can_view_atms ) );
+			}
+		}
+
+		$t_atms_always = array();
+		$t_atms_any = array();
+		$t_atms_never = array();
+
+		# @TODO, use constants for atm modifiers
+		foreach( $t_atms as $t_atm_row ) {
+			switch( $t_atm_row['filter'] ) {
+				case 1:
+					# A matched issue must always have this atm
+					$t_atms_always[] = $t_atm_row;
+					break;
+				case 0:
+					# A matched issue may have this atm
+					$t_atms_any[] = $t_atm_row;
+					break;
+				case -1:
+					# A matched must never have this atm
+					$t_atms_never[] = $t_atm_row;
+					break;
+			}
+		}
+
+		# Consider those atms that must always match, to also be part of those that can be
+		# optionally matched. This solves the scenario for an issue that matches one atm
+		# from the "always" group, and none from the "any" group.
+		if( !empty( $t_atms_always ) && !empty( $t_atms_any ) ) {
+			$t_atms_any = array_merge( $t_atms_any, $t_atms_always );
+		}
+
+		# Add the atm id to the array, from filter field "atm_select"
+		if( 0 < $c_atm_select && atm_exists( $c_atm_select ) ) {
+			$t_atms_any[] = atm_get( $c_atm_select );
+		}
+
+		$t_where = array();
+
+		if( count( $t_atms_always ) ) {
+			foreach( $t_atms_always as $t_atm_row ) {
+				$t_atm_alias = 'bug_atm_alias_alw_' . $t_atm_row['id'];
+				$t_join_inc = 'LEFT JOIN {bug_atm} ' . $t_atm_alias . ' ON ' . $t_atm_alias . '.bug_id = {bug}.id'
+					. ' AND ' . $t_atm_alias . '.atm_id = ' . $this->param( (int)$t_atm_row['id'] )
+					. $t_atm_projects_clause;
+				$this->add_join( $t_join_inc );
+				$t_where[] = $t_atm_alias . '.atm_id IS NOT NULL';
+			}
+		}
+
+		if( count( $t_atms_any ) ) {
+			$t_atm_alias = 'bug_atm_alias_any';
+			$t_atm_ids = $this->helper_array_map_int( array_column( $t_atms_any, 'id' ) );
+			$t_join_any = 'LEFT JOIN {bug_atm} ' . $t_atm_alias . ' ON ' . $t_atm_alias . '.bug_id = {bug}.id'
+				. ' AND ' . $this->sql_in( $t_atm_alias . '.atm_id', $t_atm_ids )
+				. $t_atm_projects_clause;
+			$this->add_join( $t_join_any );
+			$t_where[] = $t_atm_alias . '.atm_id IS NOT NULL';
+		}
+
+		if( count( $t_atms_never ) ) {
+			$t_atm_alias = 'bug_atm_alias_nev';
+			$t_atm_ids = $this->helper_array_map_int( array_column( $t_atms_never, 'id' ) );
+			$t_join_exc = 'LEFT JOIN {bug_atm} ' . $t_atm_alias . ' ON ' . $t_atm_alias . '.bug_id = {bug}.id'
+				. ' AND ' . $this->sql_in(  $t_atm_alias . '.atm_id', $t_atm_ids )
+				. $t_atm_projects_clause;
+			$this->add_join( $t_join_exc );
+			$t_where[] = $t_atm_alias . '.atm_id IS NULL';
 		}
 
 		if( !empty( $t_where ) ) {

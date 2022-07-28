@@ -79,6 +79,7 @@ require_api( 'relationship_api.php' );
 require_api( 'session_api.php' );
 require_api( 'string_api.php' );
 require_api( 'tag_api.php' );
+require_api( 'atm_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
@@ -350,6 +351,14 @@ function filter_get_url( array $p_custom_filter ) {
 
 	if( !filter_field_is_any( $p_custom_filter[FILTER_PROPERTY_TAG_SELECT] ) ) {
 		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_TAG_SELECT, $p_custom_filter[FILTER_PROPERTY_TAG_SELECT] );
+	}
+
+	if( !filter_field_is_any( $p_custom_filter[FILTER_PROPERTY_ATM_STRING] ) ) {
+		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_ATM_STRING, $p_custom_filter[FILTER_PROPERTY_ATM_STRING] );
+	}
+
+	if( !filter_field_is_any( $p_custom_filter[FILTER_PROPERTY_ATM_SELECT] ) ) {
+		$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_ATM_SELECT, $p_custom_filter[FILTER_PROPERTY_ATM_SELECT] );
 	}
 
 	$t_query[] = filter_encode_field_and_value( FILTER_PROPERTY_MATCH_TYPE, $p_custom_filter[FILTER_PROPERTY_MATCH_TYPE] );
@@ -903,6 +912,8 @@ function filter_get_default_array( $p_view_type = null ) {
 		FILTER_PROPERTY_VIEW_STATE => META_FILTER_ANY,
 		FILTER_PROPERTY_TAG_STRING => '',
 		FILTER_PROPERTY_TAG_SELECT => 0,
+		FILTER_PROPERTY_ATM_STRING => '',
+		FILTER_PROPERTY_ATM_SELECT => 0,
 		FILTER_PROPERTY_RELATIONSHIP_TYPE => BUG_REL_ANY,
 		FILTER_PROPERTY_RELATIONSHIP_BUG => META_FILTER_ANY,
 	);
@@ -2089,6 +2100,8 @@ function filter_gpc_get( array $p_filter = null ) {
 
 	$f_tag_string			= gpc_get_string( FILTER_PROPERTY_TAG_STRING, $t_filter[FILTER_PROPERTY_TAG_STRING] );
 	$f_tag_select			= gpc_get_int( FILTER_PROPERTY_TAG_SELECT, $t_filter[FILTER_PROPERTY_TAG_SELECT] );
+	$f_atm_string			= gpc_get_string( FILTER_PROPERTY_ATM_STRING, $t_filter[FILTER_PROPERTY_ATM_STRING] );
+	$f_atm_select			= gpc_get_int( FILTER_PROPERTY_ATM_SELECT, $t_filter[FILTER_PROPERTY_ATM_SELECT] );
 
 	# plugin filter updates
 	$t_plugin_filters = filter_get_plugin_filters();
@@ -2278,6 +2291,8 @@ function filter_gpc_get( array $p_filter = null ) {
 	$t_filter_input[FILTER_PROPERTY_OS_BUILD] 				= $f_os_build;
 	$t_filter_input[FILTER_PROPERTY_TAG_STRING] 				= $f_tag_string;
 	$t_filter_input[FILTER_PROPERTY_TAG_SELECT] 				= $f_tag_select;
+	$t_filter_input[FILTER_PROPERTY_ATM_STRING] 				= $f_atm_string;
+	$t_filter_input[FILTER_PROPERTY_ATM_SELECT] 				= $f_atm_select;
 	$t_filter_input[FILTER_PROPERTY_NOTE_USER_ID] 			= $f_note_user_id;
 	$t_filter_input[FILTER_PROPERTY_MATCH_TYPE] 				= $f_match_type;
 
