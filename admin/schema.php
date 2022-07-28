@@ -845,6 +845,10 @@ $g_upgrade[196] = array( 'CreateIndexSQL', array( 'idx_atm_name', db_get_table( 
 $g_upgrade[197] = array( 'CreateIndexSQL', array( 'idx_bug_atm_atm_id', db_get_table( 'bug_atm' ), 'atm_id' ) );
 $g_upgrade[198] = array( 'CreateIndexSQL', array( 'idx_email_id', db_get_table( 'email' ), 'email_id', array( 'DROP' ) ), array( 'db_index_exists', array( db_get_table( 'email' ), 'idx_email_id' ) ) );
 
+$g_upgrade[180] = array( 'CreateIndexSQL', array( 'idx_atm_name', db_get_table( 'atm' ), 'name' ) );
+$g_upgrade[181] = array( 'CreateIndexSQL', array( 'idx_bug_atm_atm_id', db_get_table( 'bug_atm' ), 'atm_id' ) );
+$g_upgrade[182] = array( 'CreateIndexSQL', array( 'idx_email_id', db_get_table( 'email' ), 'email_id', array( 'DROP' ) ), array( 'db_index_exists', array( db_get_table( 'email' ), 'idx_email_id' ) ) );
+
 # Release marker: 1.2.0
 
 $g_upgrade[199] = array( 'UpdateFunction', 'correct_multiselect_custom_fields_db_format' );
