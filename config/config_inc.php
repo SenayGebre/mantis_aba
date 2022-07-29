@@ -5,6 +5,6 @@ $g_database_name          = 'mantis';
 $g_db_username            = 'root';
 $g_db_password            = 'Senay@1122';
 
-$g_default_timezone       = 'Africa/Addis_Ababa';
+$g_default_timezone       = 'Europe/Berlin';
 
-$g_crypto_master_salt     = 'zFY3HGtzNRGAeh98dagzcaj+UNCTTLzT7bjXTsaDhuQ=';
+$g_crypto_master_salt     = 'oGSpaduj+VrqxyJLwngn5buuFrjDObITBMDNEurJWzg=';
