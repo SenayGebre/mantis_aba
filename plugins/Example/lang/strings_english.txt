@@ -1,0 +1,6 @@
+<?php
+$s_plugin_Example_title = 'Example Plugin';
+$s_plugin_Example_description = 'Example Plugin from MantisBT Developers Guide';
+$s_plugin_Example_configuration = 'Configuration';
+$s_plugin_Example_foo_or_bar = 'Foo or Bar?';
+$s_plugin_Example_reset = 'Reset Value';
