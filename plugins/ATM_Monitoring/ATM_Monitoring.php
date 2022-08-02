@@ -38,7 +38,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
         return array(
             'EVENT_MENU_MANAGE' => 'manage_atm_menu',
             'EVENT_REPORT_BUG_FORM_TOP' => 'select_atm',
-            'EVENT_REPORT_BUG_DATA' => 'data',
+            'EVENT_REPORT_BUG_DATA' => 'process_data',
+            'EVENT_REPORT_BUG' => 'store_data',
         );
     }
 
@@ -57,7 +58,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         echo '</tr>';
 
     }
-    function data($event, $issue)
+    function process_data($event, $issue)
     {
         $issue->atm = gpc_get('terminal_id');
     
@@ -66,6 +67,14 @@ class ATM_MonitoringPlugin extends MantisPlugin
         // echo '</pre>';
         
         return $issue;
+    }
+    function store_data($event, $issue)
+    {
+         $d_query_1 = 'IF EXISTS(SELECT 1 FROM sys.columns WHERE Name = N'atm' AND Object_ID = Object_ID(N'schemaName.tableName'))';
+        $d_query = 'ALTER TABLE mantis_atm_table ADD atm varchar(255)';
+
+        // $d_query = 'INSERT INTO mantis_atm_table(name, description) VALUES ("' .$issue->atm.'", "hello")';
+        $d_result = db_query($d_query);
     }
     function manage_atm_menu()
     {
