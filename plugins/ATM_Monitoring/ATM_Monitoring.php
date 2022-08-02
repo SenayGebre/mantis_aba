@@ -1,5 +1,5 @@
 <?php
-$terminal_id  = gpc_get_string( 'terminal_id', '' );
+// $terminal_id  = gpc_get_string( 'terminal_id' );
 
 
 class ATM_MonitoringPlugin extends MantisPlugin {
@@ -33,26 +33,30 @@ class ATM_MonitoringPlugin extends MantisPlugin {
        return array(
 			'EVENT_MENU_MANAGE' => 'manage_atm_menu',
             'EVENT_REPORT_BUG_FORM_TOP' => 'select_atm',
+            'EVENT_REPORT_BUG_DATA' => 'data',
        );
     }
   
 
     function select_atm() {
-        global $terminal_id;
-        echo '<tr>';
-		echo '<th class="category">';
-		echo '<span class="required">*</span><label for="termial_id">'. plugin_lang_get('terminal_id') . '</label>';
-		echo '</th>';
-		echo '<td>';
-		echo '<input echo' .  helper_get_tab_index() . 'type="text" id="termial_id" name="termial_id" size="105" maxlength="128" value=" ' . string_attribute( $terminal_id) .'" required />';
-		echo $terminal_id;
-        echo '</td>';
-	    echo '</tr>';
+        // global $terminal_id;
+        // echo '<tr>';
+		// echo '<th class="category">';
+		// echo '<span class="required">*</span><label for="termial_id">'. plugin_lang_get('terminal_id') . '</label>';
+		// echo '</th>';
+		// echo '<td>';
+		// echo '<input echo' .  helper_get_tab_index() . 'type="text" id="termial_id" name="termial_id" size="105" maxlength="128" value=" ' . string_attribute( $terminal_id) .'" required />';
+		// echo $terminal_id;
+        // echo '</td>';
+	    // echo '</tr>';
         
 		
         
     }
-
+    function data($issue){
+        echo '<pre>'; print_r($issue); echo '</pre>';
+       return $issue; 
+    }
     function manage_atm_menu() {
 	}
 //     function schema()
