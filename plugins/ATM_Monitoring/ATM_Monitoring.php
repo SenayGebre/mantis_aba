@@ -1,6 +1,5 @@
 <?php
 class ATM_MonitoringPlugin extends MantisPlugin {
-
     function register() {
         $this->name = 'ATM_Montoring';
                                              # Proper name of plugin
