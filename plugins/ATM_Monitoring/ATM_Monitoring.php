@@ -26,21 +26,29 @@ class ATM_MonitoringPlugin extends MantisPlugin {
     {
        return array(
 			'EVENT_MENU_MANAGE' => 'manage_atm_menu',
-            'EVENT_REPORT_BUG_FORM' => 'select_atm',
+            'EVENT_REPORT_BUG_FORM_TOP' => 'select_atm',
        );
     }
   
 
     function select_atm() {
-		echo '<tr';
+        echo '<tr>';
 		echo '<th class="category">';
-		echo '<td>dsafadsf &#160;</td>';
-		echo '<span class="required">*</span><label for="summary">'.print_documentation_link( 'summary' ).'</label>';
+		echo '<span class="required">*</span><label for="summary">jdlsakfjlk</label>';
 		echo '</th>';
 		echo '<td>';
-		echo '<input type="text" id="summary" name="summary" size="105" maxlength="128" value=" " required />';
+		echo '<input <?php echo helper_get_tab_index() ?> type="text" id="summary" name="summary" size="105" maxlength="128" value="<?php echo string_attribute( $f_summary ) ?>" required />';
 		echo '</td>';
 	    echo '</tr>';
+		// echo '<tr';
+		// echo '<th class="category">';
+		// echo '<td>dsafadsf &#160;</td>';
+		// echo '<span class="required">*</span><label for="summary">'.print_documentation_link( 'summary' ).'</label>';
+		// echo '</th>';
+		// echo '<td>';
+		// echo '<input type="text" id="summary" name="summary" size="105" maxlength="128" value=" " required />';
+		// echo '</td>';
+	    // echo '</tr>';
         
     }
 
