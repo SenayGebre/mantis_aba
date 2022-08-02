@@ -29,10 +29,13 @@ class ATM_MonitoringPlugin extends MantisPlugin
         # Author/team e-mail address
         $this->url = 'https://mantisbt.org'; # Support webpage
     }
-    // function events()
-    // {
-
-    // }
+    function events()
+    {
+        return array(
+            'EVENT_CREATE_ATM' =>  'EVENT_TYPE_EXECUTE'
+        );
+        
+    }
     function hooks()
     {
         return array(
@@ -40,28 +43,41 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG_FORM_TOP' => 'select_atm',
             'EVENT_REPORT_BUG_DATA' => 'process_data',
             'EVENT_REPORT_BUG' => 'store_data',
+            'EVENT_VIEW_BUG_DETAILS' => 'view_details',
+
+
+            'EVENT_CREATE_ATM' => 'create_atm'
         );
     }
 
 
     function select_atm()
     {
-        $_SESSION['terminal_id'] = "this is session id";
 
-        echo '<tr>';
-        echo '<th class="category">';
-        echo '<span class="required">*</span><label for="terminal_id">' .$_SESSION['terminal_id']. '</label>';
-        echo '</th>';
-        echo '<td>';
-        echo '<input type="text" id="terminal_id" class="btn" name="terminal_id" size="105" maxlength="128" value="'.isset($_POST['"terminal_id"']) .'" required />';
-        echo '</td>';
-        echo '</tr>';
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+
+        if ('ATM Monitoring ' === $current_project['name'])
+        {
+            $_SESSION['terminal_id'] = "Terminal ID";
+
+            echo '<tr>';
+            echo '<th class="category">';
+            echo '<span class="required">*</span><label for="terminal_id">' .$_SESSION['terminal_id']. '</label>';
+            echo '</th>';
+            echo '<td>';
+            echo '<input ' . helper_get_tab_index(). 'type="text" id="terminal_id"  name="terminal_id" size="105" maxlength="128" value="'.isset($_POST['"terminal_id"']) .'" required />';
+            echo '</td>';
+            echo '</tr>';
+     
+        }
+
 
     }
     function process_data($event, $issue)
     {
         $issue->atm = gpc_get('terminal_id');
-    
+        
         // echo '<pre>';
         // print_r($issue);
         // echo '</pre>';
@@ -70,11 +86,25 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function store_data($event, $issue)
     {
-         $d_query_1 = 'IF EXISTS(SELECT 1 FROM sys.columns WHERE Name = N'atm' AND Object_ID = Object_ID(N'schemaName.tableName'))';
-        $d_query = 'ALTER TABLE mantis_atm_table ADD atm varchar(255)';
-
-        // $d_query = 'INSERT INTO mantis_atm_table(name, description) VALUES ("' .$issue->atm.'", "hello")';
+       
+        $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
+        $d_result = db_query($d_query_1);
+        $d_query = 'UPDATE mantis_bug_table SET terminal_id ="'.$issue->atm .'" WHERE id =' .$issue->id .'';
         $d_result = db_query($d_query);
+    }
+    function view_details($event, $issue)
+    {
+       
+        $d_query = 'SELECT terminal_id FROM mantis_bug_table WHERE id =' .$issue .'';
+        $d_result = db_query($d_query);
+        $t_row = db_fetch_array( $d_result );
+        // echo $t_row;
+        echo '<th class="bug-summary category">Terminal ID</th>';
+        echo '<td class="bug-summary" colspan="5">', string_display_links( $t_row['terminal_id'] ), '</td>';
+        echo '</tr>';
+
+        
+
     }
     function manage_atm_menu()
     {
@@ -84,6 +114,11 @@ class ATM_MonitoringPlugin extends MantisPlugin
     //     {
 
     //     }
+
+
+    function create_atm(){
+        $d_query = 'INSERT INTO  mantis_bug_table VALUES terminal_id ="' ;
+    }
     function config()
     {
         return array(
