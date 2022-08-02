@@ -1,5 +1,11 @@
 <?php
+$terminal_id  = gpc_get_string( 'terminal_id', '' );
+
+
 class ATM_MonitoringPlugin extends MantisPlugin {
+
+   
+
     function register() {
         $this->name = 'ATM_Montoring';
                                              # Proper name of plugin
@@ -32,23 +38,18 @@ class ATM_MonitoringPlugin extends MantisPlugin {
   
 
     function select_atm() {
+        global $terminal_id;
         echo '<tr>';
 		echo '<th class="category">';
-		echo '<span class="required">*</span><label for="summary">jdlsakfjlk</label>';
+		echo '<span class="required">*</span><label for="termial_id">'. plugin_lang_get('terminal_id') . '</label>';
 		echo '</th>';
 		echo '<td>';
-		echo '<input <?php echo helper_get_tab_index() ?> type="text" id="summary" name="summary" size="105" maxlength="128" value="<?php echo string_attribute( $f_summary ) ?>" required />';
-		echo '</td>';
+		echo '<input echo' .  helper_get_tab_index() . 'type="text" id="termial_id" name="termial_id" size="105" maxlength="128" value=" ' . string_attribute( $terminal_id) .'" required />';
+		echo $terminal_id;
+        echo '</td>';
 	    echo '</tr>';
-		// echo '<tr';
-		// echo '<th class="category">';
-		// echo '<td>dsafadsf &#160;</td>';
-		// echo '<span class="required">*</span><label for="summary">'.print_documentation_link( 'summary' ).'</label>';
-		// echo '</th>';
-		// echo '<td>';
-		// echo '<input type="text" id="summary" name="summary" size="105" maxlength="128" value=" " required />';
-		// echo '</td>';
-	    // echo '</tr>';
+        
+		
         
     }
 
