@@ -2,6 +2,7 @@
 $s_plugin_ATM_Monitoring_atm = 'Manage ATM';
 $s_plugin_ATM_Monitoring_atm_create = 'Create';
 $s_plugin_ATM_Monitoring_manage_atms_link = 'Manage ATMs';
+$s_plugin_ATM_Monitoring_atm_name = 'Name';
 $s_plugin_ATM_Monitoring_atm_creator = 'Creator';
 $s_plugin_ATM_Monitoring_atm_created = 'Date Created';
 $s_plugin_ATM_Monitoring_atm_updated = 'Last Updated';
