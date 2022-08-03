@@ -108,7 +108,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function manage_atm_menu()
     {
-        return array('<a href="' . plugin_page('atm') . '">' . plugin_lang_get('atm') . '</a>');
+        return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
     //     function schema()
     //     {
@@ -124,6 +124,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         return array(
             // "atm_edit_threshold" => ADMINISTRATOR,
             "atm_manage_threshold" => ADMINISTRATOR,
+            "atm_view_threshold" => VIEWER,
         );
     }
 }

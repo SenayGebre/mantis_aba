@@ -1,5 +1,5 @@
 <?php
-$s_plugin_ATM_Monitoring_atm = 'Manage ATM';
+$s_plugin_ATM_Monitoring_manage_atm_page = 'Manage ATM';
 $s_plugin_ATM_Monitoring_atm_create = 'Create';
 $s_plugin_ATM_Monitoring_manage_atms_link = 'Manage ATMs';
 $s_plugin_ATM_Monitoring_atm_name = 'Name';
@@ -8,4 +8,6 @@ $s_plugin_ATM_Monitoring_atm_created = 'Date Created';
 $s_plugin_ATM_Monitoring_atm_updated = 'Last Updated';
 $s_plugin_ATM_Monitoring_select_atm = 'Select ATM';
 $s_plugin_ATM_Monitoring_terminal_id = 'Terminal ID';
-
+$s_plugin_ATM_Monitoring_atm_separate_by = '(Separate by "%1$s")';
+$s_plugin_ATM_Monitoring_required = 'required';
+$s_plugin_ATM_Monitoring_atm_description = 'ATM Description';
