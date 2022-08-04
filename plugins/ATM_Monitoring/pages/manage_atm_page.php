@@ -1,7 +1,7 @@
 <?php
 
 
-access_ensure_project_level(plugin_config_get('atm_manage_threshold'));
+access_ensure_project_level(plugin_config_get('atm_view_threshold'));
 
 auth_reauthenticate();
 
@@ -106,8 +106,13 @@ function atm_getall()
 									$t_atm_description = string_display($t_atm_row['description']);
 								?>
 									<tr>
-										<?php if ($t_can_edit) { ?>
-											<td><a href="./plugins/ATM_Monitoring/pages/view_atm_page.php?atm_id=<?php echo $t_atm_row['id'] ?>"><?php echo $t_atm_name ?></a></td>
+										<?php if ($t_can_edit) { 
+											$_SESSION['atm_id'] = $t_atm_row['id'];
+											?>
+											<td><a href="plugin.php?page=ATM_Monitoring/view_atm_page.php"><?php echo $t_atm_name ?></a></td>
+		
+											
+											<!-- <td><a href="./plugins/ATM_Monitoring/pages/view_atm_page.php?atm_id=<?php echo $t_atm_row['id'] ?>"><?php echo $t_atm_name ?></a></td> -->
 										<?php } else { ?>
 											<td><?php echo $t_atm_name ?></td>
 										<?php } ?>
