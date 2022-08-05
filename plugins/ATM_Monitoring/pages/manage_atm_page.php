@@ -2,6 +2,7 @@
 
 require_once( 'core.php' );
 require_once( './plugins/ATM_Monitoring/api_atm.php' );
+require_once( './plugins/ATM_Monitoring/atm_helper.php' );
 require_api( 'access_api.php' );
 require_api( 'compress_api.php' );
 require_api( 'config_api.php' );
@@ -20,7 +21,8 @@ access_ensure_project_level(plugin_config_get('atm_edit_threshold'));
 compress_enable();
 
 $t_can_edit = access_has_project_level(plugin_config_get('atm_edit_threshold'));
-$f_filter = mb_strtoupper( gpc_get_string( 'filter', plugin_config_get( 'default_manage_tag_prefix' ) ) );
+$f_filter_char = atm_get_param( 'page');
+$f_filter = $f_filter_char !== '' ? mb_strtoupper( atm_get_param( 'page') ) : mb_strtoupper('ALL');
 $f_page_number = gpc_get_int( 'page_number', 1 );
 
 echo $f_filter;
