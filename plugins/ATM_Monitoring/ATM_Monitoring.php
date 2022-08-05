@@ -120,6 +120,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             "atm_view_threshold" => VIEWER,
             'atm_edit_threshold' => DEVELOPER,
             'atm_edit_own_threshold' => REPORTER,
+            'default_manage_tag_prefix' => 'ALL',
 
         );
     }

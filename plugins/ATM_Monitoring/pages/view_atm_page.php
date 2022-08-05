@@ -55,7 +55,7 @@ require_api( 'string_api.php' );
 require_api( 'user_api.php' );
 
 access_ensure_global_level( plugin_config_get( 'atm_view_threshold' ) );
-auth_reauthenticate();		
+// auth_reauthenticate();		
 compress_enable();
 
 $f_atm_id = atm_get_param( 'page' );
