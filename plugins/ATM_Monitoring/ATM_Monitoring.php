@@ -69,22 +69,23 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</tr>';
         }
     }
-    function process_data($event, $issue)
+    function process_data($event, $t_issue)
     {
-        $issue->atm = gpc_get('terminal_id');
+        
+        $t_issue->atm = gpc_get('terminal_id');
 
         // echo '<pre>';
         // print_r($issue);
         // echo '</pre>';
 
-        return $issue;
+        return $t_issue;
     }
-    function store_data($event, $issue)
+    function store_data($event, $t_issue)
     {
-
+        
         $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
         $d_result = db_query($d_query_1);
-        $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $issue->atm . '" WHERE id =' . $issue->id . '';
+        $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
         $d_result = db_query($d_query);
     }
     function view_details($event, $issue)
