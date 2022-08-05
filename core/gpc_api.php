@@ -56,8 +56,6 @@ $g_cookie_secure_flag_enabled = http_is_protocol_https();
  * @return null
  */
 function gpc_get( $p_var_name, $p_default = null ) {
-	echo $p_var_name;
-	// echo '<pre>'; print_r($_POST); echo '</pre>';
 	if( isset( $_POST[$p_var_name] ) ) {
 		$t_result = $_POST[$p_var_name];
 	} else if( isset( $_GET[$p_var_name] ) ) {
@@ -127,10 +125,8 @@ function gpc_get_int( $p_var_name, $p_default = null ) {
 	# Don't pass along a default unless one was given to us
 	#  otherwise we prevent an error being triggered
 	$t_args = func_get_args();
-	// echo '<pre>'; print_r($t_args); echo '</pre>';
 	$t_result = call_user_func_array( 'gpc_get', $t_args );
 
-	echo $t_result;
 	if( is_array( $t_result ) ) {
 		error_parameters( $p_var_name );
 		trigger_error( ERROR_GPC_ARRAY_UNEXPECTED, ERROR );
