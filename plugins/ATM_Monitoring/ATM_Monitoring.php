@@ -109,7 +109,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
     
- function schema()
+    function schema()
     {
         require_api( 'install_helper_functions_api.php' );
         require_api( 'database_api.php' );
@@ -128,18 +128,29 @@ class ATM_MonitoringPlugin extends MantisPlugin
             $t_timestamp = '\'' . installer_db_now() . '\'';
             $t_blob_default = '';
         }
-        return
+        return array(
             array('CreateTableSQL', array(
                 plugin_table('atm'), "
                 id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
 	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
-	            name					C(100)	NOTNULL PRIMARY DEFAULT \" '' \",
+	            terminal_id				C(100)	NOTNULL PRIMARY DEFAULT \" '' \",	
 	            description				XL		$t_notnull,
 	            date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
 	            date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "'",
                 array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
-            ));
-        }
+            )),
+           
+            array('CreateTableSQL', array(
+                plugin_table('bug_atm'), "
+                id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
+	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
+                name				C(100)	NOTNULL PRIMARY DEFAULT \" '' \",
+	            bug_id					C(100)	NOTNULL PRIMARY DEFAULT \" '' \",
+	            date_attached			T		NOTNULL DEFAULT '" . db_null_date() . "'",
+                array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
+            )),
+        );
+    }
 
 
     function create_atm()
