@@ -5,8 +5,12 @@
 
 
 
+
 class ATM_MonitoringPlugin extends MantisPlugin
 {
+
+
+
 
 
 
@@ -71,8 +75,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function process_data($event, $t_t_issue)
     {
-        
-        
+
+
         $t_t_issue->atm = gpc_get('terminal_id');
 
         // echo '<pre>';
@@ -83,7 +87,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function store_data($event, $t_issue)
     {
-                
+
         $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
         $d_result = db_query($d_query_1);
         $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
@@ -104,10 +108,38 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
-    //     function schema()
-    //     {
+    
+ function schema()
+    {
+        require_api( 'install_helper_functions_api.php' );
+        require_api( 'database_api.php' );
+        
 
-    //     }
+        # Special handling for Oracle (oci8):
+        # - Field cannot be null with oci because empty string equals NULL
+        # - Oci uses a different date literal syntax
+        # - Default BLOBs to empty_blob() function
+        if (db_is_oracle()) {
+            $t_notnull = '';
+            $t_timestamp = 'timestamp' . installer_db_now();
+            $t_blob_default = 'DEFAULT " empty_blob() "';
+        } else {
+            $t_notnull = 'NOTNULL';
+            $t_timestamp = '\'' . installer_db_now() . '\'';
+            $t_blob_default = '';
+        }
+        return
+            array('CreateTableSQL', array(
+                plugin_table('atm'), "
+                id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
+	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
+	            name					C(100)	NOTNULL PRIMARY DEFAULT \" '' \",
+	            description				XL		$t_notnull,
+	            date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
+	            date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "'",
+                array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
+            ));
+        }
 
 
     function create_atm()
