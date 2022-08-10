@@ -1,6 +1,8 @@
 <?php
 $s_plugin_ATM_Monitoring_manage_atm_page = 'Manage ATM';
 $s_plugin_ATM_Monitoring_atm_create = 'Create';
+$s_plugin_ATM_Monitoring_atm_user = 'User';
+$s_plugin_ATM_Monitoring_atm_id = 'ATM ID';
 $s_plugin_ATM_Monitoring_manage_atms_link = 'Manage ATMs';
 $s_plugin_ATM_Monitoring_atm_terminal_id = 'Terminal ID';
 $s_plugin_ATM_Monitoring_atm_branch_name = 'Branch Name';
@@ -22,3 +24,5 @@ $s_plugin_ATM_Monitoring_atm_description = 'ATM Description';
 $s_plugin_ATM_Monitoring_atm_update = 'Update ATM: %1$s';
 $s_plugin_ATM_Monitoring_atm_update_return = 'Back to ATM';
 $s_plugin_ATM_Monitoring_no_atm_project_found = 'NO ATM PROJECT FOUND';
+$s_plugin_ATM_Monitoring_atm_delete_button = 'Delete';
+$s_plugin_ATM_Monitoring_atm_update_button = 'Update';

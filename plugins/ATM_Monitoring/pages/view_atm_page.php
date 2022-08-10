@@ -124,13 +124,13 @@ layout_page_begin();
 		<td class="category">
 			<?php echo plugin_lang_get( 'atm_created' ) ?>
 		</td>
-		<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_created'] ) ?></td>
+		<td><?php echo $t_atm_row['date_created']  ?></td>
 	</tr>
 	<tr>
 		<td class="category">
 			<?php echo plugin_lang_get( 'atm_updated' ) ?>
 		</td>
-		<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_updated'] ) ?></td>
+		<td><?php echo  $t_atm_row['date_updated']  ?></td>
 	</tr>
 	<tr>
 		<td class="category">

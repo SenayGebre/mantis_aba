@@ -181,6 +181,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 						<thead>
 							<tr>
 								<td><?php echo plugin_lang_get('atm_terminal_id') ?></td>
+								<td><?php echo plugin_lang_get('atm_user') ?></td>
 								<td><?php echo plugin_lang_get('atm_branch_name') ?></td>
 								<td><?php echo plugin_lang_get('atm_model') ?></td>
 								<td><?php echo plugin_lang_get('atm_ip') ?></td>
@@ -214,8 +215,16 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 										<td><?php echo $t_atm_terminal_id ?></td>
 									<?php } ?>
 									<td><?php echo string_display_line(user_get_name($t_atm_row['user_id'])) ?></td>
-									<td><?php echo date(config_get('normal_date_format'), $t_atm_row['date_created']) ?></td>
-									<td><?php echo date(config_get('normal_date_format'), $t_atm_row['date_updated']) ?></td>
+									<td><?php echo  $t_atm_branch_name ?></td>
+									<td><?php echo  $t_atm_model ?></td>
+									<td><?php echo  $t_atm_ip ?></td>
+									<td><?php echo  $t_atm_port ?></td>
+									<td><?php echo  $t_atm_country ?></td>
+									<td><?php echo  $t_atm_city ?></td>
+									<td><?php echo  $t_atm_spec_loc ?></td>
+									
+									<td><?php echo $t_atm_row['date_created'] ?></td>
+									<td><?php echo $t_atm_row['date_updated'] ?></td>
 								</tr>
 							<?php
 							} # end while loop on atms
