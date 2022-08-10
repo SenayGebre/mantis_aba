@@ -128,6 +128,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 port                    I       DEFAULT NULL,
                 country                 C(128)  NOTNULL DEFAULT \" '' \",
                 city                    C(128)  NOTNULL DEFAULT \" '' \",
+                precinct                C(128)  NOTNULL DEFAULT \" '' \",
                 date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
 	            date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "' ",
                 array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
