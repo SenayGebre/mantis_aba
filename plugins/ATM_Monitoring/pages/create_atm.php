@@ -53,7 +53,7 @@ if( !is_null( $f_atm_name ) ) {
 				break;
 			case -2:
 				error_parameters( $t_atm_row['name'] );
-				trigger_error( ERROR_ATM_NAME_INVALID, ERROR );
+				trigger_error( ERROR_TERMINAL_ID_INVALID, ERROR );
 		}
 	}
 }

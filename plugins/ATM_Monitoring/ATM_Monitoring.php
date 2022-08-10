@@ -108,17 +108,18 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
-    
+
     function schema()
     {
-        require_api( 'install_helper_functions_api.php' );
+        require_api('install_helper_functions_api.php');
 
-        require_api( 'database_api.php' );
+        require_api('database_api.php');
 
         return array(
             array('CreateTableSQL', array(
                 plugin_table('atm'), "
                 id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
+	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
                 terminal_id             C(40)   NOTNULL DEFAULT \" '' \",
                 merchant_id             C(40)   NOTNULL DEFAULT \" '' \",
                 branch_name             C(100)  DEFAULT NULL,
@@ -127,15 +128,17 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 port                    I       DEFAULT NULL,
                 country                 C(128)  NOTNULL DEFAULT \" '' \",
                 city                    C(128)  NOTNULL DEFAULT \" '' \",
-                precinct                C(128)  NOTNULL DEFAULT \" '' \"",
+                date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
+	            date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "' ",
                 array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
             )),
-           
+
             array('CreateTableSQL', array(
                 plugin_table('bug_atm'), "
                 id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
-                terminal_id             C(40)   NOTNULL DEFAULT \" '' \",
+                atm_id                  C(40)   NOTNULL DEFAULT \" '' \",
 	            bug_id					I		UNSIGNED NOTNULL PRIMARY DEFAULT '0',
+	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
 	            date_attached			T		NOTNULL DEFAULT '" . db_null_date() . "'",
                 array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
             )),

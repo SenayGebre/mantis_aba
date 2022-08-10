@@ -438,7 +438,7 @@ function history_get_event_from_row( $p_result, $p_user_id = null, $p_check_acce
 		}
 
 		# atms
-		if( $v_type == ATM_ATTACHED || $v_type == ATM_DETACHED || $v_type == ATM_RENAMED ) {
+		if( $v_type == ATM_ATTACHED || $v_type == ATM_DETACHED || $v_type == ATM_TERMINAL_ID_CHANGED ) {
 			if( !access_has_bug_level( config_get( 'atm_view_threshold', null, $t_user_id, $t_project_id ), $v_bug_id, $t_user_id ) ) {
 				continue;
 			}
@@ -731,7 +731,7 @@ function history_get_type_name( $p_type ) {
 		case ATM_DETACHED:
 			$t_type_name = 'atm-deleted';
 			break;
-		case ATM_RENAMED:
+		case ATM_TERMINAL_ID_CHANGED:
 			$t_type_name = 'atm-updated';
 			break;
 		case BUG_REVISION_DROPPED:
@@ -976,7 +976,7 @@ function history_localize_item( $p_bug_id, $p_field_name, $p_type, $p_old_value,
 			case ATM_DETACHED:
 				$t_note = lang_get( 'atm_history_detached' ) . ': ' . $p_old_value;
 				break;
-			case ATM_RENAMED:
+			case ATM_TERMINAL_ID_CHANGED:
 				$t_note = lang_get( 'atm_history_renamed' );
 				$t_change = $p_old_value . ' => ' . $p_new_value;
 				break;
