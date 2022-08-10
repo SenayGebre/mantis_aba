@@ -203,7 +203,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 								$t_atm_port = string_display($t_atm_row['port']);
 								$t_atm_country = string_display($t_atm_row['country']);
 								$t_atm_city= string_display($t_atm_row['city']);
-								$t_atm_specifc_location = string_display($t_atm_row['specifc_location']);
+								$t_atm_spec_loc = string_display($t_atm_row['specifc_location']);
 								
 							?>
 
@@ -338,47 +338,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 												<option value="Welkite">Welkite</option>
 												
 											</select>
-										<tr>
-											<td class="category">
-												<span class="required">*</span> <?php echo plugin_lang_get('atm_country') ?>
-											</td>
-											<td>
-												<input type="text" id="atm-name" name="country" class="input-sm" size="40" maxlength="100"  value="Ethiopia" />
-											</td>
-										</tr>
-										<tr>
-											<td class="category">
-												<span class="required">*</span> <?php echo plugin_lang_get('atm_city') ?>
-											</td>
-											<td>
-											<select name="city" id="atm-name">
-												<option value="Addis Ababa">Addis Ababa</option>
-												<option value="Bahir Dar">Bahir Dar</option>
-												<option value="Gondar">Gondar</option>
-												<option value="Mekelle">Mekelle</option>
-												<option value="Adama">	Adama</option>
-												<option value="Awassa">Awassa</option>
-												<option value="Dire Dawa">Dire Dawa</option>
-												<option value="Dessie">Dessie</option>
-												<option value="Jimma">Jimma</option>
-												<option value="Bishoftu">Bishoftu</option>
-												<option value="Arba Minch">Arba Minch</option>
-												<option value="Harar">	Harar</option>
-												<option value="Dilla">Dilla</option>
-												<option value="Debre Birhan">Debre Birhan</option>
-												<option value="Debre Mark'os">Debre Mark'os</option>
-												<option value="Debre Tabor">Debre Tabor</option>
-												<option value="Kombolcha">Kombolcha</option>
-												<option value="Burayu">Burayu</option>
-												<option value="Kobo">Kobo</option>
-												<option value="Bonga">Bonga</option>
-												<option value="Assosa">Assosa</option>
-												<option value="Welkite">Welkite</option>
 												
-											</select>
-														
-											</td>
-										</tr>
 											</td>
 										</tr>
 										<tr>
@@ -396,7 +356,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 											<td>
 												<textarea class="form-control" id="atm-description" name="description" cols="80" rows="6"></textarea>
 											</td>
-										</tr> --> -->
+										</tr> -->
 									</fieldset>
 								</table>
 							</div>

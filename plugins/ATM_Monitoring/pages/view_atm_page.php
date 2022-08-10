@@ -202,6 +202,13 @@ layout_page_begin();
 			$t_country = string_display( $t_atm['country'] );
 			$t_city = string_display( $t_atm['city'] );
 			$t_spec_loc = string_display( $t_atm['specifc_location'] );
+			$t_branch_name = string_display_line( $t_atm['branch_name'] );
+			$t_model = string_display_line( $t_atm['model'] );
+			$t_ip = string_display_line( $t_atm['ip_address'] );
+			$t_port= string_display_line( $t_atm['port'] );
+			$t_country = string_display_line( $t_atm['country'] );
+			$t_city = string_display_line( $t_atm['city'] );
+			$t_spec_loc = string_display_line( $t_atm['specifc_location'] );
 			$t_count = $t_atm['count'];
 			$t_link = string_html_specialchars( 'search.php?atm_string='.urlencode( '+' . $t_atm_row['terminal_id'] . config_get( 'atm_separator' ) . '+' . $t_terminal_id ) );
 			$t_label = sprintf( lang_get( 'atm_related_issues' ), $t_atm['count'] ); ?>
