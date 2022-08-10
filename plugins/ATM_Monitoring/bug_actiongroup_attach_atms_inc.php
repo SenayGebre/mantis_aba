@@ -87,9 +87,9 @@ function action_attach_atms_validate( $p_bug_id ) {
 		$g_action_attach_atms_atms = atm_parse_string( gpc_get_string( 'atm_string' ) );
 		foreach ( $g_action_attach_atms_atms as $t_atm_row ) {
 			if( $t_atm_row['id'] == -1 ) {
-				$g_action_attach_atms_create[$t_atm_row['name']] = $t_atm_row;
+				$g_action_attach_atms_create[$t_atm_row['terminal_id']] = $t_atm_row;
 			} else if( $t_atm_row['id'] >= 0 ) {
-				$g_action_attach_atms_attach[$t_atm_row['name']] = $t_atm_row;
+				$g_action_attach_atms_attach[$t_atm_row['terminal_id']] = $t_atm_row;
 			}
 		}
 	}
@@ -116,7 +116,7 @@ function action_attach_atms_process( $p_bug_id ) {
 	global $g_action_attach_atms_attach, $g_action_attach_atms_create;
 
 	foreach( $g_action_attach_atms_create as $t_atm_row ) {
-		$g_action_attach_atms_attach[] = array( 'name' => $t_atm_row['name'] );
+		$g_action_attach_atms_attach[] = array( 'terminal_id' => $t_atm_row['terminal_id'] );
 	}
 
 	$g_action_attach_atms_create = array();

@@ -35,11 +35,11 @@ use Mantis\Exceptions\ClientException;
  *          "id": 1
  *       },
  *       {
- *          "name": "atm2"
+ *          "terminal_id": "atm2"
  *       },
  *       {
  *          "id": 3,
- *          "name": "atm3"
+ *          "terminal_id": "atm3"
  *       }
  *     ]
  *   }
@@ -57,7 +57,7 @@ class ATMAttachCommand extends Command {
 	private $user_id;
 
 	/**
-	 * @var array Array of atm names to be added.
+	 * @var array Array of atm terminal_ids to be added.
 	 */
 	private $atmsToCreate = array();
 
@@ -95,16 +95,16 @@ class ATMAttachCommand extends Command {
 			if( isset( $t_atm['id'] ) ) {
 				atm_ensure_exists( $t_atm['id'] );
 				$this->atmsToAttach[] = (int)$t_atm['id'];
-			} else if( isset( $t_atm['name'] ) ) {
-				$t_atm_row = atm_get_by_name( $t_atm['name'] );
+			} else if( isset( $t_atm['terminal_id'] ) ) {
+				$t_atm_row = atm_get_by_terminal_id( $t_atm['terminal_id'] );
 				if( $t_atm_row === false ) {
 					if( $t_can_create ) {
-						if( !in_array( $t_atm['name'], $this->atmsToCreate ) ) {
-							$this->atmsToCreate[] = $t_atm['name'];
+						if( !in_array( $t_atm['terminal_id'], $this->atmsToCreate ) ) {
+							$this->atmsToCreate[] = $t_atm['terminal_id'];
 						}
 					} else {
 						throw new ClientException(
-							sprintf( "ATM '%s' not found.  Access denied to auto-create atm.", $t_atm['name'] ),
+							sprintf( "ATM '%s' not found.  Access denied to auto-create atm.", $t_atm['terminal_id'] ),
 							ERROR_INVALID_FIELD_VALUE,
 							array( 'atms' ) );
 					}
@@ -112,8 +112,8 @@ class ATMAttachCommand extends Command {
 					$this->atmsToAttach[] = (int)$t_atm_row['id'];
 				}
 			} else {
-				# invalid atm with no id or name.
-				throw new ClientException( "Invalid atm with no id or name", ERROR_INVALID_FIELD_VALUE, array( 'atms' ) );
+				# invalid atm with no id or terminal_id.
+				throw new ClientException( "Invalid atm with no id or terminal_id", ERROR_INVALID_FIELD_VALUE, array( 'atms' ) );
 			}
 		}
 	}
@@ -135,8 +135,8 @@ class ATMAttachCommand extends Command {
 		}
 
 		# Create new atms and then attach them
-		foreach( $this->atmsToCreate as $t_atm_name ) {
-			$t_atm_id = atm_create( $t_atm_name, $this->user_id );
+		foreach( $this->atmsToCreate as $t_atm_terminal_id ) {
+			$t_atm_id = atm_create( $t_atm_terminal_id, $this->user_id );
 			if( !atm_bug_is_attached( $t_atm_id, $this->issue_id ) ) {
 				atm_bug_attach( $t_atm_id, $this->issue_id, $this->user_id );
 				$t_attached_atms[] = atm_get( $t_atm_id );

@@ -29,21 +29,21 @@
  */
 class IssueATMTimelineEvent extends TimelineEvent {
 	private $issue_id;
-	private $atm_name;
+	private $atm_terminal_id;
 	private $atm;
 
 	/**
 	 * @param integer $p_timestamp Timestamp representing the time the event occurred.
 	 * @param integer $p_user_id   A user identifier.
 	 * @param integer $p_issue_id  A issue identifier.
-	 * @param string  $p_atm_name  ATM name linked to the issue.
+	 * @param string  $p_atm_terminal_id  ATM terminal_id linked to the issue.
 	 * @param boolean $p_atm       Whether atm was being linked or unlinked from the issue.
 	 */
-	public function __construct( $p_timestamp, $p_user_id, $p_issue_id, $p_atm_name, $p_atm ) {
+	public function __construct( $p_timestamp, $p_user_id, $p_issue_id, $p_atm_terminal_id, $p_atm ) {
 		parent::__construct( $p_timestamp, $p_user_id );
 
 		$this->issue_id = $p_issue_id;
-		$this->atm_name = $p_atm_name;
+		$this->atm_terminal_id = $p_atm_terminal_id;
 		$this->atm = $p_atm;
 	}
 
@@ -53,7 +53,7 @@ class IssueATMTimelineEvent extends TimelineEvent {
 	 */
 	public function html() {
 		$t_string = $this->atm ? lang_get( 'timeline_issue_added_atm' ) : lang_get( 'timeline_issue_removed_added_atm' );
-		$t_atm_row = atm_get_by_name( $this->atm_name );
+		$t_atm_row = atm_get_by_terminal_id( $this->atm_terminal_id );
 
 		$t_html = $this->html_start( 'fa-atm' );
 		$t_html .= '<div class="action">'
@@ -61,7 +61,7 @@ class IssueATMTimelineEvent extends TimelineEvent {
 				$t_string,
 				prepare_user_name( $this->user_id ),
 				string_get_bug_view_link( $this->issue_id ),
-				$t_atm_row ? atm_get_link( $t_atm_row ) : $this->atm_name
+				$t_atm_row ? atm_get_link( $t_atm_row ) : $this->atm_terminal_id
 			)
 			. '</div>';
 		$t_html .= $this->html_end();
