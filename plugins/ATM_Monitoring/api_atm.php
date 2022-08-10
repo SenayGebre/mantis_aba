@@ -627,7 +627,7 @@ function atm_create(
 				 ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ', ' . db_param() . ',' . db_param()  . ')';
 	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, db_now(), db_now()));
 
-	return db_insert_id(db_get_table(plugin_table('atm')));
+	return db_insert_id(db_get_table(plugin_table(plugin_table('atm'))));
 }
 
 /**
