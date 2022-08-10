@@ -121,7 +121,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
 	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
                 terminal_id             C(40)   NOTNULL DEFAULT \" '' \",
-                merchant_id             C(40)   NOTNULL DEFAULT \" '' \",
                 branch_name             C(100)  DEFAULT NULL,
                 model                   C(64)   NOTNULL DEFAULT \" '' \",
                 ip_address              C(100)  DEFAULT NULL,
