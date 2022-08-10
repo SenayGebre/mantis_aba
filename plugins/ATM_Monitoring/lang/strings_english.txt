@@ -2,7 +2,15 @@
 $s_plugin_ATM_Monitoring_manage_atm_page = 'Manage ATM';
 $s_plugin_ATM_Monitoring_atm_create = 'Create';
 $s_plugin_ATM_Monitoring_manage_atms_link = 'Manage ATMs';
-$s_plugin_ATM_Monitoring_atm_name = 'Name';
+$s_plugin_ATM_Monitoring_atm_terminal_id = 'Terminal ID';
+$s_plugin_ATM_Monitoring_atm_branch_name = 'Branch Name';
+$s_plugin_ATM_Monitoring_atm_model = 'Model';
+$s_plugin_ATM_Monitoring_atm_ip = 'IP Address';
+$s_plugin_ATM_Monitoring_atm_port = 'Port Number';
+$s_plugin_ATM_Monitoring_atm_country = 'Country';
+$s_plugin_ATM_Monitoring_atm_country_value = 'Ethiopia';
+$s_plugin_ATM_Monitoring_atm_city = 'City';
+$s_plugin_ATM_Monitoring_atm_spec_loc = 'Specific location';
 $s_plugin_ATM_Monitoring_atm_creator = 'Creator';
 $s_plugin_ATM_Monitoring_atm_created = 'Date Created';
 $s_plugin_ATM_Monitoring_atm_updated = 'Last Updated';
