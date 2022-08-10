@@ -180,8 +180,14 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 					<table class="table table-striped table-bordered table-condensed table-hover">
 						<thead>
 							<tr>
-								<td><?php echo plugin_lang_get('atm_name') ?></td>
-								<td><?php echo plugin_lang_get('atm_creator') ?></td>
+								<td><?php echo plugin_lang_get('atm_terminal_id') ?></td>
+								<td><?php echo plugin_lang_get('atm_branch_name') ?></td>
+								<td><?php echo plugin_lang_get('atm_model') ?></td>
+								<td><?php echo plugin_lang_get('atm_ip') ?></td>
+								<td><?php echo plugin_lang_get('atm_port') ?></td>
+								<td><?php echo plugin_lang_get('atm_country') ?></td>
+								<td><?php echo plugin_lang_get('atm_city') ?></td>
+								<td><?php echo plugin_lang_get('atm_spec_loc') ?></td>
 								<td><?php echo plugin_lang_get('atm_created') ?></td>
 								<td><?php echo plugin_lang_get('atm_updated') ?></td>
 							</tr>
@@ -190,15 +196,22 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 							<?php
 							# Display all atms
 							while ($t_atm_row = db_fetch_array($t_result)) {
-								$t_atm_name = string_display_line($t_atm_row['name']);
-								$t_atm_description = string_display($t_atm_row['description']);
+								$t_atm_terminal_id = string_display_line($t_atm_row['terminal_id']);
+								$t_atm_branch_name = string_display($t_atm_row['branch_name']);
+								$t_atm_model = string_display($t_atm_row['model']);
+								$t_atm_ip = string_display($t_atm_row['ip_address']);
+								$t_atm_port = string_display($t_atm_row['port']);
+								$t_atm_country = string_display($t_atm_row['country']);
+								$t_atm_city= string_display($t_atm_row['city']);
+								$t_atm_spec_loc = string_display($t_atm_row['specifc_location']);
+								
 							?>
 
 								<tr>
 									<?php if ($t_can_edit) { ?>
-										<td><a href="<?php echo plugin_page('view_atm_page') ?>?atm_id=<?php echo $t_atm_row['id'] ?>"><?php echo $t_atm_name ?></a></td>
+										<td><a href="<?php echo plugin_page('view_atm_page') ?>?atm_id=<?php echo $t_atm_row['id'] ?>"><?php echo $t_atm_terminal_id ?></a></td>
 									<?php } else { ?>
-										<td><?php echo $t_atm_name ?></td>
+										<td><?php echo $t_atm_terminal_id ?></td>
 									<?php } ?>
 									<td><?php echo string_display_line(user_get_name($t_atm_row['user_id'])) ?></td>
 									<td><?php echo date(config_get('normal_date_format'), $t_atm_row['date_created']) ?></td>
@@ -249,22 +262,101 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 										<?php echo form_security_field('atm_create'); ?>
 										<tr>
 											<td class="category">
-												<span class="required">*</span> <?php echo plugin_lang_get('atm_name') ?>
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_terminal_id') ?>
 											</td>
 											<td>
-												<input type="text" id="atm-name" name="name" class="input-sm" size="40" maxlength="100" required />
-												<small><?php echo sprintf(plugin_lang_get('atm_separate_by'), config_get('atm_separator')); ?></small>
+												<input type="text" id="atm-name" name="terminal_id" class="input-sm" size="40" maxlength="100" required />
 											</td>
 										</tr>
-										
 										<tr>
 											<td class="category">
-												<?php echo plugin_lang_get('atm_description') ?>
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_branch_name') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="branch_name" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_model') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="model" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_ip') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="ip" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_port') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="port" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_country') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="country" class="input-sm" size="40" maxlength="100"  value="Ethiopia" />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_city') ?>
+											</td>
+											<td>
+											<select name="city" id="atm-name">
+												<option value="Addis Ababa">Addis Ababa</option>
+												<option value="Bahir Dar">Bahir Dar</option>
+												<option value="Gondar">Gondar</option>
+												<option value="Mekelle">Mekelle</option>
+												<option value="Adama">	Adama</option>
+												<option value="Awassa">Awassa</option>
+												<option value="Dire Dawa">Dire Dawa</option>
+												<option value="Dessie">Dessie</option>
+												<option value="Jimma">Jimma</option>
+												<option value="Bishoftu">Bishoftu</option>
+												<option value="Arba Minch">Arba Minch</option>
+												<option value="Harar">	Harar</option>
+												<option value="Dilla">Dilla</option>
+												<option value="Debre Birhan">Debre Birhan</option>
+												<option value="Debre Mark'os">Debre Mark'os</option>
+												<option value="Debre Tabor">Debre Tabor</option>
+												<option value="Kombolcha">Kombolcha</option>
+												<option value="Burayu">Burayu</option>
+												<option value="Kobo">Kobo</option>
+												<option value="Bonga">Bonga</option>
+												<option value="Assosa">Assosa</option>
+												<option value="Welkite">Welkite</option>
+												
+											</select>
+												
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_spec_loc') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="spec_loc" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<!-- <tr>
+											<td class="category">
+											
 											</td>
 											<td>
 												<textarea class="form-control" id="atm-description" name="description" cols="80" rows="6"></textarea>
 											</td>
-										</tr>
+										</tr> -->
 									</fieldset>
 								</table>
 							</div>

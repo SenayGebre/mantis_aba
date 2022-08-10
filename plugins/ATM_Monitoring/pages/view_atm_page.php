@@ -63,14 +63,21 @@ $f_atm_id = atm_get_param( 'page' );
 echo $f_atm_id;
 atm_ensure_exists( $f_atm_id );
 $t_atm_row = atm_get( $f_atm_id );
-$t_name = string_display_line( $t_atm_row['name'] );
-$t_description = string_display( $t_atm_row['description'] );
+$t_terminal_id = string_display_line( $t_atm_row['terminal_id'] );
+$t_branch_name = string_display( $t_atm_row['branch_name'] );
+$t_model = string_display( $t_atm_row['model'] );
+$t_ip = string_display( $t_atm_row['ip_address'] );
+$t_port= string_display( $t_atm_row['port'] );
+$t_country = string_display( $t_atm_row['country'] );
+$t_city = string_display( $t_atm_row['city'] );
+$t_spec_loc = string_display( $t_atm_row['specifc_location'] );
+
 $t_can_edit = access_has_global_level( config_get( 'atm_edit_threshold' ) );
 $t_can_edit_own = $t_can_edit || auth_get_current_user_id() == atm_get_field( $f_atm_id, 'user_id' )
 	&& access_has_global_level( config_get( 'atm_edit_own_threshold' ) );
 
 
-layout_page_header( sprintf( lang_get( 'atm_details' ), $t_name ) );
+layout_page_header( sprintf( lang_get( 'atm_details' ), $t_terminal_id ) );
 
 layout_page_begin();
 ?>
@@ -81,14 +88,14 @@ layout_page_begin();
 <div class="widget-header widget-header-small">
 <h4 class="widget-title lighter">
 	<?php print_icon( 'fa-atm', 'ace-icon' ); ?>
-	<?php echo sprintf( lang_get( 'atm_details' ), $t_name ) ?>
+	<?php echo sprintf( lang_get( 'atm_details' ), $t_terminal_id ) ?>
 </h4>
 </div>
 
 <div class="widget-body">  
 <div class="widget-main no-padding">
 	<div class="widget-toolbox padding-8 clearfix">
-		<?php print_link_button( 'search.php?atm_string='.urlencode($t_atm_row['name']),
+		<?php print_link_button( 'search.php?atm_string='.urlencode($t_atm_row['terminal_id']),
 			sprintf( lang_get( 'atm_filter_default' ), atm_stats_attached( $f_atm_id ) ),
 			'btn-sm pull-right'); ?>
 	</div>
@@ -97,39 +104,81 @@ layout_page_begin();
 
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_id' ) ?>
+			<?php echo plugin_lang_get( 'atm_id' ) ?>
 		</td>
 		<td><?php echo $t_atm_row['id'] ?></td>
 	</tr>
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_name' ) ?>
+			<?php echo plugin_lang_get( 'atm_terminal_id' ) ?>
 		</td>
-		<td><?php echo $t_name ?></td>
+		<td><?php echo $t_terminal_id ?></td>
 	</tr>
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_creator' ) ?>
+			<?php echo plugin_lang_get( 'atm_creator' ) ?>
 		</td>
 		<td><?php echo string_display_line( user_get_name($t_atm_row['user_id']) ) ?></td>
 	</tr>
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_created' ) ?>
+			<?php echo plugin_lang_get( 'atm_created' ) ?>
 		</td>
 		<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_created'] ) ?></td>
 	</tr>
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_updated' ) ?>
+			<?php echo plugin_lang_get( 'atm_updated' ) ?>
 		</td>
 		<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_updated'] ) ?></td>
 	</tr>
 	<tr>
 		<td class="category">
-			<?php echo lang_get( 'atm_description' ) ?>
+			<?php echo plugin_lang_get( 'atm_branch_name' ) ?>
 		</td>
-		<td><?php echo $t_description ?></td>
+		<td><?php echo $t_branch_name ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_model' ) ?>
+		</td>
+		<td><?php echo $t_model ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_model' ) ?>
+		</td>
+		<td><?php echo $t_model ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_ip' ) ?>
+		</td>
+		<td><?php echo $t_ip ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_port' ) ?>
+		</td>
+		<td><?php echo $t_port ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_country' ) ?>
+		</td>
+		<td><?php echo $t_country ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_city' ) ?>
+		</td>
+		<td><?php echo $t_city ?></td>
+	</tr>
+	<tr>
+		<td class="category">
+			<?php echo plugin_lang_get( 'atm_spec_loc' ) ?>
+		</td>
+		<td><?php echo $t_spec_loc ?></td>
 	</tr>
 
 <?php
@@ -145,12 +194,18 @@ layout_page_begin();
 			<td>
 <?php
 		foreach( $t_atms_related as $t_atm ) {
-			$t_name = string_display_line( $t_atm['name'] );
-			$t_description = string_display_line( $t_atm['description'] );
+			$t_terminal_id = string_display_line( $t_atm['terminal_id'] );
+			$t_branch_name = string_display_line( $t_atm['branch_name'] );
+			$t_model = string_display_line( $t_atm['model'] );
+			$t_ip = string_display_line( $t_atm['ip_address'] );
+			$t_port= string_display_line( $t_atm['port'] );
+			$t_country = string_display_line( $t_atm['country'] );
+			$t_city = string_display_line( $t_atm['city'] );
+			$t_spec_loc = string_display_line( $t_atm['specifc_location'] );
 			$t_count = $t_atm['count'];
-			$t_link = string_html_specialchars( 'search.php?atm_string='.urlencode( '+' . $t_atm_row['name'] . config_get( 'atm_separator' ) . '+' . $t_name ) );
+			$t_link = string_html_specialchars( 'search.php?atm_string='.urlencode( '+' . $t_atm_row['terminal_id'] . config_get( 'atm_separator' ) . '+' . $t_terminal_id ) );
 			$t_label = sprintf( lang_get( 'atm_related_issues' ), $t_atm['count'] ); ?>
-			<div class="col-md-3 col-xs-6 no-padding"><a href="view_atm_page.php?atm_id=<?php echo $t_atm['id']; ?>" title="<?php echo $t_description; ?>"><?php echo $t_name; ?></a></div>
+			<div class="col-md-3 col-xs-6 no-padding"><a href="view_atm_page.php?atm_id=<?php echo $t_atm['id']; ?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal; ?></a></div>
 			<div class="col-md-9 col-xs-6 no-padding"><a href="<?php echo $t_link; ?>" class="btn btn-xs btn-primary btn-white btn-round"><?php echo $t_label; ?></a></div>
 			<div class="clearfix"></div>
 			<div class="space-4"></div>
@@ -175,7 +230,7 @@ layout_page_begin();
 			<fieldset>
 				<?php # CSRF protection not required here - form does not result in modifications ?>
 				<input type="hidden" name="atm_id" value="<?php echo $f_atm_id ?>" />
-				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'atm_update_button' ) ?>" />
+				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo plugin_lang_get( 'atm_update_button' ) ?>" />
 			</fieldset>
 		</form><?php
 		}
@@ -185,7 +240,7 @@ layout_page_begin();
 			<fieldset>
 				<?php echo form_security_field( 'delete_atm' ) ?>
 				<input type="hidden" name="atm_id" value="<?php echo $f_atm_id ?>" />
-				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'atm_delete_button' ) ?>" />
+				<input type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo plugin_lang_get( 'atm_delete_button' ) ?>" />
 			</fieldset>
 		</form><?php
 		} ?>

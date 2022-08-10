@@ -598,7 +598,6 @@ function atm_ensure_can_create($p_user_id = null)
 function atm_create(
 	$p_terminal_id,
 	$p_user_id = null,
-	$p_merchant_id = '',
 	$p_branch_name = null,
 	$p_model = null,
 	$p_ip_address = null,
@@ -622,13 +621,13 @@ function atm_create(
 
 	db_param_push();
 	$t_query = 'INSERT INTO ' . plugin_table('atm') . ' 
-				( user_id, terminal_id, merchant_id, branch_name, model, ip_address, port,  country, city, specifc_location, date_created, date_updated )
+				( user_id, terminal_id, branch_name, model, ip_address, port,  country, city, specifc_location, date_created, date_updated )
 				VALUES
 				( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param()  . ',
 				 ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ', ' . db_param() . ',' . db_param() . ', ' . db_param() . ')';
-	db_query($t_query, array($p_user_id, $p_terminal_id, $p_merchant_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, db_now(), db_now()));
+	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, db_now(), db_now()));
 
-	return db_insert_id(db_get_table('atm'));
+	return db_insert_id(db_get_table(plugin_table('atm')));
 }
 
 /**
@@ -645,7 +644,7 @@ function atm_update(
 	$p_atm_id,
 	$p_terminal_id,
 	$p_user_id,
-	$p_merchant_id,
+	
 	$p_branch_name,
 	$p_model,
 	$p_ip_address,
@@ -660,15 +659,14 @@ function atm_update(
 
 	if (
 		$t_atm_terminal_id == $p_terminal_id &&
-		$$t_atm_row['user_id'] == $p_user_id &&
-		$$t_atm_row['merchant_id'] == $p_merchant_id &&
-		$$t_atm_row['branch_name'] == $p_branch_name &&
-		$$t_atm_row['model'] == $p_model &&
-		$$t_atm_row['ip_address'] == $p_ip_address &&
-		$$t_atm_row['port'] == $p_port &&
-		$$t_atm_row['country'] == $p_country &&
-		$$t_atm_row['city'] == $p_city &&
-		$$t_atm_row['specifc_location'] == $p_specifc_location
+		$t_atm_row['user_id'] == $p_user_id &&
+		$t_atm_row['branch_name'] == $p_branch_name &&
+		$t_atm_row['model'] == $p_model &&
+		$t_atm_row['ip_address'] == $p_ip_address &&
+		$t_atm_row['port'] == $p_port &&
+		$t_atm_row['country'] == $p_country &&
+		$t_atm_row['city'] == $p_city &&
+		$t_atm_row['specifc_location'] == $p_specifc_location
 	) {
 		# nothing has changed
 		return true;
@@ -702,7 +700,7 @@ function atm_update(
 	$t_query = 'UPDATE ' . plugin_table('atm') . ' 
 					SET user_id=' . db_param() . ',
 						terminal_id=' . db_param() . ',
-						merchant_id=' . db_param() . ',
+						
 						branch_name=' . db_param() . ',
 						model=' . db_param() . ',
 						ip_address=' . db_param() . ',
@@ -712,7 +710,7 @@ function atm_update(
 						specifc_location=' . db_param() . ',
 						date_updated=' . db_param() . '
 					WHERE id=' . db_param();
-	db_query($t_query, array((int)$p_user_id, $p_terminal_id, $p_merchant_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated));
+	db_query($t_query, array((int)$p_user_id, $p_terminal_id,  $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated));
 
 	if ($t_rename) {
 		$t_bugs = atm_get_bugs_attached($p_atm_id);
