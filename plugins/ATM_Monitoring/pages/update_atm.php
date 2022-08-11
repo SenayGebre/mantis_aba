@@ -66,10 +66,17 @@ if( $t_can_edit ) {
 	$f_new_user_id = $t_atm_row['user_id'];
 }
 
-$f_new_name = gpc_get_string( 'name', $t_atm_row['name'] );
-$f_new_description = gpc_get_string( 'description', $t_atm_row['description'] );
 
-atm_update( $f_atm_id, $f_new_name, $f_new_user_id, $f_new_description );
+$f_new_terminal_id = gpc_get_string( 'terminal_id',  $t_atm_row['terminal_id']  );
+$f_new_branch_name = gpc_get_string( 'branch_name',  $t_atm_row['branch_name']  );
+$f_new_model = gpc_get_string( 'model',  $t_atm_row['model']  );
+$f_new_ip = gpc_get_string( 'ip',  $t_atm_row['ip_address']  );
+$f_new_port = gpc_get_string( 'port',  $t_atm_row['port']  );
+$f_new_country = gpc_get_string( 'country',  $t_atm_row['country']  );
+$f_new_city = gpc_get_string( 'city',  $t_atm_row['city']  );
+$f_new_spec_loc = gpc_get_string( 'spec_loc',  $t_atm_row['specifc_location']  );
+
+atm_update( $f_atm_id, $f_new_terminal_id, $f_new_user_id, $f_new_branch_name, $f_new_model,$f_new_ip,$f_new_port, $f_new_country,$f_new_city,$f_new_port );
 
 form_security_purge( 'update_atm' );
 

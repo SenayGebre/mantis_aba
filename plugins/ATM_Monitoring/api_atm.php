@@ -643,8 +643,7 @@ function atm_create(
 function atm_update(
 	$p_atm_id,
 	$p_terminal_id,
-	$p_user_id,
-	
+	$p_user_id,	
 	$p_branch_name,
 	$p_model,
 	$p_ip_address,
@@ -675,9 +674,9 @@ function atm_update(
 	user_ensure_exists($p_user_id);
 
 	if (auth_get_current_user_id() == $t_atm_row['user_id']) {
-		$t_update_level = config_get('atm_edit_own_threshold');
+		$t_update_level = plugin_config_get('atm_edit_own_threshold');
 	} else {
-		$t_update_level = config_get('atm_edit_threshold');
+		$t_update_level = plugin_config_get('atm_edit_threshold');
 	}
 	access_ensure_global_level($t_update_level);
 
@@ -700,7 +699,6 @@ function atm_update(
 	$t_query = 'UPDATE ' . plugin_table('atm') . ' 
 					SET user_id=' . db_param() . ',
 						terminal_id=' . db_param() . ',
-						
 						branch_name=' . db_param() . ',
 						model=' . db_param() . ',
 						ip_address=' . db_param() . ',
@@ -710,7 +708,7 @@ function atm_update(
 						specifc_location=' . db_param() . ',
 						date_updated=' . db_param() . '
 					WHERE id=' . db_param();
-	db_query($t_query, array((int)$p_user_id, $p_terminal_id,  $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated));
+	db_query($t_query, array((int)$p_user_id, $p_terminal_id,  $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated, $p_atm_id));
 
 	if ($t_rename) {
 		$t_bugs = atm_get_bugs_attached($p_atm_id);

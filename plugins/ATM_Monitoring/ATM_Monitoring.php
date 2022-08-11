@@ -48,8 +48,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
 
-
-            'EVENT_CREATE_ATM' => 'create_atm'
         );
     }
 
@@ -93,13 +91,13 @@ class ATM_MonitoringPlugin extends MantisPlugin
         $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
         $d_result = db_query($d_query);
     }
-    function view_details($event, $issue)
+    function view_details($event, $t_issue)
     {
 
-        $d_query = 'SELECT terminal_id FROM mantis_bug_table WHERE id =' . $issue . '';
+        $d_query = 'SELECT terminal_id FROM mantis_bug_table WHERE id =' . $t_issue->id . '';
         $d_result = db_query($d_query);
         $t_row = db_fetch_array($d_result);
-        // echo $t_row;
+         echo $t_row;
         echo '<th class="bug-summary category">Terminal ID</th>';
         echo '<td class="bug-summary" colspan="5">', string_display_links($t_row['terminal_id']), '</td>';
         echo '</tr>';
@@ -146,10 +144,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
 
 
-    function create_atm()
-    {
-        $d_query = 'INSERT INTO  mantis_bug_table VALUES terminal_id ="';
-    }
     function config()
     {
         return array(

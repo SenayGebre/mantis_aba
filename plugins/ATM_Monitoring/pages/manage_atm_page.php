@@ -34,9 +34,9 @@ for( $i = 'A'; $i != 'AA'; $i++ ) {
 	$t_prefix_array[] = $i;
 }
 
-for( $i = 0; $i <= 9; $i++ ) {
-	$t_prefix_array[] = (string)$i;
-}
+// for( $i = 0; $i <= 9; $i++ ) {
+// 	$t_prefix_array[] = (string)$i;
+// }
 
 if( $f_filter === 'ALL' ) {
 	$t_terminal_id_filter = '';
@@ -47,7 +47,7 @@ if( $f_filter === 'ALL' ) {
 
 
 # Set the number of ATMs per page.
-$t_per_page = 20;
+$t_per_page = 10;
 $t_offset = (( $f_page_number - 1 ) * $t_per_page );
 
 
@@ -242,7 +242,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 				<div class="widget-toolbox padding-8 clearfix">
 					<div class="btn-toolbar pull-right"><?php
 														# @todo hack - pass in the hide inactive filter via cheating the actual filter value
-														print_page_links('manage_atm_page.php', 1, $t_page_count, (int)$f_page_number, $f_filter); ?>
+														print_page_links(plugin_page('manage_atm_page'), 1, $t_page_count, (int)$f_page_number, $f_filter); ?>
 					</div>
 				</div>
 			<?php } ?>

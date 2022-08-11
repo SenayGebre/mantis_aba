@@ -26,3 +26,6 @@ $s_plugin_ATM_Monitoring_atm_update_return = 'Back to ATM';
 $s_plugin_ATM_Monitoring_no_atm_project_found = 'NO ATM PROJECT FOUND';
 $s_plugin_ATM_Monitoring_atm_delete_button = 'Delete';
 $s_plugin_ATM_Monitoring_atm_update_button = 'Update';
+$s_plugin_ATM_Monitoring_update_atm = 'Update';
+$s_plugin_ATM_Monitoring_atm_update_return = 'Back to ATM';
+$s_plugin_ATM_Monitoring_atm_delete_message = 'Are you sure you wish to delete this ATM?';

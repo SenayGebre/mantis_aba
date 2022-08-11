@@ -50,7 +50,7 @@ $f_atm_id = gpc_get_int( 'atm_id' );
 atm_ensure_exists( $f_atm_id );
 $t_atm_row = atm_get( $f_atm_id );
 
-helper_ensure_confirmed( lang_get( 'atm_delete_message' ), lang_get( 'atm_delete_button' ) );
+helper_ensure_confirmed( plugin_lang_get( 'atm_delete_message' ), plugin_lang_get( 'atm_delete_button' ) );
 
 atm_delete( $f_atm_id );
 
