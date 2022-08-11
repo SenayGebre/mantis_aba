@@ -1031,7 +1031,7 @@ function atm_display_link(array $p_atm_row, $p_bug_id = 0)
 	}
 
 	if ($p_bug_id > 0 && access_has_bug_level($t_detach, $p_bug_id)) {
-		$t_tooltip = string_html_specialchars(sprintf(lang_get('atm_detach'), string_display_line($p_atm_row['terminal_id'])));
+		$t_tooltip = string_html_specialchars(sprintf(plugin_lang_get('atm_detach'), string_display_line($p_atm_row['terminal_id'])));
 		$t_href = 'atm_detach.php?bug_id=' . $p_bug_id . '&amp;atm_id=' . $p_atm_row['id'] . $s_security_token;
 		echo ' <a class="btn btn-xs btn-primary btn-white btn-round" title="' . $t_tooltip . '" href="' . $t_href . '">';
 		print_icon('fa-times');
@@ -1051,7 +1051,7 @@ function atm_display_attached($p_bug_id)
 	$t_atm_rows = atm_bug_get_attached($p_bug_id);
 
 	if (count($t_atm_rows) == 0) {
-		echo lang_get('atm_none_attached');
+		echo plugin_lang_get('atm_none_attached');
 	} else {
 		$i = 0;
 		foreach ($t_atm_rows as $t_atm) {
