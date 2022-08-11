@@ -96,7 +96,7 @@ $current_project = project_cache_row($t_project_id);
 
 // echo $current_project['name'];
 
-if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring ' === $current_project['name']) {
+if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['name']) {
 	$atm_project_found = true;
 } else {
 
@@ -106,7 +106,7 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring ' === $current_project['n
 
 	foreach ($all_projects as $array) {
 		foreach ($array as $key => $value) {
-			if (($key === 'name') and ($value === 'ATM Monitoring ')) {
+			if (($key === 'name') and ($value === 'ATM Monitoring')) {
 				$atm_project = $array;
 				break;
 			}
@@ -389,7 +389,11 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 	<?php
 		} #End can Edit
 	} else {
-		echo '<div class="alert alert-info">' . plugin_lang_get('no_atm_project_found') . '</div>';
+		echo '<div class="center alert alert-info">' . plugin_lang_get('no_atm_project_found') . '</div>';
+		echo '<form action="'.plugin_page('create_atm_monitoring_project').'" method="post">';
+		echo '<div class="center"><input type="submit" name="create_atm_monitoring_project" class="center btn btn-primary btn-sm btn-white btn-round"
+					   value="'.plugin_lang_get('create_atm_monitoring_project').'"/></div>';
+		echo '</form>';
 	} #End if atms exist
 	echo '</div>';
 	layout_page_end();

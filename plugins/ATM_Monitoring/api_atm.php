@@ -632,6 +632,37 @@ function atm_create(
 	return db_insert_id(db_get_table(plugin_table('atm')));
 }
 
+
+function create_atm_monitoring_project($p_user_id = null) {
+	atm_ensure_can_create($p_user_id);
+
+
+	if (null == $p_user_id) {
+		$p_user_id = auth_get_current_user_id();
+	} else {
+		user_ensure_exists($p_user_id);
+	}
+	
+	$t_param = array(
+		'name' => "ATM Monitoring",
+		'status' => 50,
+		'enabled' => "1",
+		'view_state' => 50,
+		'file_path' => "",
+		'description' => "This is project is for ATM monitoring",
+		'inherit_global' => "1",
+	);
+	$t_query = new DbQuery( 'INSERT INTO {project}
+		( ' . implode( ', ', array_keys( $t_param ) ) . ' )
+		VALUES :param'
+	);
+	$t_query->bind( 'param', $t_param );
+	$t_query->execute();
+
+	# return the id of the new project
+	return db_insert_id( db_get_table( 'project' ) );
+}
+
 /**
  * Update a atm with given terminal_id, creator, and description.
  * @param integer $p_atm_id      The atm ID which is being updated.
@@ -893,29 +924,32 @@ function atm_get_bugs_attached($p_atm_id)
  */
 function atm_bug_attach($p_atm_id, $p_bug_id, $p_user_id = null)
 {
+	
 	antispam_check();
-
+	
 	access_ensure_bug_level(plugin_config_get('atm_attach_threshold'), $p_bug_id, $p_user_id);
 
 	atm_ensure_exists($p_atm_id);
-
+	
 	if (atm_bug_is_attached($p_atm_id, $p_bug_id)) {
 		trigger_error(ERROR_ATM_ALREADY_ATTACHED, ERROR);
 	}
-
-
+	
+	
 	if (null == $p_user_id) {
 		$p_user_id = auth_get_current_user_id();
 	} else {
 		user_ensure_exists($p_user_id);
 	}
 
+	date_default_timezone_set("Africa/Nairobi");
+	$c_date_attached =  date('y-m-d h:i');
+	
 	db_param_push();
 	$t_query = 'INSERT INTO ' . plugin_table('bug_atm') . ' 
-					( atm_id, bug_id, user_id, date_attached )
-					VALUES
-					( ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ')';
-	db_query($t_query, array($p_atm_id, $p_bug_id, $p_user_id, db_now()));
+	( atm_id, bug_id, user_id, date_attached ) VALUES
+	( ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ')';
+	db_query($t_query, array($p_atm_id, $p_bug_id, $p_user_id, $c_date_attached));
 
 	atm_clear_cache_bug_atms($p_bug_id);
 	

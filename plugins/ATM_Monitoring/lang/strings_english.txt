@@ -41,3 +41,4 @@ $s_plugin_ATM_Monitoring_atm_filter_default = 'Attached Issues (%1$s)';
 $s_plugin_ATM_Monitoring_atm_related = 'Related ATM';
 $s_plugin_ATM_Monitoring_atm_related_issues = 'Shared Issues (%1$s)';
 $s_plugin_ATM_Monitoring_atm_search = 'Search';
+$s_plugin_ATM_Monitoring_create_atm_monitoring_project = 'Create ATM Monitoring Project';
