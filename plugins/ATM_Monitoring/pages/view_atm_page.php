@@ -72,9 +72,9 @@ $t_country = string_display($t_atm_row['country']);
 $t_city = string_display($t_atm_row['city']);
 $t_spec_loc = string_display($t_atm_row['specifc_location']);
 
-$t_can_edit = access_has_global_level(config_get('atm_edit_threshold'));
+$t_can_edit = access_has_global_level(plugin_config_get('atm_edit_threshold'));
 $t_can_edit_own = $t_can_edit || auth_get_current_user_id() == atm_get_field($f_atm_id, 'user_id')
-	&& access_has_global_level(config_get('atm_edit_own_threshold'));
+	&& access_has_global_level(plugin_config_get('atm_edit_own_threshold'));
 
 
 layout_page_header(sprintf(lang_get('atm_details'), $t_terminal_id));
@@ -214,7 +214,7 @@ layout_page_begin();
 										$t_city = string_display_line($t_atm['city']);
 										$t_spec_loc = string_display_line($t_atm['specifc_location']);
 										$t_count = $t_atm['count'];
-										$t_link = string_html_specialchars('search.php?atm_string=' . urlencode('+' . $t_atm_row['terminal_id'] . config_get('atm_separator') . '+' . $t_terminal_id));
+										$t_link = string_html_specialchars('search.php?atm_string=' . urlencode('+' . $t_atm_row['terminal_id'] . plugin_config_get('atm_separator') . '+' . $t_terminal_id));
 										$t_label = sprintf(lang_get('atm_related_issues'), $t_atm['count']); ?>
 										<div class="col-md-3 col-xs-6 no-padding"><a href="view_atm_page.php?atm_id=<?php echo $t_atm['id']; ?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal; ?></a></div>
 										<div class="col-md-9 col-xs-6 no-padding"><a href="<?php echo $t_link; ?>" class="btn btn-xs btn-primary btn-white btn-round"><?php echo $t_label; ?></a></div>

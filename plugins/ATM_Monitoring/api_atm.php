@@ -253,7 +253,7 @@ function atm_ensure_unique($p_terminal_id)
  */
 function atm_terminal_id_is_valid($p_terminal_id, array &$p_matches, $p_prefix = '')
 {
-	$t_separator = config_get('atm_separator');
+	$t_separator = plugin_config_get('atm_separator');
 	$t_pattern = '/^' . $p_prefix . '([^\+\-' . $t_separator . '][^' . $t_separator . ']*)$/';
 	return preg_match($t_pattern, $p_terminal_id, $p_matches);
 }
@@ -310,7 +310,7 @@ function atm_parse_string($p_string)
 {
 	$t_atms = array();
 
-	$t_strings = explode(config_get('atm_separator'), $p_string);
+	$t_strings = explode(plugin_config_get('atm_separator'), $p_string);
 	foreach ($t_strings as $t_terminal_id) {
 		$t_terminal_id = trim($t_terminal_id);
 		if (is_blank($t_terminal_id)) {
@@ -353,7 +353,7 @@ function atm_attach_many($p_bug_id, $p_atm_string, $p_atm_id = 0)
 		return true;
 	}
 
-	access_ensure_bug_level(config_get('atm_attach_threshold'), $p_bug_id);
+	access_ensure_bug_level(plugin_config_get('atm_attach_threshold'), $p_bug_id);
 
 	$t_atms = atm_parse_string($p_atm_string);
 	$t_can_create = atm_can_create();
@@ -415,7 +415,7 @@ function atm_parse_filters($p_string)
 	$t_atms = array();
 	$t_prefix = '[+-]{0,1}';
 
-	$t_strings = explode(config_get('atm_separator'), $p_string);
+	$t_strings = explode(plugin_config_get('atm_separator'), $p_string);
 	foreach ($t_strings as $t_terminal_id) {
 		$t_terminal_id = trim($t_terminal_id);
 		$t_matches = array();
@@ -573,7 +573,7 @@ function atm_get_field($p_atm_id, $p_field_name)
  */
 function atm_can_create($p_user_id = null)
 {
-	return access_has_global_level(config_get('atm_create_threshold'), $p_user_id);
+	return access_has_global_level(plugin_config_get('atm_create_threshold'), $p_user_id);
 }
 
 /**
@@ -584,7 +584,7 @@ function atm_can_create($p_user_id = null)
  */
 function atm_ensure_can_create($p_user_id = null)
 {
-	access_ensure_global_level(config_get('atm_create_threshold'), $p_user_id);
+	access_ensure_global_level(plugin_config_get('atm_create_threshold'), $p_user_id);
 }
 
 /**
@@ -683,7 +683,7 @@ function atm_update(
 	atm_ensure_terminal_id_is_valid($p_terminal_id);
 
 	# Do not allow assigning a atm to a user who is not allowed to create one
-	if (!access_has_global_level(config_get('atm_create_threshold'), $p_user_id)) {
+	if (!access_has_global_level(plugin_config_get('atm_create_threshold'), $p_user_id)) {
 		trigger_error(ERROR_USER_DOES_NOT_HAVE_REQ_ACCESS, ERROR);
 	}
 
@@ -730,7 +730,7 @@ function atm_delete($p_atm_id)
 {
 	atm_ensure_exists($p_atm_id);
 
-	access_ensure_global_level(config_get('atm_edit_threshold'));
+	access_ensure_global_level(plugin_config_get('atm_edit_threshold'));
 
 	$t_bugs = atm_get_bugs_attached($p_atm_id);
 	foreach ($t_bugs as $t_bug_id) {
@@ -891,7 +891,7 @@ function atm_bug_attach($p_atm_id, $p_bug_id, $p_user_id = null)
 {
 	antispam_check();
 
-	access_ensure_bug_level(config_get('atm_attach_threshold'), $p_bug_id, $p_user_id);
+	access_ensure_bug_level(plugin_config_get('atm_attach_threshold'), $p_bug_id, $p_user_id);
 
 	atm_ensure_exists($p_atm_id);
 
@@ -945,9 +945,9 @@ function atm_bug_detach($p_atm_id, $p_bug_id, $p_add_history = true, $p_user_id 
 
 	$t_atm_row = atm_bug_get_row($p_atm_id, $p_bug_id);
 	if ($t_user_id == atm_get_field($p_atm_id, 'user_id') || $t_user_id == $t_atm_row['user_id']) {
-		$t_detach_level = config_get('atm_detach_own_threshold');
+		$t_detach_level = plugin_config_get('atm_detach_own_threshold');
 	} else {
-		$t_detach_level = config_get('atm_detach_threshold');
+		$t_detach_level = plugin_config_get('atm_detach_threshold');
 	}
 
 	if (!access_has_bug_level($t_detach_level, $p_bug_id, $t_user_id)) {
@@ -1025,9 +1025,9 @@ function atm_display_link(array $p_atm_row, $p_bug_id = 0)
 		isset($p_atm_row['user_attached']) && auth_get_current_user_id() == $p_atm_row['user_attached']
 		|| auth_get_current_user_id() == $p_atm_row['user_id']
 	) {
-		$t_detach = config_get('atm_detach_own_threshold');
+		$t_detach = plugin_config_get('atm_detach_own_threshold');
 	} else {
-		$t_detach = config_get('atm_detach_threshold');
+		$t_detach = plugin_config_get('atm_detach_threshold');
 	}
 
 	if ($p_bug_id > 0 && access_has_bug_level($t_detach, $p_bug_id)) {
@@ -1055,7 +1055,7 @@ function atm_display_attached($p_bug_id)
 	} else {
 		$i = 0;
 		foreach ($t_atm_rows as $t_atm) {
-			echo ($i > 0 ? config_get('atm_separator') . ' ' : '');
+			echo ($i > 0 ? plugin_config_get('atm_separator') . ' ' : '');
 			atm_display_link($t_atm, $p_bug_id);
 			$i++;
 		}
@@ -1076,7 +1076,7 @@ function atm_bug_get_all($p_bug_id)
 
 	$i = 0;
 	foreach ($t_atm_rows as $t_atm) {
-		$t_value .= ($i > 0 ? config_get('atm_separator') . ' ' : '');
+		$t_value .= ($i > 0 ? plugin_config_get('atm_separator') . ' ' : '');
 		$t_value .= $t_atm['terminal_id'];
 		$i++;
 	}

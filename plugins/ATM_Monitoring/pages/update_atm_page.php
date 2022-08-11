@@ -129,10 +129,10 @@ layout_page_begin();
 									</tr>
 									<tr>
 										<?php
-										if (access_has_global_level(config_get('atm_edit_threshold'))) {
+										if (access_has_global_level(plugin_config_get('atm_edit_threshold'))) {
 											echo '<td class="category">', plugin_lang_get('atm_creator'), '</td>';
 											echo '<td><select ', helper_get_tab_index(), ' id="atm-user-id" name="user_id" class="input-sm">';
-											print_user_option_list((int)$t_atm_row['user_id'], ALL_PROJECTS, (int)config_get('atm_create_threshold'));
+											print_user_option_list((int)$t_atm_row['user_id'], ALL_PROJECTS, (int)plugin_config_get('atm_create_threshold'));
 											echo '</select></td>';
 										} else { ?>
 											<td class="category"><?php echo lang_get('atm_creator'); ?></td>
