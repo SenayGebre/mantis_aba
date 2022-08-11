@@ -40,7 +40,7 @@ function mc_atm_get_all( $p_username, $p_password, $p_page_number, $p_per_page )
 		return mci_fault_login_failed();
 	}
 
-	if( !access_has_global_level( config_get( 'atm_view_threshold' ) ) ) {
+	if( !access_has_global_level( plugin_config_get( 'atm_view_threshold' ) ) ) {
 		return mci_fault_access_denied( $t_user_id, 'No rights to view atms' );
 	}
 
@@ -144,7 +144,7 @@ function mc_atm_delete( $p_username, $p_password, $p_atm_id ) {
  * @param integer $p_user_id  User id.
  * @return void|RestFault|SoapFault
  */
-function mci_atm_set_for_issue ( $p_issue_id, array $p_atms, $p_user_id ) {
+function mci_atm_set_for_issue ( $p_issue_id, $p_atms, $p_user_id ) {
 	$t_atm_ids_to_attach = array();
 	$t_atm_ids_to_detach = array();
 
@@ -155,6 +155,7 @@ function mci_atm_set_for_issue ( $p_issue_id, array $p_atms, $p_user_id ) {
 		$t_attached_atm_ids[] = $t_attached_atm['id'];
 	}
 
+	echo $t_atm;
 	foreach( $p_atms as $t_atm ) {
 		$t_atm = ApiObjectFactory::objectToArray( $t_atm );
 
@@ -201,14 +202,14 @@ function mci_atm_set_for_issue ( $p_issue_id, array $p_atms, $p_user_id ) {
 	}
 
 	foreach( $t_atm_ids_to_detach as $t_atm_id ) {
-		if( access_has_bug_level( config_get( 'atm_detach_threshold' ), $p_issue_id, $p_user_id ) ) {
+		if( access_has_bug_level( plugin_config_get( 'atm_detach_threshold' ), $p_issue_id, $p_user_id ) ) {
 			log_event( LOG_WEBSERVICE, 'detaching atm id \'' . $t_atm_id . '\' from issue \'' . $p_issue_id . '\'' );
 			atm_bug_detach( $t_atm_id, $p_issue_id );
 		}
 	}
 
 	foreach ( $t_atm_ids_to_attach as $t_atm_id ) {
-		if( access_has_bug_level( config_get( 'atm_attach_threshold' ), $p_issue_id, $p_user_id ) ) {
+		if( access_has_bug_level( plugin_config_get( 'atm_attach_threshold' ), $p_issue_id, $p_user_id ) ) {
 			log_event( LOG_WEBSERVICE, 'attaching atm id \'' . $t_atm_id . '\' to issue \'' . $p_issue_id . '\'' );
 			atm_bug_attach( $t_atm_id, $p_issue_id );
 		}

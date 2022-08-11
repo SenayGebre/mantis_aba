@@ -73,25 +73,39 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</tr>';
         }
     }
-    function process_data($event, $t_t_issue)
+    function process_data($event, $t_issue)
     {
+        require_once( './plugins/ATM_Monitoring/api_atm.php' );
+       $p_terminal_id = gpc_get('terminal_id');
 
+        
+        $r_atm = atm_get_by_terminal_id($p_terminal_id);
+            
 
-        $t_t_issue->atm = gpc_get('terminal_id');
+        $t_issue->atm = $r_atm;
 
         // echo '<pre>';
-        // print_r($issue);
+        // print_r($t_issue);
         // echo '</pre>';
 
-        return $t_t_issue;
+        return $t_issue;
     }
     function store_data($event, $t_issue)
     {
+        require_once( dirname( __FILE__ ) . '/../../plugins/ATM_Monitoring/mc_atm_api.php' );
+        $p_user_id = auth_get_current_user_id();
+        echo '<pre>';
+        print_r($t_issue->atm);
+        echo '</pre>';
+        mci_atm_set_for_issue( $t_issue->id, $t_issue->atm, $p_user_id );
 
-        $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
-        $d_result = db_query($d_query_1);
-        $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
-        $d_result = db_query($d_query);
+
+
+
+        // $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
+        // $d_result = db_query($d_query_1);
+        // $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
+        // $d_result = db_query($d_query);
     }
     function view_details($event, $issue)
     {
@@ -156,6 +170,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
             "atm_manage_threshold" => ADMINISTRATOR,
             "atm_view_threshold" => VIEWER,
             'atm_edit_threshold' => DEVELOPER,
+            'atm_detach_threshold' => DEVELOPER,
+            'atm_attach_threshold' => REPORTER,
             'atm_edit_own_threshold' => REPORTER,
             'default_manage_tag_prefix' => 'ALL',
 
