@@ -179,11 +179,6 @@ function mci_issue_get_history( $p_issue_id, $p_user_id, $p_lang ) {
 				$t_show_new_value = false;
 				$t_old_value_name = 'tag';
 				break;
-			case ATM_ATTACHED:
-			case ATM_DETACHED:
-				$t_show_new_value = false;
-				$t_old_value_name = 'atm';
-				break;
 			case FILE_ADDED:
 			case FILE_DELETED:
 				$t_show_new_value = false;
@@ -225,13 +220,6 @@ function mci_issue_get_history( $p_issue_id, $p_user_id, $p_lang ) {
 					}
 
 					return array( 'id' => $t_tag['id'], 'name' => $t_tag['name'] );
-				case ATM_DETACHED:
-					$t_atm = atm_get_by_name( $p_value );
-					if( $t_atm === false ) {
-						return array( 'name' => $p_value );
-					}
-
-					return array( 'id' => $t_atm['id'], 'name' => $t_atm['name'] );
 				case BUGNOTE_ADDED:
 				case BUGNOTE_DELETED:
 					return array( 'id' => (int)$p_value );
@@ -1194,10 +1182,6 @@ function mc_issue_update( $p_username, $p_password, $p_issue_id, stdClass $p_iss
 		mci_tag_set_for_issue( $p_issue_id, $p_issue['tags'], $t_user_id );
 	}
 
-	if( isset( $p_issue['atms'] ) && is_array( $p_issue['atms'] ) ) {
-		mci_atm_set_for_issue( $p_issue_id, $p_issue['atms'], $t_user_id );
-	}
-
 	# submit the issue
 	log_event( LOG_WEBSERVICE, 'updating issue \'' . $p_issue_id . '\'' );
 	return $t_bug_data->update( /* update extended */ true, /* bypass email */ false );
@@ -1236,34 +1220,6 @@ function mc_issue_set_tags ( $p_username, $p_password, $p_issue_id, array $p_tag
 	}
 
 	mci_tag_set_for_issue( $p_issue_id, $p_tags, $t_user_id );
-
-	return true;
-}
-
-function mc_issue_set_atms ( $p_username, $p_password, $p_issue_id, array $p_atms ) {
-	global $g_project_override;
-
-	$t_user_id = mci_check_login( $p_username, $p_password );
-	if( $t_user_id === false ) {
-		return mci_fault_login_failed();
-	}
-
-	if( !bug_exists( $p_issue_id ) ) {
-		return ApiObjectFactory::faultNotFound( 'Issue \'' . $p_issue_id . '\' does not exist.' );
-	}
-
-	$t_project_id = bug_get_field( $p_issue_id, 'project_id' );
-	$g_project_override = $t_project_id;
-
-	if( !mci_has_readwrite_access( $t_user_id, $t_project_id ) ) {
-		return mci_fault_access_denied( $t_user_id );
-	}
-
-	if( bug_is_readonly( $p_issue_id ) ) {
-		return mci_fault_access_denied( $t_user_id, 'Issue \'' . $p_issue_id . '\' is readonly' );
-	}
-
-	mci_atm_set_for_issue( $p_issue_id, $p_atms, $t_user_id );
 
 	return true;
 }
@@ -1752,8 +1708,6 @@ function mci_issue_data_as_array( BugData $p_issue_data, $p_user_id, $p_lang ) {
 
 	# Get tags - access checked as part of returning tags
 	$t_issue['tags'] = mci_issue_get_tags_for_bug_id( $p_issue_data->id, $p_user_id );
-	
-	$t_issue['atms'] = mci_issue_get_atms_for_bug_id( $p_issue_data->id, $p_user_id );
 
 	# Get users monitoring issue - access checked as part of returning user list.
 	$t_issue['monitors'] = mci_account_get_array_by_ids( bug_get_monitors( $p_issue_data->id ) );
@@ -1789,24 +1743,6 @@ function mci_issue_get_tags_for_bug_id( $p_bug_id, $p_user_id ) {
 		$t_result[] = array (
 			'id' => $t_tag_row['id'],
 			'name' => $t_tag_row['name']
-		);
-	}
-
-	return $t_result;
-}
-
-function mci_issue_get_atms_for_bug_id( $p_bug_id, $p_user_id ) {
-	if( !access_has_bug_level( config_get( 'atm_view_threshold' ), $p_bug_id, $p_user_id ) ) {
-		return array();
-	}
-
-	$t_atm_rows = atm_bug_get_attached( $p_bug_id );
-	$t_result = array();
-
-	foreach ( $t_atm_rows as $t_atm_row ) {
-		$t_result[] = array (
-			'id' => $t_atm_row['id'],
-			'name' => $t_atm_row['name']
 		);
 	}
 

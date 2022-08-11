@@ -1623,17 +1623,6 @@ function print_filter_values_tag_string( array $p_filter ) {
 	echo '<input type="hidden" name="', FILTER_PROPERTY_TAG_STRING, '" value="', string_attribute( $t_tag_string ), '" />';
 }
 
-function print_filter_values_atm_string( array $p_filter ) {
-	$t_filter = $p_filter;
-	$t_atm_string = $t_filter[FILTER_PROPERTY_ATM_STRING];
-	if( $t_filter[FILTER_PROPERTY_ATM_SELECT] != 0 && atm_exists( $t_filter[FILTER_PROPERTY_ATM_SELECT] ) ) {
-		$t_atm_string .= ( is_blank( $t_atm_string ) ? '' : config_get( 'atm_separator' ) );
-		$t_atm_string .= atm_get_field( $t_filter[FILTER_PROPERTY_ATM_SELECT], 'name' );
-	}
-	echo string_html_entities( $t_atm_string );
-	echo '<input type="hidden" name="', FILTER_PROPERTY_ATM_STRING, '" value="', string_attribute( $t_atm_string ), '" />';
-}
-
 /**
  * print tag fields
  * @global array $g_filter
@@ -1658,28 +1647,6 @@ function print_filter_tag_string( array $p_filter = null ) {
 		<input class="input-xs" type="text" name="<?php echo FILTER_PROPERTY_TAG_STRING;?>" id="<?php echo FILTER_PROPERTY_TAG_STRING;?>" size="25" value="<?php echo string_attribute( $t_tag_string )?>" />
 		<select class="input-xs" <?php echo helper_get_tab_index()?> name="<?php echo FILTER_PROPERTY_TAG_SELECT;?>" id="<?php echo FILTER_PROPERTY_TAG_SELECT;?>">
 			<?php print_tag_option_list();?>
-		</select>
-		<?php
-}
-
-function print_filter_atm_string( array $p_filter = null ) {
-	global $g_filter;
-	if( !access_has_project_level( config_get( 'atm_view_threshold' ) ) ) {
-		return;
-	}
-	if( null === $p_filter ) {
-		$p_filter = $g_filter;
-	}
-	$t_atm_string = $p_filter[FILTER_PROPERTY_ATM_STRING];
-	if( $p_filter[FILTER_PROPERTY_ATM_SELECT] != 0 && atm_exists( $p_filter[FILTER_PROPERTY_ATM_SELECT] ) ) {
-		$t_atm_string .= ( is_blank( $t_atm_string ) ? '' : config_get( 'atm_separator' ) );
-		$t_atm_string .= atm_get_field( $p_filter[FILTER_PROPERTY_ATM_SELECT], 'name' );
-	}
-	?>
-		<input type="hidden" id="atm_separator" value="<?php echo config_get( 'atm_separator' )?>" />
-		<input class="input-xs" type="text" name="<?php echo FILTER_PROPERTY_ATM_STRING;?>" id="<?php echo FILTER_PROPERTY_ATM_STRING;?>" size="25" value="<?php echo string_attribute( $t_atm_string )?>" />
-		<select class="input-xs" <?php echo helper_get_tab_index()?> name="<?php echo FILTER_PROPERTY_ATM_SELECT;?>" id="<?php echo FILTER_PROPERTY_ATM_SELECT;?>">
-			<?php print_atm_option_list();?>
 		</select>
 		<?php
 }
@@ -2688,16 +2655,6 @@ function filter_form_draw_inputs( $p_filter, $p_for_screen = true, $p_static = f
 				3 /* colspan */,
 				null /* class */,
 				'tag_string_filter_target' /* content id */
-				));
-	}
-
-	if( access_has_project_level( config_get( 'atm_view_threshold' ) ) ) {
-		$t_row3->add_item( new TableFieldsItem(
-				$get_field_header( 'atm_string_filter', lang_get( 'atms' ) ),
-				filter_form_get_input( $t_filter, 'atm_string', $t_show_inputs ),
-				3 /* colspan */,
-				null /* class */,
-				'atm_string_filter_target' /* content id */
 				));
 	}
 

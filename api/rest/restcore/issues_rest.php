@@ -51,12 +51,6 @@ $g_app->group('/issues', function() use ( $g_app ) {
 	$g_app->delete( '/{id}/tags/{tag_id}', 'rest_issue_tag_detach' );
 	$g_app->delete( '/{id}/tags/{tag_id}/', 'rest_issue_tag_detach' );
 
-	# ATMs
-	$g_app->post( '/{id}/atms', 'rest_issue_atm_attach' );
-	$g_app->post( '/{id}/atms/', 'rest_issue_atm_attach' );
-	$g_app->delete( '/{id}/atms/{atm_id}', 'rest_issue_atm_detach' );
-	$g_app->delete( '/{id}/atms/{atm_id}/', 'rest_issue_atm_detach' );
-
 	# Monitor
 	$g_app->post( '/{id}/monitors/', 'rest_issue_monitor_add' );
 	$g_app->post( '/{id}/monitors', 'rest_issue_monitor_add' );
@@ -480,22 +474,6 @@ function rest_issue_tag_attach( \Slim\Http\Request $p_request, \Slim\Http\Respon
 		withJson( array( 'issues' => array( $t_issue ) ) );
 }
 
-function rest_issue_atm_attach( \Slim\Http\Request $p_request, \Slim\Http\Response $p_response, array $p_args ) {
-	$t_issue_id = $p_args['id'];
-	$t_data = array(
-		'query' => array( 'issue_id' => $t_issue_id ),
-		'payload' => $p_request->getParsedBody(),
-	);
-
-	$t_command = new ATMAttachCommand( $t_data );
-	$t_command->execute();
-
-	$t_issue = mc_issue_get( /* username */ '', /* password */ '', $t_issue_id );			
-
-	return $p_response->withStatus( HTTP_STATUS_CREATED, "ATM attached to issue $t_issue_id" )->
-		withJson( array( 'issues' => array( $t_issue ) ) );
-}
-
 /**
  * Detach a tag from the issue
  *
@@ -521,23 +499,6 @@ function rest_issue_tag_detach( \Slim\Http\Request $p_request, \Slim\Http\Respon
 	$t_issue = mc_issue_get( /* username */ '', /* password */ '', $t_issue_id );			
 
 	return $p_response->withStatus( HTTP_STATUS_SUCCESS, "Tag detached from issue $t_issue_id" )->
-		withJson( array( 'issues' => array( $t_issue ) ) );
-}
-
-function rest_issue_atm_detach( \Slim\Http\Request $p_request, \Slim\Http\Response $p_response, array $p_args ) {
-	$t_issue_id = $p_args['id'];
-	$t_atm_id = $p_args['atm_id'];
-
-	$t_data = array(
-		'query' => array( 'issue_id' => $t_issue_id, 'atm_id' => $t_atm_id )
-	);
-
-	$t_command = new ATMDetachCommand( $t_data );
-	$t_command->execute();
-
-	$t_issue = mc_issue_get( /* username */ '', /* password */ '', $t_issue_id );			
-
-	return $p_response->withStatus( HTTP_STATUS_SUCCESS, "ATM detached from issue $t_issue_id" )->
 		withJson( array( 'issues' => array( $t_issue ) ) );
 }
 

@@ -163,7 +163,6 @@
    <xsd:element name="monitors" type="tns:AccountDataArray" minOccurs="0"/>
    <xsd:element name="sticky" type="xsd:boolean" minOccurs="0"/>
    <xsd:element name="tags" type="tns:ObjectRefArray" minOccurs="0"/>
-   <xsd:element name="atms" type="tns:ObjectRefArray" minOccurs="0"/>
   </xsd:all>
  </xsd:complexType>
  <xsd:complexType name="IssueDataArray">
@@ -305,8 +304,6 @@
    <xsd:element name="last_update_end_year" type="xsd:integer" minOccurs="0"/>
    <xsd:element name="tag_string" type="tns:StringArray" minOccurs="0"/>
    <xsd:element name="tag_select" type="tns:IntegerArray" minOccurs="0"/>
-   <xsd:element name="atm_string" type="tns:StringArray" minOccurs="0"/>
-   <xsd:element name="atm_select" type="tns:IntegerArray" minOccurs="0"/>
    <xsd:element name="custom_fields" type="tns:FilterCustomFieldArray" minOccurs="0"/>
   </xsd:all>
  </xsd:complexType>
@@ -405,29 +402,6 @@
  <xsd:complexType name="TagDataSearchResult">
   <xsd:all>
    <xsd:element name="results" type="tns:TagDataArray" minOccurs="0"/>
-   <xsd:element name="total_results" type="xsd:integer" minOccurs="0"/>
-  </xsd:all>
- </xsd:complexType>
- <xsd:complexType name="ATMData">
-  <xsd:all>
-   <xsd:element name="id" type="xsd:integer" minOccurs="0"/>
-   <xsd:element name="user_id" type="tns:AccountData" minOccurs="0"/>
-   <xsd:element name="name" type="xsd:string" minOccurs="0"/>
-   <xsd:element name="description" type="xsd:string" minOccurs="0"/>
-   <xsd:element name="date_created" type="xsd:dateTime" minOccurs="0"/>
-   <xsd:element name="date_updated" type="xsd:dateTime" minOccurs="0"/>
-  </xsd:all>
- </xsd:complexType>
- <xsd:complexType name="ATMDataArray">
-  <xsd:complexContent>
-   <xsd:restriction base="SOAP-ENC:Array">
-    <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:ATMData[]"/>
-   </xsd:restriction>
-  </xsd:complexContent>
- </xsd:complexType>
- <xsd:complexType name="ATMDataSearchResult">
-  <xsd:all>
-   <xsd:element name="results" type="tns:ATMDataArray" minOccurs="0"/>
    <xsd:element name="total_results" type="xsd:integer" minOccurs="0"/>
   </xsd:all>
  </xsd:complexType>
@@ -591,13 +565,6 @@
   <part name="issue_id" type="xsd:integer" />
   <part name="tags" type="tns:TagDataArray" /></message>
 <message name="mc_issue_set_tagsResponse">
-  <part name="return" type="xsd:boolean" /></message>
-<message name="mc_issue_set_atmsRequest">
-  <part name="username" type="xsd:string" />
-  <part name="password" type="xsd:string" />
-  <part name="issue_id" type="xsd:integer" />
-  <part name="atms" type="tns:ATMDataArray" /></message>
-<message name="mc_issue_set_atmsResponse">
   <part name="return" type="xsd:boolean" /></message>
 <message name="mc_issue_deleteRequest">
   <part name="username" type="xsd:string" />
@@ -924,25 +891,6 @@
   <part name="tag_id" type="xsd:integer" /></message>
 <message name="mc_tag_deleteResponse">
   <part name="return" type="xsd:boolean" /></message>
-<message name="mc_atm_get_allRequest">
-  <part name="username" type="xsd:string" />
-  <part name="password" type="xsd:string" />
-  <part name="page_number" type="xsd:integer" />
-  <part name="per_page" type="xsd:integer" /></message>
-<message name="mc_atm_get_allResponse">
-  <part name="return" type="tns:ATMDataSearchResult" /></message>
-<message name="mc_atm_addRequest">
-  <part name="username" type="xsd:string" />
-  <part name="password" type="xsd:string" />
-  <part name="atm" type="tns:ATMData" /></message>
-<message name="mc_atm_addResponse">
-  <part name="return" type="xsd:integer" /></message>
-<message name="mc_atm_deleteRequest">
-  <part name="username" type="xsd:string" />
-  <part name="password" type="xsd:string" />
-  <part name="atm_id" type="xsd:integer" /></message>
-<message name="mc_atm_deleteResponse">
-  <part name="return" type="xsd:boolean" /></message>
 <portType name="MantisConnectPortType">
   <operation name="mc_version">
     <input message="tns:mc_versionRequest"/>
@@ -1067,11 +1015,6 @@
     <documentation>Sets the tags for a specified issue.</documentation>
     <input message="tns:mc_issue_set_tagsRequest"/>
     <output message="tns:mc_issue_set_tagsResponse"/>
-  </operation>
-  <operation name="mc_issue_set_atms">
-    <documentation>Sets the atms for a specified issue.</documentation>
-    <input message="tns:mc_issue_set_atmsRequest"/>
-    <output message="tns:mc_issue_set_atmsResponse"/>
   </operation>
   <operation name="mc_issue_delete">
     <documentation>Delete the issue with the specified id.</documentation>
@@ -1308,21 +1251,6 @@
     <input message="tns:mc_tag_deleteRequest"/>
     <output message="tns:mc_tag_deleteResponse"/>
   </operation>
-  <operation name="mc_atm_get_all">
-    <documentation>Gets all the atms.</documentation>
-    <input message="tns:mc_atm_get_allRequest"/>
-    <output message="tns:mc_atm_get_allResponse"/>
-  </operation>
-  <operation name="mc_atm_add">
-    <documentation>Creates a atm.</documentation>
-    <input message="tns:mc_atm_addRequest"/>
-    <output message="tns:mc_atm_addResponse"/>
-  </operation>
-  <operation name="mc_atm_delete">
-    <documentation>Deletes a atm.</documentation>
-    <input message="tns:mc_atm_deleteRequest"/>
-    <output message="tns:mc_atm_deleteResponse"/>
-  </operation>
 </portType>
 <binding name="MantisConnectBinding" type="tns:MantisConnectPortType">
   <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
@@ -1448,11 +1376,6 @@
   </operation>
   <operation name="mc_issue_set_tags">
     <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_issue_set_tags" style="rpc"/>
-    <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-    <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
-  </operation>
-  <operation name="mc_issue_set_atm">
-    <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_issue_set_atms" style="rpc"/>
     <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
     <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
   </operation>
@@ -1688,21 +1611,6 @@
   </operation>
   <operation name="mc_tag_delete">
     <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_tag_delete" style="rpc"/>
-    <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-    <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
-  </operation>
-  <operation name="mc_atm_get_all">
-    <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_atm_get_all" style="rpc"/>
-    <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-    <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
-  </operation>
-  <operation name="mc_atm_add">
-    <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_atm_add" style="rpc"/>
-    <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
-    <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
-  </operation>
-  <operation name="mc_atm_delete">
-    <soap:operation soapAction="http://www.mantisbt.org/bugs/api/soap/mantisconnect.php/mc_atm_delete" style="rpc"/>
     <input><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></input>
     <output><soap:body use="encoded" namespace="http://futureware.biz/mantisconnect" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/></output>
   </operation>

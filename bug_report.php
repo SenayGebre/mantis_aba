@@ -256,8 +256,6 @@ if( $f_master_bug_id > 0 ) {
 	$t_data['options'] = array( 'clone_info' => $t_clone_info );
 }
 
-
-
 $t_command = new IssueAddCommand( $t_data );
 $t_result = $t_command->execute();
 $t_issue_id = (int)$t_result['issue_id'];

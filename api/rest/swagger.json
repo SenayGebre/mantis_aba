@@ -20,9 +20,6 @@
         "tags": [
           "Issues"
         ],
-        "atms": [
-          "Issues"
-        ],
         "operationId": "issueGet",
         "parameters": [
           {
@@ -54,9 +51,6 @@
         "tags": [
           "Issues"
         ],
-        "atms": [
-          "Issues"
-        ],
         "operationId": "issueAdd",
         "parameters": [
           {
@@ -84,9 +78,6 @@
       "delete": {
         "summary": "Delete an issue",
         "tags": [
-          "Issues"
-        ],
-        "atms": [
           "Issues"
         ],
         "operationId": "issueDelete",
@@ -121,9 +112,6 @@
         "summary": "Get config options",
         "description": "Get the value for a set of configuration options given a user and project context.  If a configuration option is invalid or is marked as private, then they will be filtered out, but request will still succeed.",
         "tags": [
-          "Config"
-        ],
-        "atms": [
           "Config"
         ],
         "operationId": "configGet",
@@ -181,9 +169,6 @@
         "tags": [
           "Localization"
         ],
-        "atms": [
-          "Localization"
-        ],
         "operationId": "langGet",
         "parameters": [
           {
@@ -220,9 +205,6 @@
         "tags": [
           "Users"
         ],
-        "atms": [
-          "Users"
-        ],
         "operationId": "userGetMe",
         "responses": {
           "200": {
@@ -245,9 +227,6 @@
         "summary": "Reset user's password",
         "description": "Reset the user's password",
         "tags": [
-          "Users"
-        ],
-        "atms": [
           "Users"
         ],
         "operationId": "userResetPassword",

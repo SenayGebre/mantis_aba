@@ -1859,12 +1859,6 @@ $g_mentions_enabled = ON;
  */
 $g_mentions_tag = '@';
 
-/**
- * The tag to use for mentions.
- * @global string $g_mentions_tag
- */
-$g_mentions_atm = '@';
-
 #################################
 # MantisBT Sponsorship Settings #
 #################################
@@ -2563,7 +2557,6 @@ $g_bug_report_page_fields = array(
 	'severity',
 	'steps_to_reproduce',
 	'tags',
-	'atms',
 	'target_version',
 	'view_state',
 );
@@ -2639,7 +2632,6 @@ $g_bug_view_page_fields = array(
 	'steps_to_reproduce',
 	'summary',
 	'tags',
-	'atms',
 	'target_version',
 	'view_state',
 );
@@ -3173,15 +3165,6 @@ $g_anonymous_account = '';
 $g_bug_link_tag = '#';
 
 /**
- * Bug Linking
- * if a number follows this tag it will create a link to a bug.
- * eg. for # a link would be #45
- * eg. for bug: a link would be bug:98
- * @global string $g_bug_link_tag
- */
-$g_bug_link_atm = '#';
-
-/**
  * Bugnote Linking
  * if a number follows this tag it will create a link to a bugnote.
  * eg. for ~ a link would be ~45
@@ -3189,15 +3172,6 @@ $g_bug_link_atm = '#';
  * @global string $g_bugnote_link_tag
  */
 $g_bugnote_link_tag = '~';
-
-/**
- * Bugnote Linking
- * if a number follows this tag it will create a link to a bugnote.
- * eg. for ~ a link would be ~45
- * eg. for bugnote: a link would be bugnote:98
- * @global string $g_bugnote_link_tag
- */
-$g_bugnote_link_atm = '~';
 
 /**
  * Bug Count Linking
@@ -3232,15 +3206,6 @@ $g_user_login_valid_regex = '/^([a-z\d\-.+_ ]+(@[a-z\d\-.]+\.[a-z]{2,18})?)$/i';
  * @global string $g_default_manage_tag_prefix
  */
 $g_default_manage_tag_prefix = 'ALL';
-
-/**
- * Default tag prefix used to filter the list of tags in
- * manage_tags_page.php.  Change this to 'A' (or any other
- * letter) if you have a lot of tags in the system and loading
- * the manage tags page takes a long time.
- * @global string $g_default_manage_tag_prefix
- */
-$g_default_manage_atm_prefix = 'ALL';
 
 /**
  * The separator to use for CSV exports.
@@ -4065,22 +4030,10 @@ $g_recently_visited_count = 5;
 $g_tag_separator = ',';
 
 /**
- * String that will separate tags as entered for input
- * @global integer $g_tag_separator
- */
-$g_atm_separator = ',';
-
-/**
  * Access level required to view tags attached to a bug
  * @global integer $g_tag_view_threshold
  */
 $g_tag_view_threshold = VIEWER;
-
-/**
- * Access level required to view tags attached to a bug
- * @global integer $g_tag_view_threshold
- */
-$g_atm_view_threshold = VIEWER;
 
 /**
  * Access level required to attach tags to a bug
@@ -4089,39 +4042,22 @@ $g_atm_view_threshold = VIEWER;
 $g_tag_attach_threshold = REPORTER;
 
 /**
- * Access level required to attach tags to a bug
- * @global integer $g_tag_attach_threshold
- */
-$g_atm_attach_threshold = REPORTER;
-
-/**
  * Access level required to detach tags from a bug
  * @global integer $g_tag_detach_threshold
  */
 $g_tag_detach_threshold = DEVELOPER;
 
 /**
- * Access level required to detach tags from a bug
- * @global integer $g_tag_detach_threshold
- */
-$g_atm_detach_threshold = DEVELOPER;
-
-/**
  * Access level required to detach tags attached by the same user
  * @global integer $g_tag_detach_own_threshold
  */
 $g_tag_detach_own_threshold = REPORTER;
-/**
- * Access level required to detach tags attached by the same user
- * @global integer $g_tag_detach_own_threshold
- */
-$g_atm_detach_own_threshold = REPORTER;
 
 /**
  * Access level required to create new tags
  * @global integer $g_tag_create_threshold
  */
-$g_atm_create_threshold = REPORTER;
+$g_tag_create_threshold = REPORTER;
 
 /**
  * Access level required to edit tag names and descriptions
@@ -4130,22 +4066,10 @@ $g_atm_create_threshold = REPORTER;
 $g_tag_edit_threshold = DEVELOPER;
 
 /**
- * Access level required to edit tag names and descriptions
- * @global integer $g_tag_edit_threshold
- */
-$g_atm_edit_threshold = DEVELOPER;
-
-/**
  * Access level required to edit descriptions by the creating user
  * @global integer $g_tag_edit_own_threshold
  */
 $g_tag_edit_own_threshold = REPORTER;
-
-/**
- * Access level required to edit descriptions by the creating user
- * @global integer $g_tag_edit_own_threshold
- */
-$g_atm_edit_own_threshold = REPORTER;
 
 #################
 # Time tracking #
@@ -4666,7 +4590,6 @@ $g_public_config_names = array(
 	'bug_duplicate_resolution',
 	'bug_feedback_status',
 	'bug_link_tag',
-	'bug_link_atm',
 	'bug_list_cookie',
 	'bug_readonly_status_threshold',
 	'bug_reminder_threshold',
@@ -4682,7 +4605,6 @@ $g_public_config_names = array(
 	'bug_update_page_fields',
 	'bug_view_page_fields',
 	'bugnote_link_tag',
-	'bugnote_link_atm',
 	'bugnote_order',
 	'bugnote_user_change_view_state_threshold',
 	'bugnote_user_delete_threshold',
@@ -4747,7 +4669,6 @@ $g_public_config_names = array(
 	'default_language',
 	'default_limit_view',
 	'default_manage_tag_prefix',
-	'default_manage_atm_prefix',
 	'default_new_account_access_level',
 	'default_notify_flags',
 	'default_project_view_status',
@@ -4840,7 +4761,6 @@ $g_public_config_names = array(
 	'max_lost_password_in_progress_count',
 	'mentions_enabled',
 	'mentions_tag',
-	'mentions_atm',
 	'min_refresh_delay',
 	'minimum_sponsorship_amount',
 	'monitor_add_others_bug_threshold',
@@ -4957,14 +4877,6 @@ $g_public_config_names = array(
 	'tag_edit_threshold',
 	'tag_separator',
 	'tag_view_threshold',
-	'atm_attach_threshold',
-	'atm_create_threshold',
-	'atm_detach_own_threshold',
-	'atm_detach_threshold',
-	'atm_edit_own_threshold',
-	'atm_edit_threshold',
-	'atm_separator',
-	'atm_view_threshold',
 	'time_tracking_billing_rate',
 	'time_tracking_edit_threshold',
 	'time_tracking_enabled',

@@ -1948,17 +1948,6 @@ function email_build_visible_bug_data( $p_user_id, $p_bug_id, $p_message_id ) {
 		$t_bug_data['email_tag'] = trim( $t_bug_data['email_tag'], ', ' );
 	}
 
-	$t_atm_rows = atm_bug_get_attached( $p_bug_id );
-	if( in_array( 'atms', $t_bug_view_fields ) && !empty( $t_atm_rows ) && access_compare_level( $t_user_access_level, config_get( 'atm_view_threshold' ) ) ) {
-		$t_bug_data['email_atm'] = '';
-
-		foreach( $t_atm_rows as $t_atm ) {
-			$t_bug_data['email_atm'] .= $t_atm['name'] . ', ';
-		}
-
-		$t_bug_data['email_atm'] = trim( $t_bug_data['email_atm'], ', ' );
-	}
-
 	$t_bug_data['email_date_submitted'] = $t_row['date_submitted'];
 	$t_bug_data['email_last_modified'] = $t_row['last_updated'];
 

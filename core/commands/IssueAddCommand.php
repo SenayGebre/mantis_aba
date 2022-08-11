@@ -517,3 +517,4 @@ class IssueAddCommand extends Command {
 		return $t_tag_id;
 	}
 }
+

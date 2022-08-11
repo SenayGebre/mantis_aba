@@ -71,7 +71,6 @@ require_api( 'mention_api.php' );
 require_api( 'relationship_api.php' );
 require_api( 'sponsorship_api.php' );
 require_api( 'tag_api.php' );
-require_api( 'atm_api.php' );
 require_api( 'user_api.php' );
 require_api( 'utility_api.php' );
 
@@ -1451,9 +1450,6 @@ function bug_delete( $p_bug_id ) {
 
 	# Detach tags
 	tag_bug_detach_all( $p_bug_id, false );
-	
-	# Detach atms
-	atm_bug_detach_all( $p_bug_id, false );
 
 	# Delete the bug history
 	history_delete( $p_bug_id );
@@ -2275,7 +2271,6 @@ function bug_clear_cache_all( $p_bug_id = null ) {
 	file_bug_attachment_count_clear_cache( $p_bug_id );
 	bugnote_clear_bug_cache( $p_bug_id );
 	tag_clear_cache_bug_tags( $p_bug_id );
-	atm_clear_cache_bug_atms( $p_bug_id );
 	custom_field_clear_cache_values( $p_bug_id );
 
 	$t_plugin_objects = columns_get_plugin_columns();
@@ -2345,9 +2340,6 @@ function bug_cache_columns_data( array $p_bugs, array $p_selected_columns ) {
 				break;
 			case 'tags':
 				tag_cache_bug_tag_rows( $t_bug_ids );
-				break;
-			case 'atms':
-				atm_cache_bug_atm_rows( $t_bug_ids );
 				break;
 		}
 	}

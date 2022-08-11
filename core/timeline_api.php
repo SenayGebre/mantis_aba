@@ -92,12 +92,6 @@ function timeline_events( $p_start_time, $p_end_time, $p_max_events, $p_filter =
 			case TAG_DETACHED:
 				$t_event = new IssueTagTimelineEvent( $t_timestamp, $t_user_id, $t_issue_id, $t_history_event['old_value'], false );
 				break;
-			case ATM_ATTACHED:
-				$t_event = new IssueATMTimelineEvent( $t_timestamp, $t_user_id, $t_issue_id, $t_history_event['old_value'], true );
-				break;
-			case ATM_DETACHED:
-				$t_event = new IssueATMTimelineEvent( $t_timestamp, $t_user_id, $t_issue_id, $t_history_event['old_value'], false );
-				break;
 			case NORMAL_TYPE:
 				switch( $t_history_event['field'] ) {
 					case 'status':

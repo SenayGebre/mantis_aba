@@ -327,16 +327,6 @@ function csv_format_tags( BugData $p_bug ) {
 	return csv_escape_string( $t_value );
 }
 
-function csv_format_atms( BugData $p_bug ) {
-	$t_value = '';
-
-	if( access_has_bug_level( config_get( 'atm_view_threshold' ), $p_bug->id ) ) {
-		$t_value = atm_bug_get_all( $p_bug->id );
-	}
-
-	return csv_escape_string( $t_value );
-}
-
 /**
  * return the projection
  * @param BugData $p_bug A BugData object.

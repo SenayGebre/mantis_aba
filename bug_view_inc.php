@@ -72,7 +72,6 @@ require_api( 'print_api.php' );
 require_api( 'project_api.php' );
 require_api( 'string_api.php' );
 require_api( 'tag_api.php' );
-require_api( 'atm_api.php' );
 require_api( 'utility_api.php' );
 require_api( 'version_api.php' );
 
@@ -586,24 +585,6 @@ if( $t_flags['tags_can_attach'] ) {
 	echo '<th class="bug-attach-tags category">', lang_get( 'tag_attach_long' ), '</th>';
 	echo '<td class="bug-attach-tags" colspan="5">';
 	print_tag_attach_form( $f_issue_id );
-	echo '</td></tr>';
-}
-
-# ATM adding
-if( $t_flags['atms_show'] ) {
-	echo '<tr>';
-	echo '<th class="bug-atms category">', lang_get( 'atms' ), '</th>';
-	echo '<td class="bug-atms" colspan="5">';
-	atm_display_attached( $f_issue_id );
-	echo '</td></tr>';
-}
-
-# Attach ATMs
-if( $t_flags['atms_can_attach'] ) {
-	echo '<tr class="noprint">';
-	echo '<th class="bug-attach-atms category">', lang_get( 'atm_attach_long' ), '</th>';
-	echo '<td class="bug-attach-atms" colspan="5">';
-	print_atm_attach_form( $f_issue_id );
 	echo '</td></tr>';
 }
 

@@ -151,13 +151,11 @@ $t_lang_bug_notes_title = lang_get( 'bug_notes_title' );
 $t_lang_system_profile = lang_get( 'profile_description' );
 $t_lang_attached_files = lang_get( 'attached_files' );
 $t_lang_tags = lang_get( 'tags' );
-$t_lang_atms = lang_get( 'atms' );
 
 $t_fields = config_get( 'bug_view_page_fields' );
 $t_fields = columns_filter_disabled( $t_fields );
 
 $t_show_tags = in_array( 'tags', $t_fields ) && access_has_global_level( config_get( 'tag_view_threshold' ) );
-$t_show_atms = in_array( 'atms', $t_fields ) && access_has_global_level( config_get( 'atm_view_threshold' ) );
 
 $t_current_user_id = auth_get_current_user_id();
 $t_user_bugnote_order = user_pref_get_pref( $t_current_user_id, 'bugnote_order' );
@@ -429,16 +427,6 @@ foreach( $t_related_custom_field_ids as $t_custom_field_id ) {
 	</td>
 	<td colspan="5">
 		<?php echo string_display_links( tag_bug_get_all( $t_bug->id ) ) ?>
-	</td>
-</tr>
-<?php }?>
-<?php if( $t_show_atms ) { ?>
-<tr>
-	<td class="print">
-		<?php echo sprintf( lang_get( 'label' ), $t_lang_atms ) ?>
-	</td>
-	<td colspan="5">
-		<?php echo string_display_links( atm_bug_get_all( $t_bug->id ) ) ?>
 	</td>
 </tr>
 <?php }?>

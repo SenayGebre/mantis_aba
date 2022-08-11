@@ -95,9 +95,7 @@ $t_my_filter[FILTER_PROPERTY_VIEW_STATE] = gpc_get_string_array( FILTER_PROPERTY
 $t_my_filter[FILTER_PROPERTY_VERSION] = gpc_get_string_array( FILTER_PROPERTY_VERSION, $t_meta_filter_any_array );
 $t_my_filter[FILTER_PROPERTY_MATCH_TYPE] = gpc_get_int( FILTER_PROPERTY_MATCH_TYPE, FILTER_MATCH_ALL );
 $t_my_filter[FILTER_PROPERTY_TAG_STRING] = gpc_get_string( FILTER_PROPERTY_TAG_STRING, '' );
-$t_my_filter[FILTER_PROPERTY_ATM_STRING] = gpc_get_string( FILTER_PROPERTY_ATM_STRING, '' );
 $t_my_filter[FILTER_PROPERTY_TAG_SELECT] = gpc_get_int( FILTER_PROPERTY_TAG_SELECT, 0 );
-$t_my_filter[FILTER_PROPERTY_ATM_SELECT] = gpc_get_int( FILTER_PROPERTY_ATM_SELECT, 0 );
 $t_my_filter[FILTER_PROPERTY_NOTE_USER_ID] = gpc_get_string_array( FILTER_PROPERTY_NOTE_USER_ID, $t_meta_filter_any_array );
 
 # Filtering by Date

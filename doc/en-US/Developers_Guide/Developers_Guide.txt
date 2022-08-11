@@ -2608,34 +2608,6 @@ execution.
       * 
 
         <Array of Integers>: Tag IDs
-        
-  EVENT_ATM_ATTACHED (Execute)
-
-    This event allows plugins to do post-processing of attached atms.
-
-    Parameters
-
-      * 
-
-        <Integer>: Bug ID
-
-      * 
-
-        <Array of Integers>: ATM IDs
-
-  EVENT_ATM_DETACHED (Execute)
-
-    This event allows plugins to do post-processing of detached atms.
-
-    Parameters
-
-      * 
-
-        <Integer>: Bug ID
-
-      * 
-
-        <Array of Integers>: ATM IDs
 
 
 5.6. Notification Events

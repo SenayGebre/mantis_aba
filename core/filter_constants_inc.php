@@ -53,8 +53,6 @@ define( 'FILTER_PROPERTY_RELATIONSHIP_TYPE', 'relationship_type' );
 define( 'FILTER_PROPERTY_RELATIONSHIP_BUG', 'relationship_bug' );
 define( 'FILTER_PROPERTY_TAG_STRING', 'tag_string' );
 define( 'FILTER_PROPERTY_TAG_SELECT', 'tag_select' );
-define( 'FILTER_PROPERTY_ATM_STRING', 'atm_string' );
-define( 'FILTER_PROPERTY_ATM_SELECT', 'atm_select' );
 define( 'FILTER_PROPERTY_MATCH_TYPE', 'match_type' );
 
 define( 'FILTER_PROPERTY_NOTE_USER_ID', 'note_user_id' );

@@ -178,15 +178,6 @@ class IssueViewPageCommand extends Command {
 			$t_flags['tags_show'] &&
 			!$t_force_readonly &&
 			access_has_bug_level( config_get( 'tag_attach_threshold' ), $t_issue_id );
-			
-		$t_flags['atms_show'] =
-			in_array( 'atms', $t_fields ) &&
-			access_has_bug_level( config_get( 'atm_view_threshold' ), $t_issue_id );
-
-		$t_flags['atms_can_attach'] =
-			$t_flags['atms_show'] &&
-			!$t_force_readonly &&
-			access_has_bug_level( config_get( 'atm_attach_threshold' ), $t_issue_id );
 
 		# Due date
 		$t_flags['due_date_show'] = in_array( 'due_date', $t_fields ) && access_has_bug_level( config_get( 'due_date_view_threshold' ), $t_issue_id );

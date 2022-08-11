@@ -524,22 +524,6 @@ $(document).ready( function() {
 		$(this).val(0);
 	});
 
-	$(document).on('change', '#atm_select', function() {
-		var atmSeparator = $('#atm_separator').val();
-		var currentATMString = $('#atm_string').val();
-		var newATMOptionID = $(this).val();
-		var newATM = $('#atm_select option[value=' + newATMOptionID + ']').text();
-		var atmArray = currentATMString.split(atmSeparator);
-		if (atmArray.indexOf(newATM) == -1) {
-			if (currentATMString.length > 0) {
-				$('#atm_string').val(currentATMString + atmSeparator + newATM);
-			} else {
-				$('#atm_string').val(newATM);
-			}
-		}
-		$(this).val(0);
-	});
-
 	$('a.click-url').bind("click", function() {
 		$(this).attr("href", $(this).attr("url"));
 	});
@@ -757,11 +741,6 @@ function setDisplay(idTag, state)
 function toggleDisplay(idTag)
 {
 	setDisplay( idTag, (document.getElementById(idTag).style.display == 'none')?1:0 );
-}
-
-function toggleDisplay(idATM)
-{
-	setDisplay( idATM, (document.getElementById(idATM).style.display == 'none')?1:0 );
 }
 
 // Dropzone handler
