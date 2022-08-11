@@ -76,7 +76,7 @@ $f_new_country = gpc_get_string( 'country',  $t_atm_row['country']  );
 $f_new_city = gpc_get_string( 'city',  $t_atm_row['city']  );
 $f_new_spec_loc = gpc_get_string( 'spec_loc',  $t_atm_row['specifc_location']  );
 
-atm_update( $f_atm_id, $f_new_terminal_id, $f_new_user_id, $f_new_branch_name, $f_new_model,$f_new_ip,$f_new_port, $f_new_country,$f_new_city,$f_new_port );
+atm_update( $f_atm_id, $f_new_terminal_id, $f_new_user_id, $f_new_branch_name, $f_new_model,$f_new_ip,$f_new_port, $f_new_country,$f_new_city,$f_new_spec_loc );
 
 form_security_purge( 'update_atm' );
 

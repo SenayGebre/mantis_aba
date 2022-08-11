@@ -155,8 +155,21 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 	} ?>
 		</div>
 	</div>
+	
 	</div>
-
+	
+	<div class="center">
+		<div class="btn-toolbar inline" style="margin-top:  30px;">
+		<div class="btn-group" style="margin-right: 10px;">
+		<input type="text" id="atm-name" name="search" class="input-sm" size="40" maxlength="100"  />
+		</div>
+		
+		<?php print_small_button('#atmcreate',  plugin_lang_get('atm_search')) ;
+		echo '<a class="btn btn-xs btn-white btn-primary ' . plugin_lang_get('atm_search') .
+		'" href="'. plugin_page( 'manage_atm_page.php?filter='.$t_prefix).'">' .plugin_lang_get('atm_search') . '</a>' ."\n";?>
+	</div>
+	
+	</div>
 <div class="space-10"></div>
 
 	<div class="widget-box widget-color-blue2">

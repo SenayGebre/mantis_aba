@@ -206,17 +206,11 @@ layout_page_begin();
 										$t_country = string_display($t_atm['country']);
 										$t_city = string_display($t_atm['city']);
 										$t_spec_loc = string_display($t_atm['specifc_location']);
-										$t_branch_name = string_display_line($t_atm['branch_name']);
-										$t_model = string_display_line($t_atm['model']);
-										$t_ip = string_display_line($t_atm['ip_address']);
-										$t_port = string_display_line($t_atm['port']);
-										$t_country = string_display_line($t_atm['country']);
-										$t_city = string_display_line($t_atm['city']);
-										$t_spec_loc = string_display_line($t_atm['specifc_location']);
+										
 										$t_count = $t_atm['count'];
 										$t_link = string_html_specialchars('search.php?atm_string=' . urlencode('+' . $t_atm_row['terminal_id'] . plugin_config_get('atm_separator') . '+' . $t_terminal_id));
-										$t_label = sprintf(lang_get('atm_related_issues'), $t_atm['count']); ?>
-										<div class="col-md-3 col-xs-6 no-padding"><a href="view_atm_page.php?atm_id=<?php echo $t_atm['id']; ?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal; ?></a></div>
+										$t_label = sprintf(plugin_lang_get('atm_related_issues'), $t_atm['count']); ?>
+										<div class="col-md-3 col-xs-6 no-padding"><a href="<?php plugin_page('view_atm_page?atm_id='.$t_atm['id'])?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal_id; ?></a></div>
 										<div class="col-md-9 col-xs-6 no-padding"><a href="<?php echo $t_link; ?>" class="btn btn-xs btn-primary btn-white btn-round"><?php echo $t_label; ?></a></div>
 										<div class="clearfix"></div>
 										<div class="space-4"></div>

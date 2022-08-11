@@ -103,12 +103,20 @@ class ATM_MonitoringPlugin extends MantisPlugin
     function view_details($event, $t_issue)
     {
 
-        $d_query = 'SELECT terminal_id FROM mantis_bug_table WHERE id =' . $t_issue->id . '';
-        $d_result = db_query($d_query);
-        $t_row = db_fetch_array($d_result);
-         echo $t_row;
+        $d_query = 'SELECT atm_id FROM ' .plugin_table('bug_atm').' WHERE bug_id =' . $t_issue ;
+        $d_result_atm_id = db_query($d_query);
+        $t_row = db_fetch_array($d_result_atm_id);
+        $d_query = 'SELECT * FROM ' .plugin_table('atm').' WHERE id =' . $t_row['atm_id'] ;
+        $d_result_terminal_id = db_query($d_query);
+        $t_row = db_fetch_array($d_result_terminal_id);
+        
         echo '<th class="bug-summary category">Terminal ID</th>';
-        echo '<td class="bug-summary" colspan="5">', string_display_links($t_row['terminal_id']), '</td>';
+        // echo '<td class="bug-summary" colspan="5">', string_display_links($t_row['terminal_id']), '</td>';
+        echo '<td class="bug-summary" colspan="5"><a href="'.plugin_page('view_atm_page').'?atm_id='. $t_row['id'].'">'.string_display_links($t_row['terminal_id']).'</a></td>';
+ 
+        echo '</tr>';
+        echo '<th class="bug-summary category">Branch Name</th>';
+        echo '<td class="bug-summary" colspan="5">', string_display_links($t_row['branch_name']), '</td>';
         echo '</tr>';
     }
     function manage_atm_menu()

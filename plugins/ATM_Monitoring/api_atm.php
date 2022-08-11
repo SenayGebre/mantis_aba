@@ -618,16 +618,16 @@ function atm_create(
 	} else {
 		user_ensure_exists($p_user_id);
 	}
-
-	$c_date_created = db_now();
-	$c_date_updated = db_now();
+	date_default_timezone_set("Africa/Nairobi");
+	$c_date_created = date('y-m-d h:i');
+	$c_date_updated =  date('y-m-d h:i');
 	db_param_push();
 	$t_query = 'INSERT INTO ' . plugin_table('atm') . ' 
 				( user_id, terminal_id, branch_name, model, ip_address, port,  country, city, specifc_location, date_created, date_updated )
 				VALUES
 				( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param()  . ',
 				 ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ', ' . db_param() . ',' . db_param()  . ')';
-	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_created, $c_date_created));
+	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_created, $c_date_updated));
 
 	return db_insert_id(db_get_table(plugin_table('atm')));
 }
@@ -694,8 +694,10 @@ function atm_update(
 		atm_ensure_unique($p_terminal_id);
 		$t_rename = true;
 	}
+	date_default_timezone_set("Africa/Nairobi");
 
-	$c_date_updated = db_now();
+	$c_date_updated =  date('y-m-d h:i');
+	
 
 	db_param_push();
 	$t_query = 'UPDATE ' . plugin_table('atm') . ' 
