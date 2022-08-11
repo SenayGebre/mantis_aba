@@ -25,6 +25,8 @@ $t_can_edit = access_has_project_level(plugin_config_get('atm_edit_threshold'));
 $f_filter_char = atm_get_param('page');
 $f_filter = $f_filter_char !== '' ? mb_strtoupper(atm_get_param('page')) : mb_strtoupper('ALL');
 $f_page_number = gpc_get_int('page_number', 1);
+$f_search = gpc_get_string( 'search', '');
+
 
 echo $f_filter;
 
@@ -76,7 +78,7 @@ if ($f_page_number < 1) {
 
 
 // auth_reauthenticate();
-$t_result = atm_get_all($t_terminal_id_filter, $t_per_page, $t_offset);
+$t_result = atm_get_all($t_terminal_id_filter,$f_search, $t_per_page, $t_offset);
 
 layout_page_header(plugin_lang_get('manage_atms_link'));
 
@@ -150,7 +152,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 
 	foreach ( $t_prefix_array as $t_prefix ) {
 		$t_caption = ( $t_prefix === 'ALL' ? plugin_lang_get( 'show_all_atms' ) : $t_prefix );
-		$t_active = $t_prefix == $f_filter ? 'active' : '';
+		$t_active = $t_prefix == $f_filter && is_blank($f_search) ? 'active' : '';
 		echo '<a class="btn btn-xs btn-white btn-primary ' . $t_active .
 		'" href="'. plugin_page( 'manage_atm_page.php?filter='.$t_prefix).'">' . $t_caption . '</a>' ."\n";
 	} ?>
@@ -160,15 +162,21 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 	</div>
 	
 	<div class="center">
+	<form id="manage-atm-filter" method="post" action="<?php echo plugin_page('manage_atm_page'); ?>" class="inline button-toolbar">
+	</fieldset>
+
 		<div class="btn-toolbar inline" style="margin-top:  30px;">
 		<div class="btn-group" style="margin-right: 10px;">
-		<input type="text" id="atm-name" name="search" class="input-sm" size="40" maxlength="100"  />
-		</div>
+		<input id="search" type="text" size="45" name="search" class="input-sm"
+				   value="<?php echo string_attribute ( $f_search );?>" placeholder="Search by keyword"
+			/>
+			<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="<?php echo lang_get( 'search' ) ?>" />
 		
-		<?php print_small_button('#atmcreate',  plugin_lang_get('atm_search')) ;
-		echo '<a class="btn btn-xs btn-white btn-primary ' . plugin_lang_get('atm_search') .
-		'" href="'. plugin_page( 'manage_atm_page.php?filter='.$t_prefix).'">' .plugin_lang_get('atm_search') . '</a>' ."\n";?>
-	</div>
+</fieldset>
+	
+</form>
+
+</div>
 	
 	</div>
 <div class="space-10"></div>
