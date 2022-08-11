@@ -39,44 +39,51 @@
  * @uses user_api.php
  */
 
-require_once( 'core.php' );
-require_once( './plugins/ATM_Monitoring/api_atm.php' );
-require_once( './plugins/ATM_Monitoring/atm_helper.php' );
+require_once('core.php');
+require_once('./plugins/ATM_Monitoring/api_atm.php');
+require_once('./plugins/ATM_Monitoring/atm_helper.php');
 
-require_api( 'access_api.php' );
-require_api( 'authentication_api.php' );
+require_api('access_api.php');
+require_api('authentication_api.php');
 
-require_api( 'compress_api.php' );
-require_api( 'config_api.php' );
-require_api( 'constant_inc.php' );
-require_api( 'form_api.php' );
-require_api( 'gpc_api.php' );
-require_api( 'helper_api.php' );
-require_api( 'html_api.php' );
-require_api( 'lang_api.php' );
-require_api( 'prepare_api.php' );
-require_api( 'print_api.php' );
-require_api( 'string_api.php' );
+require_api('compress_api.php');
+require_api('config_api.php');
+require_api('constant_inc.php');
+require_api('form_api.php');
+require_api('gpc_api.php');
+require_api('helper_api.php');
+require_api('html_api.php');
+require_api('lang_api.php');
+require_api('prepare_api.php');
+require_api('print_api.php');
+require_api('string_api.php');
 
-require_api( 'user_api.php' );
+require_api('user_api.php');
 
 compress_enable();
 
-$f_atm_id = gpc_get_int( 'atm_id' );
+$f_atm_id = gpc_get_int('atm_id');
 echo $f_atm_id;
-atm_ensure_exists( $f_atm_id );
-$t_atm_row = atm_get( $f_atm_id );
+atm_ensure_exists($f_atm_id);
+$t_atm_row = atm_get($f_atm_id);
 
-$t_name = string_display_line( $t_atm_row['name'] );
-$t_description = string_display( $t_atm_row['description'] );
+$t_terminal_id = string_display_line($t_atm_row['terminal_id']);
+$t_branch_name = string_display($t_atm_row['branch_name']);
+$t_model = string_display($t_atm_row['model']);
+$t_ip = string_display($t_atm_row['ip_address']);
+$t_port = string_display($t_atm_row['port']);
+$t_country = string_display($t_atm_row['country']);
+$t_city = string_display($t_atm_row['city']);
+$t_spec_loc = string_display($t_atm_row['specifc_location']);
 
-if( !( access_has_global_level( plugin_config_get( 'atm_edit_threshold' ) )
-	|| ( auth_get_current_user_id() == $t_atm_row['user_id'] )
-		&& access_has_global_level( plugin_config_get( 'atm_edit_own_threshold' ) ) ) ) {
+
+if (!(access_has_global_level(plugin_config_get('atm_edit_threshold'))
+	|| (auth_get_current_user_id() == $t_atm_row['user_id'])
+	&& access_has_global_level(plugin_config_get('atm_edit_own_threshold')))) {
 	access_denied();
 }
 
-layout_page_header( sprintf( plugin_lang_get( 'update_atm' ), $t_name ) );
+layout_page_header(sprintf(plugin_lang_get('update_atm'), $t_terminal_id));
 
 layout_page_begin();
 ?>
@@ -84,83 +91,164 @@ layout_page_begin();
 <div class="col-md-12 col-xs-12">
 	<div class="space-10"></div>
 	<form method="post" action="<?php echo plugin_page('update_atm') ?>">
-	<div class="widget-box widget-color-blue2">
-		<div class="widget-header widget-header-small">
-			<h4 class="widget-title lighter">
-				<?php print_icon( 'fa-atm', 'ace-icon' ); ?>
-				<?php echo sprintf( plugin_lang_get( 'atm_update' ), $t_name ) ?>
-			</h4>
-		</div>
-		<div class="widget-body">
-		<div class="widget-main no-padding">
-		<div class="widget-toolbox padding-8 clearfix">
-			<?php print_link_button( 'atm_view_page.php?atm_id='.$f_atm_id, lang_get( 'atm_update_return' ),
-				'btn-sm pull-right' ); ?>
-		</div>
-		<div class="form-container">
-		<div class="table-responsive">
-		<table class="table table-bordered table-condensed table-striped">
-		<fieldset>
-			<input type="hidden" name="atm_id" value="<?php echo $f_atm_id ?>"/>
-			<?php echo form_security_field( 'update_atm' ) ?>
-			<tr>
-				<td class="category">
-					<?php echo lang_get( 'atm_id' ) ?>
-				</td>
-				<td><?php echo $t_atm_row['id'] ?></td>
-			</tr>
-			<tr>
-				<td class="category">
-					<?php echo lang_get( 'atm_name' ) ?>
-				</td>
-				<td>
-					<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="name" class="input-sm" value="<?php echo $t_name ?>"/>
-				</td>
-			</tr>
-			<tr>
-				<?php
-				if( access_has_global_level( config_get( 'atm_edit_threshold' ) ) ) {
-					echo '<td class="category">', lang_get( 'atm_creator' ), '</td>';
-					echo '<td><select ', helper_get_tab_index(), ' id="atm-user-id" name="user_id" class="input-sm">';
-					print_user_option_list( (int)$t_atm_row['user_id'], ALL_PROJECTS, (int)config_get( 'atm_create_threshold' ) );
-					echo '</select></td>';
-				} else { ?>
-					<td class="category"><?php echo lang_get( 'atm_creator' ); ?></td>
-					<td><?php echo string_display_line( user_get_name($t_atm_row['user_id']) ); ?></td><?php
-				} ?>
-			</tr>
-			<tr>
-				<td class="category">
-					<?php echo lang_get( 'atm_created' ) ?>
-				</td>
-				<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_created'] ) ?></td>
-			</tr>
-			<tr>
-				<td class="category">
-					<?php echo lang_get( 'atm_updated' ) ?>
-				</td>
-				<td><?php echo date( config_get( 'normal_date_format' ), $t_atm_row['date_updated'] ) ?></td>
-			</tr>
-			<tr>
-				<td class="category">
-					<?php echo lang_get( 'atm_description' ) ?>
-				</td>
-				<td>
-					<?php # Newline after opening textarea atm is intentional, see #25839 ?>
-					<textarea class="form-control" id="atm-description" name="description" <?php echo helper_get_tab_index() ?> cols="80" rows="6">
-<?php echo string_textarea( $t_description ) ?>
-</textarea>
-				</td>
-			</tr>
-		</fieldset>
-		</table>
-		</div>
-		</div>
-		</div>
-		</div>
-		<div class="widget-toolbox padding-8 clearfix">
-			<input <?php echo helper_get_tab_index() ?> type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo lang_get( 'atm_update_button' ) ?>" />
-		</div>
+		<div class="widget-box widget-color-blue2">
+			<div class="widget-header widget-header-small">
+				<h4 class="widget-title lighter">
+					<?php print_icon('fa-atm', 'ace-icon'); ?>
+					<?php echo sprintf(plugin_lang_get('atm_update'), $t_terminal_id) ?>
+				</h4>
+			</div>
+			<div class="widget-body">
+				<div class="widget-main no-padding">
+					<div class="widget-toolbox padding-8 clearfix">
+						<?php print_link_button(
+							plugin_page('view_atm_page?atm_id='.$f_atm_id),
+							plugin_lang_get('atm_update_return'),
+							'btn-sm pull-right'
+						); ?>
+					</div>
+					<div class="form-container">
+						<div class="table-responsive">
+							<table class="table table-bordered table-condensed table-striped">
+								<fieldset>
+									<input type="hidden" name="atm_id" value="<?php echo $f_atm_id ?>" />
+									<?php echo form_security_field('update_atm') ?>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_id') ?>
+										</td>
+										<td><?php echo $t_atm_row['id'] ?></td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_terminal_id') ?>
+										</td>
+										<td>
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="terminal_id" class="input-sm" value="<?php echo $t_terminal_id ?>" />
+										</td>
+									</tr>
+									<tr>
+										<?php
+										if (access_has_global_level(config_get('atm_edit_threshold'))) {
+											echo '<td class="category">', plugin_lang_get('atm_creator'), '</td>';
+											echo '<td><select ', helper_get_tab_index(), ' id="atm-user-id" name="user_id" class="input-sm">';
+											print_user_option_list((int)$t_atm_row['user_id'], ALL_PROJECTS, (int)config_get('atm_create_threshold'));
+											echo '</select></td>';
+										} else { ?>
+											<td class="category"><?php echo lang_get('atm_creator'); ?></td>
+											<td><?php echo string_display_line(user_get_name($t_atm_row['user_id'])); ?></td><?php
+																															} ?>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_created') ?>
+										</td>
+										<td><?php echo  $t_atm_row['date_created']  ?></td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_updated') ?>
+										</td>
+										<td><?php echo  $t_atm_row['date_updated']  ?></td>
+									</tr>
+				
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_branch_name') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="branch_name" class="input-sm" value="<?php echo $t_branch_name ?>" />
+										</td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_model') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="model" class="input-sm" value="<?php echo $t_model ?>" />
+
+									</td>
+									</tr>
+									
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_ip') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="ip" class="input-sm" value="<?php echo $t_ip ?>" />
+	
+										</td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_port') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="port" class="input-sm" value="<?php echo $t_port ?>" />	
+										</td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_country') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="country" class="input-sm" value="<?php echo $t_country ?>" />
+
+										</td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_city') ?>
+										</td>
+										<td>
+										<select name="city" id="atm-name">
+												<option value="Addis Ababa">Addis Ababa</option>
+												<option value="Bahir Dar">Bahir Dar</option>
+												<option value="Gondar">Gondar</option>
+												<option value="Mekelle">Mekelle</option>
+												<option value="Adama">	Adama</option>
+												<option value="Awassa">Awassa</option>
+												<option value="Dire Dawa">Dire Dawa</option>
+												<option value="Dessie">Dessie</option>
+												<option value="Jimma">Jimma</option>
+												<option value="Bishoftu">Bishoftu</option>
+												<option value="Arba Minch">Arba Minch</option>
+												<option value="Harar">	Harar</option>
+												<option value="Dilla">Dilla</option>
+												<option value="Debre Birhan">Debre Birhan</option>
+												<option value="Debre Mark'os">Debre Mark'os</option>
+												<option value="Debre Tabor">Debre Tabor</option>
+												<option value="Kombolcha">Kombolcha</option>
+												<option value="Burayu">Burayu</option>
+												<option value="Kobo">Kobo</option>
+												<option value="Bonga">Bonga</option>
+												<option value="Assosa">Assosa</option>
+												<option value="Welkite">Welkite</option>
+												
+											</select>
+	
+										</td>
+									</tr>
+									<tr>
+										<td class="category">
+											<?php echo plugin_lang_get('atm_spec_loc') ?>
+										</td>
+										<td>
+										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="spec_loc" class="input-sm" value="<?php echo $t_spec_loc ?>" />
+	
+										</td>
+									</tr>
+								</fieldset>
+
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="widget-toolbox padding-8 clearfix">
+				<input <?php echo helper_get_tab_index() ?> type="submit" class="btn btn-primary btn-white btn-round" value="<?php echo plugin_lang_get('atm_update_button') ?>" />
+			</div>
 		</div>
 	</form>
 </div>
