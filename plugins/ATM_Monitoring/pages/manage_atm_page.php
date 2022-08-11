@@ -148,7 +148,7 @@ echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 
 
 	foreach ( $t_prefix_array as $t_prefix ) {
-		$t_caption = ( $t_prefix === 'ALL' ? lang_get( 'show_all_atms' ) : $t_prefix );
+		$t_caption = ( $t_prefix === 'ALL' ? plugin_lang_get( 'show_all_atms' ) : $t_prefix );
 		$t_active = $t_prefix == $f_filter ? 'active' : '';
 		echo '<a class="btn btn-xs btn-white btn-primary ' . $t_active .
 		'" href="'. plugin_page( 'manage_atm_page.php?filter='.$t_prefix).'">' . $t_caption . '</a>' ."\n";

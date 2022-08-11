@@ -77,7 +77,7 @@ $t_can_edit_own = $t_can_edit || auth_get_current_user_id() == atm_get_field($f_
 	&& access_has_global_level(config_get('atm_edit_own_threshold'));
 
 
-layout_page_header(sprintf(lang_get('atm_details'), $t_terminal_id));
+layout_page_header(sprintf(plugin_lang_get('atm_details'), $t_terminal_id));
 
 layout_page_begin();
 ?>
@@ -88,7 +88,7 @@ layout_page_begin();
 		<div class="widget-header widget-header-small">
 			<h4 class="widget-title lighter">
 				<?php print_icon('fa-atm', 'ace-icon'); ?>
-				<?php echo sprintf(lang_get('atm_details'), $t_terminal_id) ?>
+				<?php echo sprintf(plugin_lang_get('atm_details'), $t_terminal_id) ?>
 			</h4>
 		</div>
 
@@ -104,7 +104,7 @@ layout_page_begin();
 				<div class="widget-toolbox padding-8 clearfix">
 					<?php print_link_button(
 						'search.php?atm_string=' . urlencode($t_atm_row['terminal_id']),
-						sprintf(lang_get('atm_filter_default'), atm_stats_attached($f_atm_id)),
+						sprintf(plugin_lang_get('atm_filter_default'), atm_stats_attached($f_atm_id)),
 						'btn-sm pull-right'
 					); ?>
 				</div>
@@ -193,7 +193,7 @@ layout_page_begin();
 						?>
 							<tr>
 								<td class="category">
-									<?php echo lang_get('atm_related') ?>
+									<?php echo plugin_lang_get('atm_related') ?>
 								</td>
 								<td>
 									<?php
@@ -215,7 +215,7 @@ layout_page_begin();
 										$t_spec_loc = string_display_line($t_atm['specifc_location']);
 										$t_count = $t_atm['count'];
 										$t_link = string_html_specialchars('search.php?atm_string=' . urlencode('+' . $t_atm_row['terminal_id'] . config_get('atm_separator') . '+' . $t_terminal_id));
-										$t_label = sprintf(lang_get('atm_related_issues'), $t_atm['count']); ?>
+										$t_label = sprintf(plugin_lang_get('atm_related_issues'), $t_atm['count']); ?>
 										<div class="col-md-3 col-xs-6 no-padding"><a href="view_atm_page.php?atm_id=<?php echo $t_atm['id']; ?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal; ?></a></div>
 										<div class="col-md-9 col-xs-6 no-padding"><a href="<?php echo $t_link; ?>" class="btn btn-xs btn-primary btn-white btn-round"><?php echo $t_label; ?></a></div>
 										<div class="clearfix"></div>

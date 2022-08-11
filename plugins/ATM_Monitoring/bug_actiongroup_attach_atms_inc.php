@@ -50,7 +50,7 @@ require_api( 'atm_api.php' );
  * @return void
  */
 function action_attach_atms_print_title() {
-	echo lang_get( 'atm_attach_long' );
+	echo plugin_lang_get( 'atm_attach_long' );
 }
 
 /**
@@ -58,9 +58,9 @@ function action_attach_atms_print_title() {
  * @return void
  */
 function action_attach_atms_print_fields() {
-	echo '<tr><th class="category">', lang_get( 'atm_attach_long' ), '</th><td>';
+	echo '<tr><th class="category">', plugin_lang_get( 'atm_attach_long' ), '</th><td>';
 	print_atm_input();
-	echo '<input type="submit" class="btn btn-primary btn-white btn-round btn-sm" value="' . lang_get( 'atm_attach' ) . ' " /></td></tr>';
+	echo '<input type="submit" class="btn btn-primary btn-white btn-round btn-sm" value="' . plugin_lang_get( 'atm_attach' ) . ' " /></td></tr>';
 }
 
 /**
@@ -76,7 +76,7 @@ function action_attach_atms_validate( $p_bug_id ) {
 
 	$t_can_attach = access_has_bug_level( config_get( 'atm_attach_threshold' ), $p_bug_id );
 	if( !$t_can_attach ) {
-		return lang_get( 'atm_attach_denied' );
+		return plugin_lang_get( 'atm_attach_denied' );
 	}
 
 	if( !isset( $g_action_attach_atms_atms ) ) {
@@ -96,12 +96,12 @@ function action_attach_atms_validate( $p_bug_id ) {
 
 	$t_can_create = access_has_bug_level( config_get( 'atm_create_threshold' ), $p_bug_id );
 	if( count( $g_action_attach_atms_create ) > 0 && !$t_can_create ) {
-		return lang_get( 'atm_create_denied' );
+		return plugi_lang_get( 'atm_create_denied' );
 	}
 
 	if( count( $g_action_attach_atms_create ) == 0 &&
 		count( $g_action_attach_atms_attach ) == 0 ) {
-		return lang_get( 'atm_none_attached' );
+		return plugin_lang_get( 'atm_none_attached' );
 	}
 
 	return null;

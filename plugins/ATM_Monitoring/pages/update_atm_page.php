@@ -135,7 +135,7 @@ layout_page_begin();
 											print_user_option_list((int)$t_atm_row['user_id'], ALL_PROJECTS, (int)config_get('atm_create_threshold'));
 											echo '</select></td>';
 										} else { ?>
-											<td class="category"><?php echo lang_get('atm_creator'); ?></td>
+											<td class="category"><?php echo plugin_lang_get('atm_creator'); ?></td>
 											<td><?php echo string_display_line(user_get_name($t_atm_row['user_id'])); ?></td><?php
 																															} ?>
 									</tr>

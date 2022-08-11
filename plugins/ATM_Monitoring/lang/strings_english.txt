@@ -1,5 +1,6 @@
 <?php
 $s_plugin_ATM_Monitoring_manage_atm_page = 'Manage ATM';
+$s_plugin_ATM_Monitoring_show_all_atms = 'ALL';
 $s_plugin_ATM_Monitoring_atm_create = 'Create';
 $s_plugin_ATM_Monitoring_atm_user = 'User';
 $s_plugin_ATM_Monitoring_atm_id = 'ATM ID';
@@ -29,3 +30,13 @@ $s_plugin_ATM_Monitoring_atm_update_button = 'Update';
 $s_plugin_ATM_Monitoring_update_atm = 'Update';
 $s_plugin_ATM_Monitoring_atm_update_return = 'Back to ATM';
 $s_plugin_ATM_Monitoring_atm_delete_message = 'Are you sure you wish to delete this ATM?';
+$s_plugin_ATM_Monitoring_atm_none_attached = 'No ATM Attached';
+$s_plugin_ATM_Monitoring_atm_detach = 'Detach "%1$s"';
+$s_plugin_ATM_Monitoring_atm_attach_long = 'Attach Tags';
+$s_plugin_ATM_Monitoring_atm_attach = 'Attach';
+$s_plugin_ATM_Monitoring_atm_attach_denied = 'Attach permission denied.';
+$s_plugin_ATM_Monitoring_atm_create_denied = 'Create permission denied.';
+$s_plugin_ATM_Monitoring_atm_details = 'Tag Details: %1$s';
+$s_plugin_ATM_Monitoring_atm_filter_default = 'Attached Issues (%1$s)';
+$s_plugin_ATM_Monitoring_atm_related = 'Related Tags';
+$s_plugin_ATM_Monitoring_atm_related_issues = 'Shared Issues (%1$s)';
