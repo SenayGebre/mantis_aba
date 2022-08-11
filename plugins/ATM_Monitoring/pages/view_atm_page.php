@@ -77,7 +77,7 @@ $t_can_edit_own = $t_can_edit || auth_get_current_user_id() == atm_get_field($f_
 	&& access_has_global_level(plugin_config_get('atm_edit_own_threshold'));
 
 
-layout_page_header(sprintf(lang_get('atm_details'), $t_terminal_id));
+layout_page_header(sprintf(plugin_lang_get('atm_details'), $t_terminal_id));
 
 layout_page_begin();
 ?>
@@ -88,7 +88,7 @@ layout_page_begin();
 		<div class="widget-header widget-header-small">
 			<h4 class="widget-title lighter">
 				<?php print_icon('fa-atm', 'ace-icon'); ?>
-				<?php echo sprintf(lang_get('atm_details'), $t_terminal_id) ?>
+				<?php echo sprintf(plugin_lang_get('atm_details'), $t_terminal_id) ?>
 			</h4>
 		</div>
 
@@ -104,7 +104,7 @@ layout_page_begin();
 				<div class="widget-toolbox padding-8 clearfix">
 					<?php print_link_button(
 						'search.php?atm_string=' . urlencode($t_atm_row['terminal_id']),
-						sprintf(lang_get('atm_filter_default'), atm_stats_attached($f_atm_id)),
+						sprintf(plugin_lang_get('atm_filter_default'), atm_stats_attached($f_atm_id)),
 						'btn-sm pull-right'
 					); ?>
 				</div>
@@ -193,7 +193,7 @@ layout_page_begin();
 						?>
 							<tr>
 								<td class="category">
-									<?php echo lang_get('atm_related') ?>
+									<?php echo plugin_lang_get('atm_related') ?>
 								</td>
 								<td>
 									<?php

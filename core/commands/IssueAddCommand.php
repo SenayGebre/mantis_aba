@@ -351,8 +351,9 @@ class IssueAddCommand extends Command {
 	 * @throws ClientException
 	 */
 	protected function process() {
+		
 		$t_issue = $this->payload( 'issue' );
-
+		
 		# Create the bug
 		$t_issue_id = $this->issue->create();
 		log_event( LOG_WEBSERVICE, "created new issue id '$t_issue_id'" );
@@ -364,47 +365,47 @@ class IssueAddCommand extends Command {
 				if( $this->get_tag_id( $t_tag ) === false ) {
 					$t_tag['id'] = tag_create( $t_tag['name'], $this->user_id );
 					log_event( LOG_WEBSERVICE,
-						"created new tag '" . $t_tag['name'] . "' id '" . $t_tag['id'] . "'"
-					);
+					"created new tag '" . $t_tag['name'] . "' id '" . $t_tag['id'] . "'"
+				);
 				}
-
+				
 				$t_tags[] = $t_tag;
 			}
-
+			
 			# @TODO should this be replaced by TagAttachCommand, as suggested in #24441 ?
 			mci_tag_set_for_issue( $t_issue_id, $t_tags, $this->user_id );
 		}
-
+		
 		# Handle the file upload
 		file_attach_files( $t_issue_id, $this->files, /* bugnote_id */ null );
-
+		
 		# Handle custom field submission
 		mci_issue_set_custom_fields( $t_issue_id, $t_issue['custom_fields'], /* history log insert */ false );
-
+		
 		if( isset( $t_issue['monitors'] ) ) {
 			mci_issue_set_monitors( $t_issue_id, $this->user_id, $t_issue['monitors'] );
 		}
-
+		
 		$t_clone_info = $this->option( 'clone_info', array() );
 		if( isset( $t_clone_info['master_issue_id'] ) ) {
 			$t_master_issue_id = (int)$t_clone_info['master_issue_id'];
-
+			
 			# it's a child generation... let's create the relationship and add some lines in the history
-
+			
 			# update master bug last updated
 			bug_update_date( $t_master_issue_id );
-
+			
 			# Add log line to record the cloning action
 			history_log_event_special( $t_issue_id, BUG_CREATED_FROM, '', $t_master_issue_id );
 			history_log_event_special( $t_master_issue_id, BUG_CLONED_TO, '', $t_issue_id );
-
+			
 			# copy notes from parent
 			if( isset( $t_clone_info['copy_notes'] ) &&  $t_clone_info['copy_notes'] ) {
 				$t_parent_bugnotes = bugnote_get_all_bugnotes( $t_master_issue_id );
-
+				
 				foreach ( $t_parent_bugnotes as $t_parent_bugnote ) {
 					$t_private = $t_parent_bugnote->view_state == VS_PRIVATE;
-
+					
 					bugnote_add(
 						$t_issue_id,
 						$t_parent_bugnote->note,
@@ -417,11 +418,11 @@ class IssueAddCommand extends Command {
 						0,
 						0,
 						false );
-
-					# Note: we won't trigger mentions in the clone scenario.
+						
+						# Note: we won't trigger mentions in the clone scenario.
+					}
 				}
-			}
-
+				
 			# copy attachments from parent
 			if( isset( $t_clone_info['copy_files'] ) &&  $t_clone_info['copy_files'] ) {
 				file_copy_attachments( $t_master_issue_id, $t_issue_id );
@@ -440,10 +441,10 @@ class IssueAddCommand extends Command {
 				} else {
 					$t_view_state = config_get( 'default_bugnote_view_status' );
 				}
-
+				
 				$t_note_type = isset( $t_note['note_type'] ) ? (int)$t_note['note_type'] : BUGNOTE;
 				$t_note_attr = isset( $t_note['note_type'] ) ? $t_note['note_attr'] : '';
-
+				
 				$t_view_state_id = mci_get_enum_id_from_objectref( 'view_state', $t_view_state );
 				$t_note_id = bugnote_add(
 					$t_issue_id,

@@ -54,6 +54,7 @@ require_api('lang_api.php');
 require_api('string_api.php');
 require_api('user_api.php');
 require_api('utility_api.php');
+require_once( './plugins/ATM_Monitoring/constants.php' );
 
 use Mantis\Exceptions\ClientException;
 
@@ -276,14 +277,15 @@ function atm_ensure_terminal_id_is_valid($p_terminal_id)
 		trigger_error(ERROR_TERMINAL_ID_INVALID, ERROR);
 	}
 }
-function atm_ensure_terminal_ip_address_is_valid($p_terminal_id)
-{
-	$t_matches = array();
-	if (!atm_ip_address_is_valid($p_terminal_id, $t_matches)) {
-		error_parameters($p_terminal_id);
-		trigger_error(ERROR_TERMINAL_IP_ADDRESS_INVALID, ERROR);
-	}
-}
+
+// function atm_ensure_terminal_ip_address_is_valid($p_terminal_id)
+// {
+// 	$t_matches = array();
+// 	if (!atm_ip_address_is_valid($p_terminal_id, $t_matches)) {
+// 		error_parameters($p_terminal_id);
+// 		trigger_error(ERROR_TERMINAL_IP_ADDRESS_INVALID, ERROR);
+// 	}
+// }
 
 /**
  * Compare two atm rows based on atm terminal_id.
@@ -899,6 +901,7 @@ function atm_bug_attach($p_atm_id, $p_bug_id, $p_user_id = null)
 		trigger_error(ERROR_ATM_ALREADY_ATTACHED, ERROR);
 	}
 
+
 	if (null == $p_user_id) {
 		$p_user_id = auth_get_current_user_id();
 	} else {
@@ -913,7 +916,7 @@ function atm_bug_attach($p_atm_id, $p_bug_id, $p_user_id = null)
 	db_query($t_query, array($p_atm_id, $p_bug_id, $p_user_id, db_now()));
 
 	atm_clear_cache_bug_atms($p_bug_id);
-
+	
 	$t_atm_terminal_id = atm_get_field($p_atm_id, 'terminal_id');
 	history_log_event_special($p_bug_id, ATM_ATTACHED, $t_atm_terminal_id);
 
@@ -1031,7 +1034,7 @@ function atm_display_link(array $p_atm_row, $p_bug_id = 0)
 	}
 
 	if ($p_bug_id > 0 && access_has_bug_level($t_detach, $p_bug_id)) {
-		$t_tooltip = string_html_specialchars(sprintf(lang_get('atm_detach'), string_display_line($p_atm_row['terminal_id'])));
+		$t_tooltip = string_html_specialchars(sprintf(plugin_lang_get('atm_detach'), string_display_line($p_atm_row['terminal_id'])));
 		$t_href = 'atm_detach.php?bug_id=' . $p_bug_id . '&amp;atm_id=' . $p_atm_row['id'] . $s_security_token;
 		echo ' <a class="btn btn-xs btn-primary btn-white btn-round" title="' . $t_tooltip . '" href="' . $t_href . '">';
 		print_icon('fa-times');
@@ -1051,7 +1054,7 @@ function atm_display_attached($p_bug_id)
 	$t_atm_rows = atm_bug_get_attached($p_bug_id);
 
 	if (count($t_atm_rows) == 0) {
-		echo lang_get('atm_none_attached');
+		echo plugin_lang_get('atm_none_attached');
 	} else {
 		$i = 0;
 		foreach ($t_atm_rows as $t_atm) {

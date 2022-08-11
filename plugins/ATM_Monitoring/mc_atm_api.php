@@ -155,9 +155,12 @@ function mci_atm_set_for_issue ( $p_issue_id, $p_atms, $p_user_id ) {
 		$t_attached_atm_ids[] = $t_attached_atm['id'];
 	}
 
-	echo $t_atm;
+	
+
 	foreach( $p_atms as $t_atm ) {
+	
 		$t_atm = ApiObjectFactory::objectToArray( $t_atm );
+
 
 		if( isset( $t_atm['id'] ) ) {
 			$t_atm_id = $t_atm['id'];
@@ -210,8 +213,10 @@ function mci_atm_set_for_issue ( $p_issue_id, $p_atms, $p_user_id ) {
 
 	foreach ( $t_atm_ids_to_attach as $t_atm_id ) {
 		if( access_has_bug_level( plugin_config_get( 'atm_attach_threshold' ), $p_issue_id, $p_user_id ) ) {
+			
 			log_event( LOG_WEBSERVICE, 'attaching atm id \'' . $t_atm_id . '\' to issue \'' . $p_issue_id . '\'' );
 			atm_bug_attach( $t_atm_id, $p_issue_id );
 		}
 	}
+
 }

@@ -1,0 +1,10 @@
+<?php
+define( 'ATM_ATTACHED', 25 );
+define( 'ATM_DETACHED', 25 );
+define( 'ERROR_ATM_NOT_FOUND', 2200 );
+define( 'ERROR_ATM_DUPLICATE', 2201 );
+define( 'ERROR_TERMINAL_ID_INVALID', 2202 );
+define( 'ERROR_ATM_NOT_ATTACHED', 2203 );
+define( 'ERROR_ATM_ALREADY_ATTACHED', 2204 );
+define( 'ATM_TERMINAL_ID_CHANGED', 27 );
+define( 'FILTER_PROPERTY_ATM_SELECT', 'tag_select' );

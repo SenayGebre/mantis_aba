@@ -76,11 +76,13 @@ class ATM_MonitoringPlugin extends MantisPlugin
         require_once( './plugins/ATM_Monitoring/api_atm.php' );
        $p_terminal_id = gpc_get('terminal_id');
 
-        
+        $t_atms = [];
         $r_atm = atm_get_by_terminal_id($p_terminal_id);
-            
+        
+        array_push($t_atms,$r_atm);
 
-        $t_issue->atm = $r_atm;
+        $t_issue->atm = $t_atms;
+
 
         // echo '<pre>';
         // print_r($t_issue);
@@ -90,20 +92,13 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function store_data($event, $t_issue)
     {
-        require_once( dirname( __FILE__ ) . '/../../plugins/ATM_Monitoring/mc_atm_api.php' );
+        require_once( './plugins/ATM_Monitoring/mc_atm_api.php' );
+        
         $p_user_id = auth_get_current_user_id();
-        echo '<pre>';
-        print_r($t_issue->atm);
-        echo '</pre>';
+        
         mci_atm_set_for_issue( $t_issue->id, $t_issue->atm, $p_user_id );
 
 
-
-
-        // $d_query_1 = 'ALTER TABLE mantis_bug_table ADD COLUMN IF NOT EXISTS terminal_id VARCHAR(255)';
-        // $d_result = db_query($d_query_1);
-        // $d_query = 'UPDATE mantis_bug_table SET terminal_id ="' . $t_issue->atm . '" WHERE id =' . $t_issue->id . '';
-        // $d_result = db_query($d_query);
     }
     function view_details($event, $t_issue)
     {
