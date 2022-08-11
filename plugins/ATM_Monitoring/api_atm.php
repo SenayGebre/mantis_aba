@@ -454,17 +454,21 @@ function atm_parse_filters($p_string)
  *
  * @return ADORecordSet|boolean ATMs sorted by terminal_id, or false if the query failed.
  */
-function atm_get_all($p_terminal_id_filter, $p_count, $p_offset)
+function atm_get_all($p_terminal_id_filter,$p_search, $p_count,  $p_offset)
 {
 	$t_where = '';
 	$t_where_params = array();
-
+	
 	if (!is_blank($p_terminal_id_filter)) {
-		$t_where = 'WHERE ' . db_helper_like('terminal_id');
-		$t_where_params[] = $p_terminal_id_filter . '%';
-	}
-
-	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  ' . $t_where . ' ORDER BY terminal_id';
+			$t_where = 'WHERE ' . db_helper_like('terminal_id');
+			$t_where_params[] = $p_terminal_id_filter . '%';
+		} else if (!is_blank($p_search)) {
+			$t_where = 'WHERE '. db_helper_like('terminal_id') .' OR '. db_helper_like('branch_name') .' OR '. db_helper_like('model') .' OR '. db_helper_like('ip_address') .' OR '. db_helper_like('port') .' OR '. db_helper_like('country') .' OR '. db_helper_like('city') .' OR '. db_helper_like('specifc_location');
+			$t_where_params = array('%'. $p_search . '%','%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%');
+		}
+		
+		$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  ' . $t_where . ' ORDER BY terminal_id';
+		
 
 	return db_query($t_query, $t_where_params, $p_count, $p_offset);
 }

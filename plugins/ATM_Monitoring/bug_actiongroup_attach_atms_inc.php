@@ -74,7 +74,7 @@ function action_attach_atms_validate( $p_bug_id ) {
 	global $g_action_attach_atms_attach;
 	global $g_action_attach_atms_create;
 
-	$t_can_attach = access_has_bug_level( config_get( 'atm_attach_threshold' ), $p_bug_id );
+	$t_can_attach = access_has_bug_level( plugin_config_get( 'atm_attach_threshold' ), $p_bug_id );
 	if( !$t_can_attach ) {
 		return plugin_lang_get( 'atm_attach_denied' );
 	}
@@ -94,9 +94,9 @@ function action_attach_atms_validate( $p_bug_id ) {
 		}
 	}
 
-	$t_can_create = access_has_bug_level( config_get( 'atm_create_threshold' ), $p_bug_id );
+	$t_can_create = access_has_bug_level( plugin_config_get( 'atm_create_threshold' ), $p_bug_id );
 	if( count( $g_action_attach_atms_create ) > 0 && !$t_can_create ) {
-		return plugi_lang_get( 'atm_create_denied' );
+		return plugin_lang_get( 'atm_create_denied' );
 	}
 
 	if( count( $g_action_attach_atms_create ) == 0 &&

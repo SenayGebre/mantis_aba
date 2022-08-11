@@ -80,7 +80,7 @@ class ATMAttachCommand extends Command {
 		$this->issue_id = helper_parse_issue_id( $this->query( 'issue_id' ) );
 		$this->user_id = auth_get_current_user_id();
 
-		if( !access_has_bug_level( config_get( 'atm_attach_threshold' ), $this->issue_id, $this->user_id ) ) {
+		if( !access_has_bug_level( plugin_config_get( 'atm_attach_threshold' ), $this->issue_id, $this->user_id ) ) {
 			throw new ClientException( 'Access denied to attach atms', ERROR_ACCESS_DENIED );
 		}
 
@@ -89,7 +89,7 @@ class ATMAttachCommand extends Command {
 			throw new ClientException( 'Invalid atms array', ERROR_INVALID_FIELD_VALUE, array( 'atms' ) );
 		}
 
-		$t_can_create = access_has_global_level( config_get( 'atm_create_threshold' ) );
+		$t_can_create = access_has_global_level( plugin_config_get( 'atm_create_threshold' ) );
 
 		foreach( $t_atms as $t_atm ) {
 			if( isset( $t_atm['id'] ) ) {

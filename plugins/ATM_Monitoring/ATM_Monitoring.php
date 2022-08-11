@@ -173,7 +173,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'atm_edit_threshold' => DEVELOPER,
             'atm_detach_threshold' => DEVELOPER,
             'atm_attach_threshold' => REPORTER,
-            'tag_create_threshold' => REPORTER,
+            'atm_create_threshold' => REPORTER,
             'atm_edit_own_threshold' => REPORTER,
             'atm_separator' => ',',
             'default_manage_tag_prefix' => 'ALL',

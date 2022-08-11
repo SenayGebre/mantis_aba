@@ -50,7 +50,7 @@ function mc_atm_get_all( $p_username, $p_password, $p_page_number, $p_per_page )
 
 	$t_results = array();
 	$t_total_results = atm_count( '' );
-	$t_atms = atm_get_all( '', $p_per_page, $p_per_page *  ( $p_page_number - 1 ) );
+	$t_atms = atm_get_all( '','', $p_per_page, $p_per_page *  ( $p_page_number - 1 ) );
 
 	while( $t_atm = db_fetch_array( $t_atms ) ) {
 		$t_atm['user_id'] = mci_account_get_array_by_id( $t_atm['user_id'] );
@@ -85,7 +85,7 @@ function mc_atm_add( $p_username, $p_password, stdClass $p_atm ) {
 		return mci_fault_login_failed();
 	}
 
-	if( !access_has_global_level( config_get( 'atm_create_threshold' ) ) ) {
+	if( !access_has_global_level( plugin_config_get( 'atm_create_threshold' ) ) ) {
 		return mci_fault_access_denied( $t_user_id );
 	}
 
@@ -125,7 +125,7 @@ function mc_atm_delete( $p_username, $p_password, $p_atm_id ) {
 		return mci_fault_login_failed();
 	}
 
-	if( !access_has_global_level( config_get( 'atm_edit_threshold' ) ) ) {
+	if( !access_has_global_level( plugin_config_get( 'atm_edit_threshold' ) ) ) {
 		return mci_fault_access_denied( $t_user_id );
 	}
 
