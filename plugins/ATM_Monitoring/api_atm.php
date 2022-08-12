@@ -636,37 +636,6 @@ function atm_create(
 	return db_insert_id(db_get_table(plugin_table('atm')));
 }
 
-
-function create_atm_monitoring_project($p_user_id = null) {
-	atm_ensure_can_create($p_user_id);
-
-
-	if (null == $p_user_id) {
-		$p_user_id = auth_get_current_user_id();
-	} else {
-		user_ensure_exists($p_user_id);
-	}
-	
-	$t_param = array(
-		'name' => "ATM Monitoring",
-		'status' => 50,
-		'enabled' => "1",
-		'view_state' => 50,
-		'file_path' => "",
-		'description' => "This is project is for ATM monitoring",
-		'inherit_global' => "1",
-	);
-	$t_query = new DbQuery( 'INSERT INTO {project}
-		( ' . implode( ', ', array_keys( $t_param ) ) . ' )
-		VALUES :param'
-	);
-	$t_query->bind( 'param', $t_param );
-	$t_query->execute();
-
-	# return the id of the new project
-	return db_insert_id( db_get_table( 'project' ) );
-}
-
 /**
  * Update a atm with given terminal_id, creator, and description.
  * @param integer $p_atm_id      The atm ID which is being updated.
