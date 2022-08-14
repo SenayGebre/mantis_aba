@@ -1,0 +1,13 @@
+.custom-dropdown {
+    background-color: red !important;
+    width: 50% !important;
+}
+
+.full-widths {
+    width: 50vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}

@@ -1,9 +1,9 @@
 <?php
 
 require_once('core.php');
-require_once('./plugins/ATM_Monitoring/api_atm.php');
-require_once('./plugins/ATM_Monitoring/atm_helper.php');
-require_once('./plugins/ATM_Monitoring/cities.php');
+require_once(''.dirname(__DIR__).'/api_atm.php');
+require_once(''.dirname(__DIR__).'/atm_helper.php');
+require_once(''.dirname(__DIR__).'/cities.php');
 require_api('access_api.php');
 require_api('compress_api.php');
 require_api('config_api.php');
@@ -135,7 +135,6 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 // message box on the screen
 
 // Display the alert box 
-echo '<script>alert("Welcome to Geeks for Geeks")</script>';
 
 ?>
 
