@@ -61,8 +61,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         if ('ATM Monitoring' === $current_project['name']) {
             
-           
-            $_SESSION['terminal_id'] = "Terminal ID";
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
             echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
