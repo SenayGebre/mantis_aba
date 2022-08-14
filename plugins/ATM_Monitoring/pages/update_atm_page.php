@@ -40,8 +40,8 @@
  */
 
 require_once('core.php');
-require_once('./plugins/ATM_Monitoring/api_atm.php');
-require_once('./plugins/ATM_Monitoring/atm_helper.php');
+require_once(''.dirname(__DIR__).'/api_atm.php');
+require_once(''.dirname(__DIR__).'/atm_helper.php');
 
 require_api('access_api.php');
 require_api('authentication_api.php');

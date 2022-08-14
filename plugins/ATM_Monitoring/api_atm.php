@@ -54,7 +54,9 @@ require_api('lang_api.php');
 require_api('string_api.php');
 require_api('user_api.php');
 require_api('utility_api.php');
-require_once( './plugins/ATM_Monitoring/constants.php' );
+require_once('constants.php');
+
+
 
 use Mantis\Exceptions\ClientException;
 
