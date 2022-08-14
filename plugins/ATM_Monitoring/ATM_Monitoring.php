@@ -47,8 +47,23 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG_DATA' => 'process_data',
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
+			'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
+			'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
+            
 
         );
+    }
+
+    function atm_resources() {
+        printf( "\t<script src=\"%s\"></script>\n",
+				plugin_file( 'alem.js' )
+			);
+    }
+
+    function alert_message() {
+        echo '<script type="text/javascript">
+    alert_message();
+</script>';
     }
 
 
@@ -56,6 +71,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
         $t_project_id = helper_get_current_project();
         $current_project = project_cache_row($t_project_id);
+        $t_query = 'SELECT * FROM ' . plugin_table('atm');
+        $t_result = db_query($t_query);
         $t_query = 'SELECT * FROM ' . plugin_table('atm');
         $t_result = db_query($t_query);
 
@@ -119,6 +136,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         $p_user_id = auth_get_current_user_id();
 
+        mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
         mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
     }
     function view_details($event, $t_issue)
