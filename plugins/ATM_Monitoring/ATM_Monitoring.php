@@ -71,7 +71,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
             echo '<tr>';
             echo '<th class="category">';
-            echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
+            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
             echo '<td>';
             echo '<form id="form" action="select_atm.php" method="post">';
             echo '<select class="atm_mon_selectpicker atm_mon_form-control" data-live-search="true" name="terminal_id" id="terminal_id">';
