@@ -54,22 +54,45 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
+        echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url( plugin_file('bootstrap-select.min.s.css'), true ), '" />', "\n";
+        echo "\t", '<script type="text/javascript" src="', plugin_file( 'bootstrap-select.min.s.js' ), '"></script>', "\n";
 
-        $t_project_id = helper_get_current_project();
-        $current_project = project_cache_row($t_project_id);
 
-        if ('ATM Monitoring' === $current_project['name']) {
-            $_SESSION['terminal_id'] = "Terminal ID";
 
-            echo '<tr>';
-            echo '<th class="category">';
-            echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
-            echo '</th>';
-            echo '<td>';
-            echo '<input ' . helper_get_tab_index() . 'type="text" id="terminal_id"  name="terminal_id" size="105" maxlength="128" value="' . isset($_POST['"terminal_id"']) . '" required />';
-            echo '</td>';
-            echo '</tr>';
-        }
+echo '<tr>';
+								echo '<th class="category">';
+									echo '<span class="required">*</span><label for="summary"><?php print_documentation_link("summary") ?></label>';
+								echo '</th>';
+								echo '<td>';
+									echo '<label class="introdx">Vehicle</label>';
+									echo '<select class="senayselectpicker senayform-control" data-live-search="true" name="vehicle">';
+										echo '<option value="">Select vehicle</option>';
+										echo '<option value="">Vehicle 1</option>';
+										echo '<option value="">Vehicle 2</option>';
+										echo '<option value="">Vehicle 3</option>';
+										echo '<option value="">Vehicle 4</option>';
+										echo '<option value="">Vehicle 5</option>';
+									echo '</select>';
+								echo '</td>';
+							echo '</tr>';
+
+
+
+        // $t_project_id = helper_get_current_project();
+        // $current_project = project_cache_row($t_project_id);
+
+        // if ('ATM Monitoring' === $current_project['name']) {
+        //     $_SESSION['terminal_id'] = "Terminal ID";
+
+        //     echo '<tr>';
+        //     echo '<th class="category">';
+        //     echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
+        //     echo '</th>';
+        //     echo '<td>';
+        //     echo '<input ' . helper_get_tab_index() . 'type="text" id="terminal_id"  name="terminal_id" size="105" maxlength="128" value="' . isset($_POST['"terminal_id"']) . '" required />';
+        //     echo '</td>';
+        //     echo '</tr>';
+        // }
     }
     function process_data($event, $t_issue)
     {
