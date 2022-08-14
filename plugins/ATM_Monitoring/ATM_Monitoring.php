@@ -74,7 +74,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
             echo '<td>';
             echo '<form id="form" action="select_atm.php" method="post">';
-            echo '<select class="senayselectpicker senayform-control" data-live-search="true" name="terminal_id" id="terminal_id">';
+            echo '<select class="atm_mon_selectpicker atm_mon_form-control" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select Terminal ID</option>';
             while ($t_atm_row = db_fetch_array($t_result)) {
                 echo '<option value="'.$t_atm_row['terminal_id'].'">' . $t_atm_row['terminal_id'] . '</option>';
@@ -92,11 +92,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
         
 
         $p_terminal_id = gpc_get("terminal_id");
-
-        if($p_terminal_id != ""){
-            echo "senay";
-        }
-           
 
         $t_atms = [];
         $r_atm = atm_get_by_terminal_id($p_terminal_id);

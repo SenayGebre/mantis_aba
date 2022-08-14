@@ -61,7 +61,7 @@
       h = this.each(function () {
         var e = a(this);
         if (e.is("select")) {
-          var h = e.data("senayselectpicker"),
+          var h = e.data("atm_mon_selectpicker"),
             i = "object" == typeof b && b;
           if (h) {
             if (i)
@@ -70,11 +70,11 @@
             var k = a.extend(
               {},
               f.DEFAULTS,
-              a.fn.senayselectpicker.defaults || {},
+              a.fn.atm_mon_selectpicker.defaults || {},
               e.data(),
               i
             );
-            e.data("senayselectpicker", (h = new f(this, k, c)));
+            e.data("atm_mon_selectpicker", (h = new f(this, k, c)));
           }
           "string" == typeof b &&
             (g = h[b] instanceof Function ? h[b].apply(h, d) : h.options[b]);
@@ -205,7 +205,7 @@
               "</div>"
             : "",
           g = this.options.liveSearch
-            ? '<div class="bs-searchbox"><input type="text" class="input-block-level senayform-control" autocomplete="off" /></div>'
+            ? '<div class="bs-searchbox"><input type="text" class="input-block-level atm_mon_form-control" autocomplete="off" /></div>'
             : "",
           h = this.options.actionsBox
             ? '<div class="bs-actionsbox"><div class="btn-group btn-block"><button class="actions-btn bs-select-all btn btn-sm btn-default">' +
@@ -218,7 +218,7 @@
             '<div class="btn-group bootstrap-select' +
             b +
             c +
-            '"><button type="button" class="btn dropdown-toggle senayselectpicker' +
+            '"><button type="button" class="btn dropdown-toggle atm_mon_selectpicker' +
             e +
             '" data-toggle="dropdown"' +
             d +
@@ -226,7 +226,7 @@
             f +
             g +
             h +
-            '<ul class="dropdown-menu inner senayselectpicker" role="menu"></ul></div></div>';
+            '<ul class="dropdown-menu inner atm_mon_selectpicker" role="menu"></ul></div></div>';
         return a(i);
       },
       createView: function () {
@@ -430,7 +430,7 @@
           this.$newElement.addClass(
             this.$element
               .attr("class")
-              .replace(/senayselectpicker|mobile-device|validate\[.*\]/gi, "")
+              .replace(/atm_mon_selectpicker|mobile-device|validate\[.*\]/gi, "")
           );
         var c = a ? a : this.options.style;
         "add" == b
@@ -593,7 +593,7 @@
           f = a(e),
           g = function (a) {
             f
-              .addClass(a.attr("class").replace(/senayform-control/gi, ""))
+              .addClass(a.attr("class").replace(/atm_mon_form-control/gi, ""))
               .toggleClass("dropup", a.hasClass("dropup")),
               (b = a.offset()),
               (c = a.hasClass("dropup") ? 0 : a[0].offsetHeight),
@@ -1110,11 +1110,11 @@
         this.$newElement.remove(), this.$element.remove();
       },
     });
-  var g = a.fn.senayselectpicker;
-  (a.fn.senayselectpicker = e),
-    (a.fn.senayselectpicker.Constructor = f),
-    (a.fn.senayselectpicker.noConflict = function () {
-      return (a.fn.senayselectpicker = g), this;
+  var g = a.fn.atm_mon_selectpicker;
+  (a.fn.atm_mon_selectpicker = e),
+    (a.fn.atm_mon_selectpicker.Constructor = f),
+    (a.fn.atm_mon_selectpicker.noConflict = function () {
+      return (a.fn.atm_mon_selectpicker = g), this;
     }),
     a(document)
       .data("keycount", 0)
@@ -1131,7 +1131,7 @@
         }
       ),
     a(window).on("load.bs.select.data-api", function () {
-      a(".senayselectpicker").each(function () {
+      a(".atm_mon_selectpicker").each(function () {
         var b = a(this);
         e.call(b, b.data());
       });

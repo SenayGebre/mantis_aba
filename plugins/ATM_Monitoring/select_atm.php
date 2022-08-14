@@ -10,7 +10,7 @@ require_once(''.dirname(__DIR__).'/api_atm.php');
 
 require_api( 'project_api.php' );
 
-echo "senay";
+echo "atm_mon_";
 
 // project_create( "ATM Monitoring", "This is project is for ATM monitoring", 50, 10, '');
 // form_security_purge( 'create_atm_monitoring_project' );
