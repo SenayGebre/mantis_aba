@@ -56,7 +56,7 @@ atm_ensure_exists( $f_atm_id );
 $t_atm_row = atm_get( $f_atm_id );
 
 $t_can_edit = access_has_global_level( config_get( 'atm_edit_threshold' ) );
-echo "senay";
+echo "atm_mon_";
 if( $t_can_edit ) {
 	$f_new_user_id = gpc_get_int( 'user_id', $t_atm_row['user_id'] );
 } else {
