@@ -47,8 +47,23 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG_DATA' => 'process_data',
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
+			'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
+			'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
+            
 
         );
+    }
+
+    function atm_resources() {
+        printf( "\t<script src=\"%s\"></script>\n",
+				plugin_file( 'alem.js' )
+			);
+    }
+
+    function alert_message() {
+        echo '<script type="text/javascript">
+    alert_message();
+</script>';
     }
 
 
