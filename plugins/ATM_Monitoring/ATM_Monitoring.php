@@ -90,29 +90,25 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
 
 
-            echo '<div>';
             echo '<tr>';
             echo '<th class="category">';
             echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
             echo '<td>';
-            echo '<form id="form" action="select_atm.php" method="post">';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select Terminal ID</option>';
             foreach ($terminal_id_rows as $terminal_id)  {
                 echo '<option value="'.$terminal_id.'">' . $terminal_id . '</option>';
             }
             echo '</select>';
-            echo '<div class="input-sm"><span> - OR - </span></div>';
+            echo '<div class="input-sm" ><span> - OR - </span></div>';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select By Specific Location</option>';
             foreach ($branch_name_rows as $branch_row)  {
                 echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
             }
             echo '</select>';
-            echo '</form>';
             echo '</td>';
             echo '</tr>';
-            echo '<div>';
         }
     }
     function process_data($event, $t_issue)
