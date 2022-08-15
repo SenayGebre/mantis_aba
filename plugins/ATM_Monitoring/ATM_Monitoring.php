@@ -73,14 +73,12 @@ class ATM_MonitoringPlugin extends MantisPlugin
         $current_project = project_cache_row($t_project_id);
         $t_query = 'SELECT * FROM ' . plugin_table('atm');
         $t_result = db_query($t_query);
-        $t_query = 'SELECT * FROM ' . plugin_table('atm');
-        $t_result = db_query($t_query);
-        $t_query = 'SELECT * FROM ' . plugin_table('atm');
-        $t_result = db_query($t_query);
+      
+      
 
         if ('ATM Monitoring' === $current_project['name']) {
             
-           
+            $t_atm_rows = atm_get_all("","", null,null);
             $_SESSION['terminal_id'] = "Terminal ID";
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
             echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
@@ -88,18 +86,24 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
 
 
-            echo '<tr>';
+            echo '<tr >';
             echo '<th class="category">';
             echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
             echo '<td>';
             echo '<form id="form" action="select_atm.php" method="post">';
             echo '<select class="senselectpicker senform-control" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select Terminal ID</option>';
-            while ($t_atm_row = db_fetch_array($t_result)) {
+            foreach ($t_atm_rows as  $t_atm_row) {
                 echo '<option value="'.$t_atm_row['terminal_id'].'">' . $t_atm_row['terminal_id'] . '</option>';
             }
             echo '</select>';
-            echo '</form>';
+            echo '<div ><span>Or</span></div>';
+            echo '<select class="seselectpicker" data-live-search="true" name="terminal_id" >';
+            echo '<option disabled selected value="">Select Terminal ID</option>';
+            foreach ($t_atm_rows as  $t_atm_row)  {
+                echo '<option value="'.$t_atm_row['terminal_id'].'">' . $t_atm_row['branch_name'] . '</option>';
+            }
+            echo '</select>';
             echo '</td>';
             echo '</tr>';
         }
