@@ -61,7 +61,7 @@
       h = this.each(function () {
         var e = a(this);
         if (e.is("select")) {
-          var h = e.data("senayselectpicker"),
+          var h = e.data("seselectpicker"),
             i = "object" == typeof b && b;
           if (h) {
             if (i)
@@ -70,11 +70,11 @@
             var k = a.extend(
               {},
               f.DEFAULTS,
-              a.fn.senayselectpicker.defaults || {},
+              a.fn.seselectpicker.defaults || {},
               e.data(),
               i
             );
-            e.data("senayselectpicker", (h = new f(this, k, c)));
+            e.data("seselectpicker", (h = new f(this, k, c)));
           }
           "string" == typeof b &&
             (g = h[b] instanceof Function ? h[b].apply(h, d) : h.options[b]);
@@ -218,7 +218,7 @@
             '<div class="btn-group bootstrap-select' +
             b +
             c +
-            '"><button type="button" class="btn dropdown-toggle senayselectpicker' +
+            '"><button type="button" class="btn dropdown-toggle seselectpicker' +
             e +
             '" data-toggle="dropdown"' +
             d +
@@ -226,7 +226,7 @@
             f +
             g +
             h +
-            '<ul class="dropdown-menu inner senayselectpicker" role="menu"></ul></div></div>';
+            '<ul class="dropdown-menu inner seselectpicker" role="menu"></ul></div></div>';
         return a(i);
       },
       createView: function () {
@@ -430,7 +430,7 @@
           this.$newElement.addClass(
             this.$element
               .attr("class")
-              .replace(/senayselectpicker|mobile-device|validate\[.*\]/gi, "")
+              .replace(/seselectpicker|mobile-device|validate\[.*\]/gi, "")
           );
         var c = a ? a : this.options.style;
         "add" == b
@@ -1110,11 +1110,11 @@
         this.$newElement.remove(), this.$element.remove();
       },
     });
-  var g = a.fn.senayselectpicker;
-  (a.fn.senayselectpicker = e),
-    (a.fn.senayselectpicker.Constructor = f),
-    (a.fn.senayselectpicker.noConflict = function () {
-      return (a.fn.senayselectpicker = g), this;
+  var g = a.fn.seselectpicker;
+  (a.fn.seselectpicker = e),
+    (a.fn.seselectpicker.Constructor = f),
+    (a.fn.seselectpicker.noConflict = function () {
+      return (a.fn.seselectpicker = g), this;
     }),
     a(document)
       .data("keycount", 0)
@@ -1131,7 +1131,7 @@
         }
       ),
     a(window).on("load.bs.select.data-api", function () {
-      a(".senayselectpicker").each(function () {
+      a(".seselectpicker").each(function () {
         var b = a(this);
         e.call(b, b.data());
       });
