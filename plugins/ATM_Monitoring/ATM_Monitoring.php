@@ -85,16 +85,15 @@ class ATM_MonitoringPlugin extends MantisPlugin
         if ('ATM Monitoring' === $current_project['name']) {
             
            
-            $_SESSION['terminal_id'] = "Terminal ID";
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
             echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
             echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
 
 
-
+            echo '<div>';
             echo '<tr>';
             echo '<th class="category">';
-            echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
+            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
             echo '<td>';
             echo '<form id="form" action="select_atm.php" method="post">';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
@@ -103,7 +102,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 echo '<option value="'.$terminal_id.'">' . $terminal_id . '</option>';
             }
             echo '</select>';
-            echo '<div><span> - OR - </span></div>';
+            echo '<div class="input-sm"><span> - OR - </span></div>';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select By Specific Location</option>';
             foreach ($branch_name_rows as $branch_row)  {
@@ -113,6 +112,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</form>';
             echo '</td>';
             echo '</tr>';
+            echo '<div>';
         }
     }
     function process_data($event, $t_issue)
