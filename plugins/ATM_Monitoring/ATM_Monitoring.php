@@ -103,7 +103,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</select>';
             echo '<div class="input-sm" ><span> - OR - </span></div>';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select By Specific Location</option>';
+            echo '<option disabled selected value="">Select By Branch Name</option>';
             foreach ($branch_name_rows as $branch_row)  {
                 echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
             }
@@ -147,6 +147,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
         mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
     }
+    
     function view_details($event, $t_issue)
     {
         $d_query = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id =' . $t_issue;
@@ -175,6 +176,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         $t_project_id = helper_get_current_project();
         $current_project = project_cache_row($t_project_id);
         $terminal_id = null;
+        $branch_name = null;
 
         $t_query = 'SELECT * FROM ' . plugin_table('atm');
         $t_result = db_query($t_query);
@@ -193,6 +195,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         while($row = db_fetch_array($t_result)){ 
             if($t_result_id['atm_id'] === $row['id']){
                 $terminal_id = $row['terminal_id'];
+                $branch_name = $row['branch_name'];
             }
             $terminal_id_rows[] = $row['terminal_id'];
             $branch_name_rows[] = array('terminal_id'=> $row['terminal_id'],'branch_name'=> $row['branch_name'], );
@@ -227,7 +230,15 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</select>';
             echo '<div class="input-sm" ><span> - OR - </span></div>';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select By Specific Location</option>';
+           
+            if ($branch_name !== null){
+                echo '<option selected value="'.$terminal_id.'">'.$branch_name.'</option>';
+                echo '<option disabled value="">Select Terminal ID</option>';
+                
+            }
+            else{
+                echo '<option disabled selected value="">Select By Branch</option>';
+            }
             foreach ($branch_name_rows as $branch_row)  {
                 echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
             }
