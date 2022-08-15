@@ -470,9 +470,9 @@ function atm_get_all($p_terminal_id_filter,$p_search, $p_count,  $p_offset)
 		}
 		
 		$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  ' . $t_where . ' ORDER BY terminal_id';
-	if ($p_count === null && $p_offset === null ){
-		return db_query($t_query, $t_where_params);
-	}	
+	// if ($p_count === null && $p_offset === null ){
+	// 	return db_query($t_query, $t_where_params);
+	// }	
 
 	return db_query($t_query, $t_where_params, $p_count, $p_offset);
 }
