@@ -103,7 +103,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</select>';
             echo '<div class="input-sm" ><span> - OR - </span></div>';
             echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select By Specific Location</option>';
+            echo '<option disabled selected value="">Select By Branch Name</option>';
             foreach ($branch_name_rows as $branch_row)  {
                 echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
             }
