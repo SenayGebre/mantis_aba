@@ -93,7 +93,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '<span class="required">*</span><label for="terminal_id">' . $_SESSION['terminal_id'] . '</label>';
             echo '<td>';
             echo '<form id="form" action="select_atm.php" method="post">';
-            echo '<select class="senayselectpicker senayform-control" data-live-search="true" name="terminal_id" id="terminal_id">';
+            echo '<select class="senselectpicker senform-control" data-live-search="true" name="terminal_id" id="terminal_id">';
             echo '<option disabled selected value="">Select Terminal ID</option>';
             while ($t_atm_row = db_fetch_array($t_result)) {
                 echo '<option value="'.$t_atm_row['terminal_id'].'">' . $t_atm_row['terminal_id'] . '</option>';
