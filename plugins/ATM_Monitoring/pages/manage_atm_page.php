@@ -1,9 +1,9 @@
 <?php
 
 require_once('core.php');
-require_once(''.dirname(__DIR__).'/api_atm.php');
-require_once(''.dirname(__DIR__).'/atm_helper.php');
-require_once(''.dirname(__DIR__).'/cities.php');
+require_once('' . dirname(__DIR__) . '/api_atm.php');
+require_once('' . dirname(__DIR__) . '/atm_helper.php');
+require_once('' . dirname(__DIR__) . '/cities.php');
 require_api('access_api.php');
 require_api('compress_api.php');
 require_api('config_api.php');
@@ -25,7 +25,7 @@ $t_can_edit = access_has_project_level(plugin_config_get('atm_edit_threshold'));
 $f_filter_char = atm_get_param('page');
 $f_filter = $f_filter_char !== '' ? mb_strtoupper(atm_get_param('page')) : mb_strtoupper('ALL');
 $f_page_number = gpc_get_int('page_number', 1);
-$f_search = gpc_get_string( 'search', '');
+$f_search = gpc_get_string('search', '');
 
 
 echo $f_filter;
@@ -78,7 +78,7 @@ if ($f_page_number < 1) {
 
 
 // auth_reauthenticate();
-$t_result = atm_get_all($t_terminal_id_filter,$f_search, $t_per_page, $t_offset);
+$t_result = atm_get_all($t_terminal_id_filter, $f_search, $t_per_page, $t_offset);
 
 layout_page_header(plugin_lang_get('manage_atms_link'));
 
@@ -149,36 +149,35 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 					<?php
 
 
-	foreach ( $t_prefix_array as $t_prefix ) {
-		$t_caption = ( $t_prefix === 'ALL' ? plugin_lang_get( 'show_all_atms' ) : $t_prefix );
-		$t_active = $t_prefix == $f_filter && is_blank($f_search) ? 'active' : '';
-		echo '<a class="btn btn-xs btn-white btn-primary ' . $t_active .
-		'" href="'. plugin_page( 'manage_atm_page.php?filter='.$t_prefix).'">' . $t_caption . '</a>' ."\n";
-	} ?>
+					foreach ($t_prefix_array as $t_prefix) {
+						$t_caption = ($t_prefix === 'ALL' ? plugin_lang_get('show_all_atms') : $t_prefix);
+						$t_active = $t_prefix == $f_filter && is_blank($f_search) ? 'active' : '';
+						echo '<a class="btn btn-xs btn-white btn-primary ' . $t_active .
+							'" href="' . plugin_page('manage_atm_page.php?filter=' . $t_prefix) . '">' . $t_caption . '</a>' . "\n";
+					} ?>
+				</div>
+			</div>
+
 		</div>
-	</div>
-	
-	</div>
-	
-	<div class="center">
-	<form id="manage-atm-filter" method="post" action="<?php echo plugin_page('manage_atm_page'); ?>" class="inline button-toolbar">
-	</fieldset>
+		<div class="center">
+			<form id="manage-atm-filter" method="post" action="<?php echo plugin_page('manage_atm_page'); ?>" class="inline button-toolbar">
+				<fieldset>
 
-		<div class="btn-toolbar inline" style="margin-top:  30px;">
-		<div class="btn-group" style="margin-right: 10px;">
-		<input id="search" type="text" size="45" name="search" class="input-sm"
-				   value="<?php echo string_attribute ( $f_search );?>" placeholder="Search by keyword"
-			/>
-			<input type="submit" class="btn btn-primary btn-sm btn-white btn-round" value="<?php echo lang_get( 'search' ) ?>" />
+					<div class="btn-toolbar inline" style="margin-top:  30px;">
+						<div class="btn-group">
+							<input id="search" type="text" size="45" name="search" class="input-sm" value="<?php echo string_attribute($f_search); ?>" placeholder="Search by keyword" />
+							<input type="submit" class="btn pull-right btn-primary btn-sm btn-white btn-round" value="<?php echo lang_get('search') ?>"  style="margin-left:  30px;"/>
+						</div>
+					</div>
+				</fieldset>
+
+			</form>
+
+		</div>
 		
-</fieldset>
-	
-</form>
 
-</div>
-	
-	</div>
-<div class="space-10"></div>
+
+	<div class="space-10"></div>
 
 	<div class="widget-box widget-color-blue2">
 		<div class="widget-header widget-header-small">
@@ -224,9 +223,9 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 								$t_atm_ip = string_display($t_atm_row['ip_address']);
 								$t_atm_port = string_display($t_atm_row['port']);
 								$t_atm_country = string_display($t_atm_row['country']);
-								$t_atm_city= string_display($t_atm_row['city']);
+								$t_atm_city = string_display($t_atm_row['city']);
 								$t_atm_spec_loc = string_display($t_atm_row['specifc_location']);
-								
+
 							?>
 
 								<tr>
@@ -243,7 +242,7 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 									<td><?php echo  $t_atm_country ?></td>
 									<td><?php echo  $t_atm_city ?></td>
 									<td><?php echo  $t_atm_spec_loc ?></td>
-									
+
 									<td><?php echo $t_atm_row['date_created'] ?></td>
 									<td><?php echo $t_atm_row['date_updated'] ?></td>
 								</tr>
@@ -255,125 +254,125 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 				</div>
 			</div>
 
-				<?php
-				# Do not display the section's footer if we have only one page of users,
-				# otherwise it will be empty as the navigation controls won't be shown.
-				if ($t_total_atm_count > $t_per_page) {
-				?>
-					<div class="widget-toolbox padding-8 clearfix">
-						<div class="btn-toolbar pull-right"><?php
-															# @todo hack - pass in the hide inactive filter via cheating the actual filter value
-															print_page_links(plugin_page('manage_atm_page'), 1, $t_page_count, (int)$f_page_number, $f_filter); ?>
-						</div>
+			<?php
+			# Do not display the section's footer if we have only one page of users,
+			# otherwise it will be empty as the navigation controls won't be shown.
+			if ($t_total_atm_count > $t_per_page) {
+			?>
+				<div class="widget-toolbox padding-8 clearfix">
+					<div class="btn-toolbar pull-right"><?php
+														# @todo hack - pass in the hide inactive filter via cheating the actual filter value
+														print_page_links(plugin_page('manage_atm_page'), 1, $t_page_count, (int)$f_page_number, $f_filter); ?>
 					</div>
-				<?php } ?>
-
-			</div>
+				</div>
+			<?php } ?>
 
 		</div>
 
-		<?php if ($t_can_edit) { ?>
-			<div class="space-10"></div>
-			<form id="manage-atms-create-form" method="post" action="<?php echo plugin_page('create_atm') ?>">
-				<div class="widget-box widget-color-blue2">
-					<div class="widget-header widget-header-small">
-						<h4 class="widget-title lighter">
-							<?php print_icon('fa-atm', 'ace-icon'); ?>
-							<?php echo plugin_lang_get('atm_create') ?>
-						</h4>
-					</div>
-					<div class="widget-body">
-						<a name="atmcreate"></a>
-						<div class="widget-main no-padding">
-							<div class="form-container">
-								<div class="table-responsive">
-									<table class="table table-bordered table-condensed table-striped">
-										<fieldset>
-											<?php echo form_security_field('atm_create'); ?>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_terminal_id') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="terminal_id" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_branch_name') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="branch_name" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_model') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="model" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_ip') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="ip" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_port') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="port" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_country') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="country" class="input-sm" size="40" maxlength="100" value="Ethiopia" />
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_city') ?>
-												</td>
-												<td>
-													<select name="city" id="atm-name">
+	</div>
+
+	<?php if ($t_can_edit) { ?>
+		<div class="space-10"></div>
+		<form id="manage-atms-create-form" method="post" action="<?php echo plugin_page('create_atm') ?>">
+			<div class="widget-box widget-color-blue2">
+				<div class="widget-header widget-header-small">
+					<h4 class="widget-title lighter">
+						<?php print_icon('fa-atm', 'ace-icon'); ?>
+						<?php echo plugin_lang_get('atm_create') ?>
+					</h4>
+				</div>
+				<div class="widget-body">
+					<a name="atmcreate"></a>
+					<div class="widget-main no-padding">
+						<div class="form-container">
+							<div class="table-responsive">
+								<table class="table table-bordered table-condensed table-striped">
+									<fieldset>
+										<?php echo form_security_field('atm_create'); ?>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_terminal_id') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="terminal_id" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_branch_name') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="branch_name" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_model') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="model" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_ip') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="ip" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_port') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="port" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_country') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="country" class="input-sm" size="40" maxlength="100" value="Ethiopia" />
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_city') ?>
+											</td>
+											<td>
+												<select name="city" id="atm-name">
 													<option value="Addis Ababa" selected="selected">Addis Ababa</option>
 													<option value="Bahir Dar">Bahir Dar</option>
 													<option value="Gondar">Gondar</option>
 													<option value="Mekelle">Mekelle</option>
-													<option value="Adama">	Adama</option>
+													<option value="Adama"> Adama</option>
 													<option value="Awassa">Awassa</option>
 													<option value="Dire Dawa">Dire Dawa</option>
 													<option value="Dessie">Dessie</option>
 													<option value="Jijiga">Jijiga</option>
 													<option value="Jimma">Jimma</option>
-														<?php
-														$c_all_cities = get_all_cities();
-														sort($c_all_cities);
-														foreach ($c_all_cities as $c_city) {
-															echo '<option value=' . $c_city . '>' . $c_city . '</option>';
-														}
-														?>
-													</select>
+													<?php
+													$c_all_cities = get_all_cities();
+													sort($c_all_cities);
+													foreach ($c_all_cities as $c_city) {
+														echo '<option value=' . $c_city . '>' . $c_city . '</option>';
+													}
+													?>
+												</select>
 
-												</td>
-											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_spec_loc') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="spec_loc" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
-											<!-- <tr>
+											</td>
+										</tr>
+										<tr>
+											<td class="category">
+												<span class="required">*</span> <?php echo plugin_lang_get('atm_spec_loc') ?>
+											</td>
+											<td>
+												<input type="text" id="atm-name" name="spec_loc" class="input-sm" size="40" maxlength="100" required />
+											</td>
+										</tr>
+										<!-- <tr>
 											<td class="category">
 											
 											</td>
@@ -381,28 +380,28 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 												<textarea class="form-control" id="atm-description" name="description" cols="80" rows="6"></textarea>
 											</td>
 										</tr> -->
-										</fieldset>
-									</table>
-								</div>
+									</fieldset>
+								</table>
 							</div>
 						</div>
-						<div class="widget-toolbox padding-8 clearfix">
-							<span class="required pull-right"> * <?php echo plugin_lang_get('required'); ?></span>
-							<input type="submit" name="config_set" class="btn btn-primary btn-sm btn-white btn-round" value="<?php echo plugin_lang_get('atm_create') ?>" />
-						</div>
+					</div>
+					<div class="widget-toolbox padding-8 clearfix">
+						<span class="required pull-right"> * <?php echo plugin_lang_get('required'); ?></span>
+						<input type="submit" name="config_set" class="btn btn-primary btn-sm btn-white btn-round" value="<?php echo plugin_lang_get('atm_create') ?>" />
 					</div>
 				</div>
-			</form>
-	<?php
-		} #End can Edit
-	} else {
-		echo '<div class="center alert alert-info">' . plugin_lang_get('no_atm_project_found') . '</div>';
-		echo '<form action="'.plugin_page('create_atm_monitoring_project').'" method="post">';
-		echo '<div class="center"><input type="submit" name="create_atm_monitoring_project" class="center btn btn-primary btn-sm btn-white btn-round"
-					   value="'.plugin_lang_get('create_atm_monitoring_project').'"/></div>';
-		echo '</form>';
-	} #End if atms exist
-	echo '</div>';
-	layout_page_end();
+			</div>
+		</form>
+<?php
+	} #End can Edit
+} else {
+	echo '<div class="center alert alert-info">' . plugin_lang_get('no_atm_project_found') . '</div>';
+	echo '<form action="' . plugin_page('create_atm_monitoring_project') . '" method="post">';
+	echo '<div class="center"><input type="submit" name="create_atm_monitoring_project" class="center btn btn-primary btn-sm btn-white btn-round"
+					   value="' . plugin_lang_get('create_atm_monitoring_project') . '"/></div>';
+	echo '</form>';
+} #End if atms exist
+echo '</div>';
+layout_page_end();
 
-	?>
+?>
