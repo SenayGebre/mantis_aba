@@ -75,6 +75,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
         $t_result = db_query($t_query);
         $t_query = 'SELECT * FROM ' . plugin_table('atm');
         $t_result = db_query($t_query);
+        $t_query = 'SELECT * FROM ' . plugin_table('atm');
+        $t_result = db_query($t_query);
 
         if ('ATM Monitoring' === $current_project['name']) {
             
@@ -133,6 +135,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         $p_user_id = auth_get_current_user_id();
 
+        mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
         mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
         mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
     }
