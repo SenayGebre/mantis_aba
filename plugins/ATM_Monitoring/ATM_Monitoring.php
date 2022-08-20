@@ -47,21 +47,24 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG_DATA' => 'process_data',
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
-            'EVENT_UPDATE_BUG_FORM' =>'update_atm',
-			'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
-			'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
-            
+            'EVENT_UPDATE_BUG_FORM' => 'update_atm',
+            'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
+            'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
+
 
         );
     }
 
-    function atm_resources() {
-        printf( "\t<script src=\"%s\"></script>\n",
-				plugin_file( 'alem.js' )
-			);
+    function atm_resources()
+    {
+        printf(
+            "\t<script src=\"%s\"></script>\n",
+            plugin_file('alem.js')
+        );
     }
 
-    function alert_message() {
+    function alert_message()
+    {
         echo '<script type="text/javascript">
     alert_message();
 </script>';
@@ -70,64 +73,44 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
-        $t_project_id = helper_get_current_project();
-        $current_project = project_cache_row($t_project_id);
-        $t_query = 'SELECT * FROM ' . plugin_table('atm');
-        $t_result = db_query($t_query);
+        require_once('atm_helper.php');
 
-        $terminal_id_rows = array();
-        $branch_name_rows = array();
-        while($row = db_fetch_array($t_result)){ 
-            $terminal_id_rows[] = $row['terminal_id'];
-            $branch_name_rows[] = array('terminal_id'=> $row['terminal_id'],'branch_name'=> $row['branch_name'], );
-        }
-     
+        if (isProjectATMmonitoring()) {
+            $t_query = 'SELECT * FROM ' . plugin_table('atm');
+            $t_result = db_query($t_query);
 
-        if ('ATM Monitoring' === $current_project['name']) {
-            
-           
-            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
-            echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
-            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
-
-
-            echo '<tr>';
-            echo '<th class="category">';
-            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
-            echo '<td>';
-            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select Terminal ID</option>';
-            foreach ($terminal_id_rows as $terminal_id)  {
-                echo '<option value="'.$terminal_id.'">' . $terminal_id . '</option>';
+            $terminal_id_rows = array();
+            $branch_name_rows = array();
+            while ($row = db_fetch_array($t_result)) {
+                $terminal_id_rows[] = $row['terminal_id'];
+                $branch_name_rows[] = array('terminal_id' => $row['terminal_id'], 'branch_name' => $row['branch_name'],);
             }
-            echo '</select>';
-            echo '<div class="input-sm" ><span> - OR - </span></div>';
-            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select By Branch Name</option>';
-            foreach ($branch_name_rows as $branch_row)  {
-                echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
-            }
-            echo '</select>';
-            echo '</td>';
-            echo '</tr>';
+
+
+            atm_select($branch_name_rows, $terminal_id_rows);
         }
     }
     function process_data($event, $t_issue)
     {
         require_once('api_atm.php');
-        
-        
+        require_once('atm_helper.php');
+        if (isProjectATMmonitoring()) {
 
-        $p_terminal_id = gpc_get("terminal_id");
 
-      
+            $p_terminal_id = gpc_get("terminal_id");
 
-        $t_atms = [];
-        $r_atm = atm_get_by_terminal_id($p_terminal_id);
 
-        array_push($t_atms, $r_atm);
 
-        $t_issue->atm = $t_atms;
+            $t_atms = [];
+            $r_atm = atm_get_by_terminal_id($p_terminal_id);
+
+            array_push($t_atms, $r_atm);
+
+            $t_issue->atm = $t_atms;
+        }
+
+
+
 
 
         // echo '<pre>';
@@ -140,12 +123,16 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
         require_once('mc_atm_api.php');
 
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+        if ('ATM Monitoring' === $current_project['name']) {
 
-        $p_user_id = auth_get_current_user_id();
+            $p_user_id = auth_get_current_user_id();
 
-        mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
-        mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
-        mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
+            mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
+            mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
+            mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
+        }
     }
     function view_details($event, $t_issue)
     {
@@ -170,70 +157,39 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</tr>';
         }
     }
-    function update_atm($event,$issue_id)
+    function update_atm($event, $issue_id)
     {
-        $t_project_id = helper_get_current_project();
-        $current_project = project_cache_row($t_project_id);
-        $terminal_id = null;
+        require_once('atm_helper.php');
+        require_once('atm_helper.php');
 
-        $t_query = 'SELECT * FROM ' . plugin_table('atm');
-        $t_result = db_query($t_query);
-        $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm').' WHERE bug_id='.$issue_id;
-        $t_result_id = db_query($t_query_id);
-        $t_result_id =db_fetch_array($t_result_id);
-        // $t_result_id = null;
-        //   echo '<pre>';
-        // print_r(db_fetch_array($t_result_id));
-        // echo '</pre>';
+        if (isProjectATMmonitoring()) {
 
-        // echo  db_fetch_array($t_result_id);
+            $t_query = 'SELECT * FROM ' . plugin_table('atm');
+            $t_result = db_query($t_query);
 
-        $terminal_id_rows = array();
-        $branch_name_rows = array();
-        while($row = db_fetch_array($t_result)){ 
-            if($t_result_id['atm_id'] === $row['id']){
-                $terminal_id = $row['terminal_id'];
+            $terminal_id = null;
+            $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $issue_id;
+            $t_result_id = db_query($t_query_id);
+            $t_result_id = db_fetch_array($t_result_id);
+            // $t_result_id = null;
+            //   echo '<pre>';
+            // print_r(db_fetch_array($t_result_id));
+            // echo '</pre>';
+
+            // echo  db_fetch_array($t_result_id);
+
+            $terminal_id_rows = array();
+            $branch_name_rows = array();
+            while ($row = db_fetch_array($t_result)) {
+                if ($t_result_id['atm_id'] === $row['id']) {
+                    $terminal_id = $row['terminal_id'];
+                }
+                $terminal_id_rows[] = $row['terminal_id'];
+                $branch_name_rows[] = array('terminal_id' => $row['terminal_id'], 'branch_name' => $row['branch_name'],);
             }
-            $terminal_id_rows[] = $row['terminal_id'];
-            $branch_name_rows[] = array('terminal_id'=> $row['terminal_id'],'branch_name'=> $row['branch_name'], );
-        }
-     
-
-        if ('ATM Monitoring' === $current_project['name']) {
-            
-           
-            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
-            echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
-            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
 
 
-            echo '<tr>';
-            echo '<th class="category">';
-            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
-            echo '<td>';
-            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            if ($terminal_id !== null){
-                echo '<option selected value="'.$terminal_id.'">'.$terminal_id.'</option>';
-                echo '<option disabled value="">Select Terminal ID</option>';
-                
-            }
-            else{
-                echo '<option disabled selected value="">Select Terminal ID</option>';
-            }
-           
-            foreach ($terminal_id_rows as $terminal_id)  {
-                echo '<option value="'.$terminal_id.'">' . $terminal_id . '</option>';
-            }
-            echo '</select>';
-            echo '<div class="input-sm" ><span> - OR - </span></div>';
-            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
-            echo '<option disabled selected value="">Select By Specific Location</option>';
-            foreach ($branch_name_rows as $branch_row)  {
-                echo '<option value="'.$branch_row['terminal_id'].'">' . $branch_row['branch_name'] . '</option>';
-            }
-            echo '</select>';
-            echo '</td>';
-            echo '</tr>';
+            atm_select($branch_name_rows, $terminal_id_rows, $terminal_id);
         }
     }
     function manage_atm_menu()

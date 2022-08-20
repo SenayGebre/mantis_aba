@@ -20,4 +20,55 @@ function atm_get_param( $p_var_name, $p_default = null ) {
 		return str_contains($t_result,'=') ? explode( '=', $t_result )[1] : '';
 }
 
+function atm_select(array $branch_name_rows,array $terminal_id_rows,$terminal_id = null) {
+	    $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+
+		 if ('ATM Monitoring' === $current_project['name']) {
+
+
+            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
+            echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
+            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
+
+
+            echo '<tr>';
+            echo '<th class="category">';
+            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
+            echo '<td>';
+            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
+			if ($terminal_id !== null) {
+                echo '<option selected value="' . $terminal_id . '">' . $terminal_id . '</option>';
+                echo '<option disabled value="">Select Terminal ID</option>';
+            } else {
+                echo '<option disabled selected value="">Select Terminal ID</option>';
+            }
+
+            foreach ($terminal_id_rows as $terminal_id) {
+                echo '<option value="' . $terminal_id . '">' . $terminal_id . '</option>';
+            }
+            echo '</select>';
+            echo '<div class="input-sm" ><span> - OR - </span></div>';
+            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
+            echo '<option disabled selected value="">Select By Branch Name</option>';
+            foreach ($branch_name_rows as $branch_row) {
+                echo '<option value="' . $branch_row['terminal_id'] . '">' . $branch_row['branch_name'] . '</option>';
+            }
+            echo '</select>';
+            echo '</td>';
+            echo '</tr>';
+        }
+}
+
+function isProjectATMmonitoring() {
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+
+		 if ('ATM Monitoring' === $current_project['name']) {
+            return true;
+         } else {
+            return false;
+         }
+}
+
 ?>
