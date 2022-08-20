@@ -499,6 +499,16 @@ function atm_count($p_terminal_id_filter)
 	return (int)db_result($t_result);
 }
 
+function atmGetBranch() {
+	$t_query = 'SELECT * FROM mantis_project_table WHERE mantis_project_table.id IN ( SELECT mantis_project_hierarchy_table.child_id FROM mantis_project_hierarchy_table WHERE mantis_project_hierarchy_table.parent_id = 2)';
+
+	return db_query($t_query);
+}
+
+function atmGetTerminals() {
+	$t_query = 'SELECT * FROM ' . plugin_table('atm');
+     return db_query($t_query);
+}
 /**
  * Return a atm row for the given ID.
  * @param integer $p_atm_id The atm ID to retrieve from the database.
