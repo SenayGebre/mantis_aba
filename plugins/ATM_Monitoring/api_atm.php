@@ -312,7 +312,12 @@ function atm_cmp_terminal_id(array $p_atm1, array $p_atm2)
  */
 function atm_parse_string($p_string)
 {
+	if(str_contains($p_string, plugin_config_get('atm_separator'))) {
+		return false;
+	}
+
 	$t_atms = array();
+
 
 	$t_strings = explode(plugin_config_get('atm_separator'), $p_string);
 	foreach ($t_strings as $t_terminal_id) {
@@ -320,6 +325,8 @@ function atm_parse_string($p_string)
 		if (is_blank($t_terminal_id)) {
 			continue;
 		}
+
+
 
 		$t_matches = array();
 		$t_atm_row = atm_get_by_terminal_id($t_terminal_id);

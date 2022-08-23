@@ -316,14 +316,7 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 													<input type="text" id="atm-name" name="terminal_id" class="input-sm" size="40" maxlength="100" required />
 												</td>
 											</tr>
-											<tr>
-												<td class="category">
-													<span class="required">*</span> <?php echo plugin_lang_get('atm_branch_name') ?>
-												</td>
-												<td>
-													<input type="text" id="atm-name" name="branch_name" class="input-sm" size="40" maxlength="100" required />
-												</td>
-											</tr>
+									
 
 											<tr>
 												<td class="category">

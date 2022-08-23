@@ -49,10 +49,16 @@ $f_atm_city = gpc_get_string( 'city' );
 $f_atm_spec_loc = gpc_get_string( 'spec_loc' );
 $f_atm_branch_id = gpc_get_string( 'branch_id' );
 
+
+
 $t_atm_user = auth_get_current_user_id();
 
+
+
 if( !is_null( $f_atm_terminal_id ) ) {
+
 	$t_atms = atm_parse_string( $f_atm_terminal_id );
+		
 	foreach ( $t_atms as $t_atm_row ) {
 		switch( $t_atm_row['id'] ) {
 			case -1:
