@@ -54,30 +54,31 @@ class ATM_MonitoringPlugin extends MantisPlugin
         );
     }
 
-    function atm_resources()
-    {
-        printf(
-            "\t<script src=\"%s\"></script>\n",
-            plugin_file('alem.js')
-        );
-    }
+//     function atm_resources()
+//     {
+//         printf(
+//             "\t<script src=\"%s\"></script>\n",
+//             plugin_file('alem.js')
+//         );
+//     }
 
-    function alert_message()
-    {
-        echo '<script type="text/javascript">
-    alert_message();
-</script>';
-    }
+//     function alert_message()
+//     {
+//         echo '<script type="text/javascript">
+//     alert_message();
+// </script>';
+//     }
 
 
     function select_atm()
     {
-            require_once('atm_helper.php');
-            atm_select();
+        require_once('atm_helper.php');
+        
+        atm_select();
     }
     function process_data($event, $t_issue)
     {
-
+        
         require_once('api_atm.php');
         require_once('atm_helper.php');
         if (isProjectATMmonitoring()) {
@@ -87,6 +88,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             if(gpc_isset("terminal_id") && !is_blank(gpc_get("terminal_id"))) {
                 $p_terminal_id = gpc_get("terminal_id");
                 $p_atm = atm_get_by_terminal_id($p_terminal_id);
+                
             } else if(!empty(gpc_get("branch_id")) && !is_blank(gpc_get("branch_id"))) {
                 $p_atm = atm_get_atm_by_branch_id(gpc_get("branch_id"));
             }
@@ -120,17 +122,17 @@ class ATM_MonitoringPlugin extends MantisPlugin
     function view_details($event, $t_issue_id) {
         require_once('api_atm.php');
 
-        $t_terminal_id = get_terminal_id_by_issue_id($t_issue_id)['atm_id'];
+        $t_atm_id = get_id_by_issue_id($t_issue_id)["atm_id"];
+        // echo '<pre>'; print_r($t_atm_id); echo '</pre>';
         
-        if (!empty($t_terminal_id)) {
-            $t_atm = atm_get_by_terminal_id($t_terminal_id);
+        if (!empty($t_atm_id)) {
+            $t_atm = atm_get_by_id($t_atm_id);
             if(isset($t_atm) && !empty($t_atm)) {
                 if($t_atm['branch_id'] !== null && !is_blank($t_atm['branch_id'])) {
                     $d_branch = atm_get_branch_by_id($t_atm['branch_id']);
                 }
             }
             
-            // echo '<pre>'; print_r($t_row_2); echo '</pre>';
 
             if(isset($t_atm) && !empty($t_atm)) {
             echo '<th class="bug-summary category">Terminal ID</th>';
@@ -153,40 +155,23 @@ class ATM_MonitoringPlugin extends MantisPlugin
     
     function update_atm($event, $issue_id)
     {
-        $t_project_id = helper_get_current_project();
-        $current_project = project_cache_row($t_project_id);
-        $terminal_id = null;
-        $branch_name = null;
+      
 
-        $t_query = 'SELECT * FROM ' . plugin_table('atm');
-        $t_result = db_query($t_query);
-
-        $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $issue_id;
-        $t_result_id = db_query($t_query_id);
-        $t_result_id = db_fetch_array($t_result_id);
-
-        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
-        $t_result_atm_id = db_query($t_query_atm_id);
-        $atm_tobe_updated =  db_fetch_array($t_result_atm_id);
-
-        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
-        $t_result_atm_id = db_query($t_query_atm_id);
-        $atm_tobe_updated = db_fetch_array($t_result_atm_atm_id);
-        // $t_result_id = null;
         //   echo '<pre>';
         // print_r(db_fetch_array($t_result_id));
         // echo '</pre>';
-
+        
         require_once('api_atm.php');
         require_once('atm_helper.php');
-
+        
         if (isProjectATMmonitoring()) {
-
-            $t_terminal_id = get_terminal_id_by_issue_id($issue_id)['atm_id'];
-            $t_atm = atm_get_by_terminal_id($t_terminal_id);
+            
+            $t_atm_id = get_id_by_issue_id($issue_id)['atm_id'];
+            $t_atm = atm_get_by_id($t_atm_id);
+            // echo '<pre>'; print_r($t_atm); echo '</pre>';
             
             if(isset($t_atm) && !empty($t_atm)) {
-                atm_select($t_atm['terminal_id']);
+                atm_select($t_atm['terminal_id'], $t_atm['branch_id']);
             }
 
 
@@ -197,22 +182,17 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         require_once('api_atm.php');
         require_once('atm_helper.php');
+
         if (isProjectATMmonitoring()) {
-            require_once('api_atm.php');
+        
             $p_terminal_id = gpc_get("terminal_id");
-            echo '<pre>';
-            print_r($p_terminal_id);
-            echo '</pre>';
-            $t_query_id = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id . '"';
-            $t_result_id = db_query($t_query_id);
-            $t_result_id = db_fetch_array($t_result_id);
+            
+            $t_result_id = atm_id_get_by_terminal_id($p_terminal_id);
 
             $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
-                        SET atm_id=' . $t_result_id["id"] . ',
+                        SET atm_id=' . $t_result_id["id"] . '
                         WHERE bug_id=' . $u_issue->id;
-            echo '<pre>';
-            print_r($t_query);
-            echo '</pre>';
+            
             db_query($t_query);
 
 

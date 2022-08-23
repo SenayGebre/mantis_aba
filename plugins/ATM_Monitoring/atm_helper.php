@@ -21,15 +21,17 @@ function atm_get_param($p_var_name, $p_default = null)
     return str_contains($t_result, '=') ? explode('=', $t_result)[1] : '';
 }
 
-function atm_select($terminal_id = null)
+function atm_select($terminal_id = null, $branch_id = null)
 {
-
-        require_once('api_atm.php');
-
-        if (isProjectATMmonitoring()) {
-
+    
+    
+    require_once('api_atm.php');
+    
+    if (isProjectATMmonitoring()) {
+        
         $terminal_rows = atmGetTerminals();
         $branch_rows = atm_get_atm_branches();
+    
 
 
 
@@ -56,7 +58,13 @@ function atm_select($terminal_id = null)
         echo '</select>';
         echo '<div class="input-sm" ><span> - OR - </span></div>';
         echo '<select class="senselectpicker" data-live-search="true" name="branch_id" id="branch_id">';
-        echo '<option disabled selected value="">Select By Branch Name</option>';
+        if ($branch_id !== null) {
+            $branch_name_by_id = atm_get_branch_by_id($branch_id);
+            echo '<option selected value="' . $branch_id . '">' . $branch_name_by_id["name"] . '</option>';
+            echo '<option disabled value="">Select Branch Name</option>';
+        } else {
+            echo '<option disabled selected value="">Select Branch Name</option>';
+        }
         foreach ($branch_rows as $branch) {
             echo '<option value="' . $branch['id'] . '">' . $branch['name'] . '</option>';
         }

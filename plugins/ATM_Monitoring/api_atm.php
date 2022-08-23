@@ -568,7 +568,7 @@ function atm_get_atm_by_branch_id($p_atm_branch_id) {
 
 }
 
-function get_terminal_id_by_issue_id($p_issue_id) {
+function get_id_by_issue_id($p_issue_id) {
 
 	
 	$t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $p_issue_id;
@@ -633,11 +633,9 @@ function atm_get_terminal_id($p_atm_id)
  */
 function atm_get_by_terminal_id($p_terminal_id)
 {
-	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  WHERE id = ' . $p_terminal_id;
+	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  WHERE terminal_id = "' . $p_terminal_id.'"';
 	$t_result = db_query($t_query);
-
 	$t_row = db_fetch_array($t_result);
-
 
 	if (!$t_row) {
 		return false;
@@ -645,7 +643,30 @@ function atm_get_by_terminal_id($p_terminal_id)
 
 	return $t_row;
 }
+function atm_get_by_id($p_id)
+{
+	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  WHERE id = "' . $p_id.'"';
+	$t_result = db_query($t_query);
+	$t_row = db_fetch_array($t_result);
 
+	if (!$t_row) {
+		return false;
+	}
+
+	return $t_row;
+}
+function atm_id_get_by_terminal_id($p_terminal_id)
+{
+	$t_query = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id . '"';
+	$t_result = db_query($t_query);
+	$t_row = db_fetch_array($t_result);
+
+	if (!$t_row) {
+		return false;
+	}
+
+	return $t_row;
+}
 /**
  * Return a single field from a atm row for the given ID.
  * @param integer $p_atm_id     The atm id to lookup.
