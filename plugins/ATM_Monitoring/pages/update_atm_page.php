@@ -40,8 +40,8 @@
  */
 
 require_once('core.php');
-require_once(''.dirname(__DIR__).'/api_atm.php');
-require_once(''.dirname(__DIR__).'/atm_helper.php');
+require_once('' . dirname(__DIR__) . '/api_atm.php');
+require_once('' . dirname(__DIR__) . '/atm_helper.php');
 
 require_api('access_api.php');
 require_api('authentication_api.php');
@@ -67,8 +67,15 @@ echo $f_atm_id;
 atm_ensure_exists($f_atm_id);
 $t_atm_row = atm_get($f_atm_id);
 
+$d_branches_result = getAllBranches();
+
+$d_branches = [];
+while ($row = db_fetch_array($d_branches_result)) {
+	$d_branches[] = $row;
+}
+
 $t_terminal_id = string_display_line($t_atm_row['terminal_id']);
-$t_branch_name = string_display($t_atm_row['branch_name']);
+$t_old_branch = atm_get_branch_by_id($t_atm_row['branch_id']);
 $t_model = string_display($t_atm_row['model']);
 $t_ip = string_display($t_atm_row['ip_address']);
 $t_port = string_display($t_atm_row['port']);
@@ -86,6 +93,11 @@ if (!(access_has_global_level(plugin_config_get('atm_edit_threshold'))
 layout_page_header(sprintf(plugin_lang_get('update_atm'), $t_terminal_id));
 
 layout_page_begin();
+
+echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
+echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
+echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
+
 ?>
 
 <div class="col-md-12 col-xs-12">
@@ -102,7 +114,7 @@ layout_page_begin();
 				<div class="widget-main no-padding">
 					<div class="widget-toolbox padding-8 clearfix">
 						<?php print_link_button(
-							plugin_page('view_atm_page?atm_id='.$f_atm_id),
+							plugin_page('view_atm_page?atm_id=' . $f_atm_id),
 							plugin_lang_get('atm_update_return'),
 							'btn-sm pull-right'
 						); ?>
@@ -151,13 +163,26 @@ layout_page_begin();
 										</td>
 										<td><?php echo  $t_atm_row['date_updated']  ?></td>
 									</tr>
-				
+
 									<tr>
 										<td class="category">
-											<?php echo plugin_lang_get('atm_branch_name') ?>
+											<?php echo plugin_lang_get('atm_select_branch') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="branch_name" class="input-sm" value="<?php echo $t_branch_name ?>" />
+
+
+											<select class="senselectpicker" data-live-search="true" name="branch_id" id="atm-name">
+												<option disabled value="">Select Branch</option>
+												<option selected value="<?php echo $t_old_branch['id'] ?>"><?php echo $t_old_branch['name'] ?></option>
+
+												<?php foreach ($d_branches as $branch) { 
+													if($branch['id'] === $t_old_branch['id']) {
+														continue;
+													}
+													?>
+													<option value="<?php echo $branch['id'] ?>"><?php echo $branch['name'] ?></option>
+												<?php } ?>
+												?>
 										</td>
 									</tr>
 									<tr>
@@ -165,18 +190,18 @@ layout_page_begin();
 											<?php echo plugin_lang_get('atm_model') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="model" class="input-sm" value="<?php echo $t_model ?>" />
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="model" class="input-sm" value="<?php echo $t_model ?>" />
 
-									</td>
+										</td>
 									</tr>
-									
+
 									<tr>
 										<td class="category">
 											<?php echo plugin_lang_get('atm_ip') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="ip" class="input-sm" value="<?php echo $t_ip ?>" />
-	
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="ip" class="input-sm" value="<?php echo $t_ip ?>" />
+
 										</td>
 									</tr>
 									<tr>
@@ -184,7 +209,7 @@ layout_page_begin();
 											<?php echo plugin_lang_get('atm_port') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="port" class="input-sm" value="<?php echo $t_port ?>" />	
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="port" class="input-sm" value="<?php echo $t_port ?>" />
 										</td>
 									</tr>
 									<tr>
@@ -192,7 +217,7 @@ layout_page_begin();
 											<?php echo plugin_lang_get('atm_country') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="country" class="input-sm" value="<?php echo $t_country ?>" />
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="country" class="input-sm" value="<?php echo $t_country ?>" />
 
 										</td>
 									</tr>
@@ -201,19 +226,19 @@ layout_page_begin();
 											<?php echo plugin_lang_get('atm_city') ?>
 										</td>
 										<td>
-										<select name="city" id="atm-name">
+											<select name="city" id="atm-name">
 												<option value="Addis Ababa">Addis Ababa</option>
 												<option value="Bahir Dar">Bahir Dar</option>
 												<option value="Gondar">Gondar</option>
 												<option value="Mekelle">Mekelle</option>
-												<option value="Adama">	Adama</option>
+												<option value="Adama"> Adama</option>
 												<option value="Awassa">Awassa</option>
 												<option value="Dire Dawa">Dire Dawa</option>
 												<option value="Dessie">Dessie</option>
 												<option value="Jimma">Jimma</option>
 												<option value="Bishoftu">Bishoftu</option>
 												<option value="Arba Minch">Arba Minch</option>
-												<option value="Harar">	Harar</option>
+												<option value="Harar"> Harar</option>
 												<option value="Dilla">Dilla</option>
 												<option value="Debre Birhan">Debre Birhan</option>
 												<option value="Debre Mark'os">Debre Mark'os</option>
@@ -224,9 +249,9 @@ layout_page_begin();
 												<option value="Bonga">Bonga</option>
 												<option value="Assosa">Assosa</option>
 												<option value="Welkite">Welkite</option>
-												
+
 											</select>
-	
+
 										</td>
 									</tr>
 									<tr>
@@ -234,8 +259,8 @@ layout_page_begin();
 											<?php echo plugin_lang_get('atm_spec_loc') ?>
 										</td>
 										<td>
-										<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="spec_loc" class="input-sm" value="<?php echo $t_spec_loc ?>" />
-	
+											<input type="text" <?php echo helper_get_tab_index() ?> id="atm-name" name="spec_loc" class="input-sm" value="<?php echo $t_spec_loc ?>" />
+
 										</td>
 									</tr>
 								</fieldset>

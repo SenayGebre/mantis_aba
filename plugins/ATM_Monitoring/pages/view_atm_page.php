@@ -38,8 +38,8 @@
  */
 
 require_once('core.php');
-require_once(''.dirname(__DIR__).'/atm_helper.php');
-require_once(''.dirname(__DIR__).'/api_atm.php');
+require_once('' . dirname(__DIR__) . '/atm_helper.php');
+require_once('' . dirname(__DIR__) . '/api_atm.php');
 
 require_api('access_api.php');
 require_api('authentication_api.php');
@@ -61,11 +61,18 @@ compress_enable();
 
 $f_atm_id = atm_get_param('page');
 
-echo $f_atm_id;
 atm_ensure_exists($f_atm_id);
+
+$d_branches_result = getAllBranches();
+
+$d_branches = [];
+while ($row = db_fetch_array($d_branches_result)) {
+	$d_branches[] = $row;
+}
+
 $t_atm_row = atm_get($f_atm_id);
 $t_terminal_id = string_display_line($t_atm_row['terminal_id']);
-$t_branch_name = string_display($t_atm_row['branch_name']);
+$t_branch = atm_get_branch_by_id($t_atm_row['branch_id']);
 $t_model = string_display($t_atm_row['model']);
 $t_ip = string_display($t_atm_row['ip_address']);
 $t_port = string_display($t_atm_row['port']);
@@ -146,7 +153,7 @@ layout_page_begin();
 							<td class="category">
 								<?php echo plugin_lang_get('atm_branch_name') ?>
 							</td>
-							<td><?php echo $t_branch_name ?></td>
+							<td><?php echo $t_branch['name'] ?></td>
 						</tr>
 						<tr>
 							<td class="category">
@@ -200,18 +207,24 @@ layout_page_begin();
 									<?php
 									foreach ($t_atms_related as $t_atm) {
 										$t_terminal_id = string_display_line($t_atm['terminal_id']);
-										$t_branch_name = string_display($t_atm['branch_name']);
+										$t_branch_id = (string)$t_atm_row['branch_id'];
+										$t_atm_branch = null;
+										foreach ($d_branches as $branch) {
+											if ($t_branch_id === (string)$branch['id']) {
+												$t_atm_branch = $branch;
+											}
+										}
 										$t_model = string_display($t_atm['model']);
 										$t_ip = string_display($t_atm['ip_address']);
 										$t_port = string_display($t_atm['port']);
 										$t_country = string_display($t_atm['country']);
 										$t_city = string_display($t_atm['city']);
 										$t_spec_loc = string_display($t_atm['specifc_location']);
-										
+
 										$t_count = $t_atm['count'];
 										$t_link = string_html_specialchars('search.php?atm_string=' . urlencode('+' . $t_atm_row['terminal_id'] . plugin_config_get('atm_separator') . '+' . $t_terminal_id));
 										$t_label = sprintf(plugin_lang_get('atm_related_issues'), $t_atm['count']); ?>
-										<div class="col-md-3 col-xs-6 no-padding"><a href="<?php plugin_page('view_atm_page?atm_id='.$t_atm['id'])?>" title="<?php echo $t_branch_name; ?>"><?php echo $t_terminal_id; ?></a></div>
+										<div class="col-md-3 col-xs-6 no-padding"><a href="<?php plugin_page('view_atm_page?atm_id=' . $t_atm['id']) ?>" title="<?php echo $t_atm_branch['name']; ?>"><?php echo $t_terminal_id; ?></a></div>
 										<div class="col-md-9 col-xs-6 no-padding"><a href="<?php echo $t_link; ?>" class="btn btn-xs btn-primary btn-white btn-round"><?php echo $t_label; ?></a></div>
 										<div class="clearfix"></div>
 										<div class="space-4"></div>

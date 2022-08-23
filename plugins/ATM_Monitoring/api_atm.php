@@ -465,7 +465,7 @@ function atm_get_all($p_terminal_id_filter,$p_search, $p_count,  $p_offset)
 			$t_where = 'WHERE ' . db_helper_like('terminal_id');
 			$t_where_params[] = $p_terminal_id_filter . '%';
 		} else if (!is_blank($p_search)) {
-			$t_where = 'WHERE '. db_helper_like('terminal_id') .' OR '. db_helper_like('branch_name') .' OR '. db_helper_like('model') .' OR '. db_helper_like('ip_address') .' OR '. db_helper_like('port') .' OR '. db_helper_like('country') .' OR '. db_helper_like('city') .' OR '. db_helper_like('specifc_location');
+			$t_where = 'WHERE '. db_helper_like('terminal_id') .' OR '. db_helper_like('branch_id') .' OR '. db_helper_like('model') .' OR '. db_helper_like('ip_address') .' OR '. db_helper_like('port') .' OR '. db_helper_like('country') .' OR '. db_helper_like('city') .' OR '. db_helper_like('specifc_location');
 			$t_where_params = array('%'. $p_search . '%','%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%', '%'. $p_search . '%');
 		}
 		
@@ -499,10 +499,65 @@ function atm_count($p_terminal_id_filter)
 	return (int)db_result($t_result);
 }
 
-function atmGetBranch() {
-	$t_query = 'SELECT * FROM mantis_project_table WHERE mantis_project_table.id IN ( SELECT mantis_project_hierarchy_table.child_id FROM mantis_project_hierarchy_table WHERE mantis_project_hierarchy_table.parent_id = 2)';
+function getAllBranches() {
+	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
 
 	return db_query($t_query);
+}
+
+function atm_get_branches() {
+	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
+
+	return db_query($t_query);
+}
+
+
+
+
+function atm_get_branch_by_id($p_atm_branch_id) {
+	$t_query = 'SELECT * FROM {project} WHERE id = '.$p_atm_branch_id.' ';
+	$t_result = db_query($t_query);
+
+	$t_row = db_fetch_array($t_result);
+
+	if (!$t_row) {
+		return false;
+	}
+
+	return $t_row;
+}
+
+function atm_get_atm_by_branch_id($p_atm_branch_id) {
+
+	
+	$t_query = 'SELECT * FROM '.plugin_table('atm').' WHERE branch_id = '.$p_atm_branch_id.' ';
+	$t_result = db_query($t_query);
+
+	$t_row = db_fetch_array($t_result);
+
+	if (!$t_row) {
+		return false;
+	}
+
+	return $t_row;
+
+}
+
+function get_terminal_id_by_issue_id($p_issue_id) {
+
+	
+	$t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $p_issue_id;
+	$t_result_id = db_query($t_query_id);
+
+	$t_row = db_fetch_array($t_result_id);
+
+
+	if (!$t_row) {
+		return false;
+	}
+
+	return $t_row;
+
 }
 
 function atmGetTerminals() {
@@ -553,11 +608,11 @@ function atm_get_terminal_id($p_atm_id)
  */
 function atm_get_by_terminal_id($p_terminal_id)
 {
-	db_param_push();
-	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  WHERE ' . db_helper_like('terminal_id');
-	$t_result = db_query($t_query, array($p_terminal_id));
+	$t_query = 'SELECT * FROM ' . plugin_table('atm') . '  WHERE id = ' . $p_terminal_id;
+	$t_result = db_query($t_query);
 
 	$t_row = db_fetch_array($t_result);
+
 
 	if (!$t_row) {
 		return false;
@@ -618,7 +673,7 @@ function atm_ensure_can_create($p_user_id = null)
 function atm_create(
 	$p_terminal_id,
 	$p_user_id = null,
-	$p_branch_name = null,
+	$p_branch_id = null,
 	$p_model = null,
 	$p_ip_address = null,
 	$p_port = null,
@@ -641,11 +696,11 @@ function atm_create(
 	$c_date_updated =  date('y-m-d h:i');
 	db_param_push();
 	$t_query = 'INSERT INTO ' . plugin_table('atm') . ' 
-				( user_id, terminal_id, branch_name, model, ip_address, port,  country, city, specifc_location, date_created, date_updated )
+				( user_id, terminal_id, branch_id, model, ip_address, port,  country, city, specifc_location, date_created, date_updated )
 				VALUES
 				( ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param() . ', ' . db_param()  . ',
 				 ' . db_param() . ',' . db_param() . ',' . db_param() . ',' . db_param() . ', ' . db_param() . ',' . db_param()  . ')';
-	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_created, $c_date_updated));
+	db_query($t_query, array($p_user_id, $p_terminal_id, $p_branch_id, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_created, $c_date_updated));
 
 	return db_insert_id(db_get_table(plugin_table('atm')));
 }
@@ -664,7 +719,7 @@ function atm_update(
 	$p_atm_id,
 	$p_terminal_id,
 	$p_user_id,	
-	$p_branch_name,
+	$p_branch_id,
 	$p_model,
 	$p_ip_address,
 	$p_port,
@@ -679,7 +734,7 @@ function atm_update(
 	if (
 		$t_atm_terminal_id == $p_terminal_id &&
 		$t_atm_row['user_id'] == $p_user_id &&
-		$t_atm_row['branch_name'] == $p_branch_name &&
+		$t_atm_row['branch_id'] == $p_branch_id &&
 		$t_atm_row['model'] == $p_model &&
 		$t_atm_row['ip_address'] == $p_ip_address &&
 		$t_atm_row['port'] == $p_port &&
@@ -721,7 +776,7 @@ function atm_update(
 	$t_query = 'UPDATE ' . plugin_table('atm') . ' 
 					SET user_id=' . db_param() . ',
 						terminal_id=' . db_param() . ',
-						branch_name=' . db_param() . ',
+						branch_id=' . db_param() . ',
 						model=' . db_param() . ',
 						ip_address=' . db_param() . ',
 						port=' . db_param() . ',
@@ -730,7 +785,7 @@ function atm_update(
 						specifc_location=' . db_param() . ',
 						date_updated=' . db_param() . '
 					WHERE id=' . db_param();
-	db_query($t_query, array((int)$p_user_id, $p_terminal_id,  $p_branch_name, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated, $p_atm_id));
+	db_query($t_query, array((int)$p_user_id, $p_terminal_id,  $p_branch_id, $p_model, $p_ip_address, $p_port, $p_country, $p_city, $p_specifc_location, $c_date_updated, $p_atm_id));
 
 	if ($t_rename) {
 		$t_bugs = atm_get_bugs_attached($p_atm_id);

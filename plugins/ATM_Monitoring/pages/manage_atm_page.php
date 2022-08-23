@@ -27,10 +27,15 @@ $f_filter = $f_filter_char !== '' ? mb_strtoupper(atm_get_param('page')) : mb_st
 $f_page_number = gpc_get_int('page_number', 1);
 $f_search = gpc_get_string('search', '');
 
-$d_branches = atmGetBranch();
+$d_branches_result = getAllBranches();
+
+$d_branches = [];
+while($row = db_fetch_array($d_branches_result))
+{
+    $d_branches[] = $row;
+}
 
 
-echo $f_filter;
 
 # Start Index Menu
 $t_prefix_array = array('ALL');
@@ -225,7 +230,14 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 								# Display all atms
 								while ($t_atm_row = db_fetch_array($t_result)) {
 									$t_atm_terminal_id = string_display_line($t_atm_row['terminal_id']);
-									$t_atm_branch_name = string_display($t_atm_row['branch_name']);
+									$t_atm_branch_id = (string)$t_atm_row['branch_id']	;
+									$t_atm_branch = null;
+									foreach($d_branches as $branch) {
+										if($t_atm_branch_id === (string)$branch['id']) {
+											$t_atm_branch = $branch;
+										}
+									}
+									// atm_get_branch_by_id($t_atm_branch_id);
 									$t_atm_model = string_display($t_atm_row['model']);
 									$t_atm_ip = string_display($t_atm_row['ip_address']);
 									$t_atm_port = string_display($t_atm_row['port']);
@@ -242,7 +254,7 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 											<td><?php echo $t_atm_terminal_id ?></td>
 										<?php } ?>
 										<td><?php echo string_display_line(user_get_name($t_atm_row['user_id'])) ?></td>
-										<td><?php echo  $t_atm_branch_name ?></td>
+										<td><?php echo  string_display($t_atm_branch['name']) ?></td>
 										<td><?php echo  $t_atm_model ?></td>
 										<td><?php echo  $t_atm_ip ?></td>
 										<td><?php echo  $t_atm_port ?></td>
@@ -318,7 +330,7 @@ if (ALL_PROJECTS !== $t_project_id and 'ATM Monitoring' === $current_project['na
 													<?php echo plugin_lang_get('atm_select_branch') ?>
 												</td>
 												<td>
-													<select class="senselectpicker" data-live-search="true" name="atm_name" id="atm_branch">
+													<select class="senselectpicker" data-live-search="true" name="branch_id" id="atm-name">
 														<option disabled selected value="">Select Branch</option>
 														<?php foreach ($d_branches as $branch) { ?>
 															<option value="<?php echo $branch['id'] ?>"><?php echo $branch['name'] ?></option>

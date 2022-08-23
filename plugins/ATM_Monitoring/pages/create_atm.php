@@ -41,14 +41,13 @@ require_once(''.dirname(__DIR__).'/api_atm.php');
 form_security_validate( 'atm_create' );
 
 $f_atm_terminal_id = gpc_get_string( 'terminal_id' );
-$f_atm_branch_name = gpc_get_string( 'branch_name' );
 $f_atm_model = gpc_get_string( 'model' );
 $f_atm_ip = gpc_get_string( 'ip' );
 $f_atm_port = gpc_get_string( 'port' );
 $f_atm_country = gpc_get_string( 'country' );
 $f_atm_city = gpc_get_string( 'city' );
 $f_atm_spec_loc = gpc_get_string( 'spec_loc' );
-
+$f_atm_branch_id = gpc_get_string( 'branch_id' );
 
 $t_atm_user = auth_get_current_user_id();
 
@@ -57,7 +56,7 @@ if( !is_null( $f_atm_terminal_id ) ) {
 	foreach ( $t_atms as $t_atm_row ) {
 		switch( $t_atm_row['id'] ) {
 			case -1:
-				atm_create( $t_atm_row['terminal_id'], $t_atm_user, $f_atm_branch_name, $f_atm_model, $f_atm_ip, $f_atm_port, $f_atm_country,$f_atm_city,$f_atm_spec_loc );
+				atm_create( $t_atm_row['terminal_id'], $t_atm_user, $f_atm_branch_id, $f_atm_model, $f_atm_ip, $f_atm_port, $f_atm_country,$f_atm_city,$f_atm_spec_loc );
 				break;
 			case -2:
 				error_parameters( $t_atm_row['terminal_id'] );
