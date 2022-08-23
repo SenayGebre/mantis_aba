@@ -50,8 +50,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_UPDATE_BUG_FORM' => 'update_atm',
             'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
             'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
-
-
         );
     }
 
@@ -79,26 +77,20 @@ class ATM_MonitoringPlugin extends MantisPlugin
     function process_data($event, $t_issue)
     {
 
-        echo '<h1>Senayyyasdfhsdafjl dasklfjsdalkfj asdlfjsldakfjl</h1>';
         require_once('api_atm.php');
         require_once('atm_helper.php');
         if (isProjectATMmonitoring()) {
             // echo '<h1>'.!empty(gpc_get("terminal_id")) ? true : false.'</h1>';
+            // echo '<h1>'.!empty(gpc_get("terminal_id")) ? true : false.'</h1>';
 
             
-            if(!empty(gpc_isset("terminal_id")) && !is_blank(gpc_get("terminal_id"))) {
+            if(gpc_isset("terminal_id") && !is_blank(gpc_get("terminal_id"))) {
                 $p_terminal_id = gpc_get("terminal_id");
                 $p_atm = atm_get_by_terminal_id($p_terminal_id);
             } else if(!empty(gpc_get("branch_id")) && !is_blank(gpc_get("branch_id"))) {
                 $p_atm = atm_get_atm_by_branch_id(gpc_get("branch_id"));
             }
-            
-            
-            
-            
-            
-            
-            
+                  
             
             $t_atms = [];
             
@@ -113,13 +105,12 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         return $t_issue;
     }
+
     function store_data($event, $t_issue)
     {
         require_once('mc_atm_api.php');
 
-        $t_project_id = helper_get_current_project();
-        $current_project = project_cache_row($t_project_id);
-        if ('ATM Monitoring' === $current_project['name']) {
+        if (isProjectATMmonitoring()) {
 
             $p_user_id = auth_get_current_user_id();
 
@@ -159,7 +150,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
-
+    
     function update_atm($event, $issue_id)
     {
         require_once('api_atm.php');
