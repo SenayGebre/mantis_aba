@@ -73,22 +73,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
-        require_once('atm_helper.php');
-
-        if (isProjectATMmonitoring()) {
-            $t_query = 'SELECT * FROM ' . plugin_table('atm');
-            $t_result = db_query($t_query);
-
-            $terminal_id_rows = array();
-            $branch_name_rows = array();
-            while ($row = db_fetch_array($t_result)) {
-                $terminal_id_rows[] = $row['terminal_id'];
-                $branch_name_rows[] = array('terminal_id' => $row['terminal_id'], 'branch_name' => $row['branch_name'],);
-            }
-
-
-            atm_select($branch_name_rows, $terminal_id_rows);
-        }
+            require_once('atm_helper.php');
+            atm_select();
     }
     function process_data($event, $t_issue)
     {
@@ -162,7 +148,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         require_once('atm_helper.php');
         require_once('atm_helper.php');
 
-        if (isProjectATMmonitoring()) {
+        if (false) {
 
             $t_query = 'SELECT * FROM ' . plugin_table('atm');
             $t_result = db_query($t_query);
@@ -189,7 +175,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             }
 
 
-            atm_select($branch_name_rows, $terminal_id_rows, $terminal_id);
+            // atm_select($branch_name_rows, $terminal_id_rows, $terminal_id);
         }
     }
     function manage_atm_menu()
@@ -209,7 +195,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
 	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
                 terminal_id             C(40)   NOTNULL DEFAULT \" '' \",
-                branch_name             C(100)  DEFAULT NULL,
+                branch_id               C(100)  DEFAULT NULL,
                 model                   C(64)   NOTNULL DEFAULT \" '' \",
                 ip_address              C(100)  DEFAULT NULL,
                 port                    I       DEFAULT NULL,
