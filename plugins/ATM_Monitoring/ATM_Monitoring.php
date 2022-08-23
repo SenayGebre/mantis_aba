@@ -84,6 +84,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
         require_once('atm_helper.php');
         if (isProjectATMmonitoring()) {
             // echo '<h1>'.!empty(gpc_get("terminal_id")) ? true : false.'</h1>';
+            // echo '<h1>'.!empty(gpc_get("terminal_id")) ? true : false.'</h1>';
 
             
             if(!empty(gpc_isset("terminal_id")) && !is_blank(gpc_get("terminal_id"))) {
