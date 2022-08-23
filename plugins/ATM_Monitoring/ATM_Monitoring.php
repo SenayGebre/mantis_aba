@@ -48,6 +48,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
             'EVENT_UPDATE_BUG_FORM' => 'update_atm',
+            'EVENT_UPDATE_BUG_DATA' => 'process_updated_data',
             'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
             'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
 
@@ -94,12 +95,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 $p_atm = atm_get_atm_by_branch_id(gpc_get("branch_id"));
             }
             
-            
-            
-            
-            
-            
-            
+           
             
             $t_atms = [];
             
@@ -161,22 +157,111 @@ class ATM_MonitoringPlugin extends MantisPlugin
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
     }
 
-    function update_atm($event, $issue_id)
+    function update_atm($event,   $issue_id)
     {
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+        $terminal_id = null;
+        $branch_name = null;
+
+        $t_query = 'SELECT * FROM ' . plugin_table('atm');
+        $t_result = db_query($t_query);
+
+        $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $issue_id;
+        $t_result_id = db_query($t_query_id);
+        $t_result_id = db_fetch_array($t_result_id);
+
+        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
+        $t_result_atm_id = db_query($t_query_atm_id);
+        $atm_tobe_updated =  db_fetch_array($t_result_atm_id);
+
+        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
+        $t_result_atm_id = db_query($t_query_atm_id);
+        $atm_tobe_updated = db_fetch_array($t_result_atm_atm_id);
+        // $t_result_id = null;
+        //   echo '<pre>';
+        // print_r(db_fetch_array($t_result_id));
+        // echo '</pre>';
+
         require_once('api_atm.php');
         require_once('atm_helper.php');
-
         if (isProjectATMmonitoring()) {
-
-            $t_terminal_id = get_terminal_id_by_issue_id($issue_id)['atm_id'];
-            $t_atm = atm_get_by_terminal_id($t_terminal_id);
             
-            if(isset($t_atm) && !empty($t_atm)) {
-                atm_select($t_atm['terminal_id']);
+            while ($row = db_fetch_array($t_result)) {
+
+                $atm_rows[] = ['terminal_id' => $row['terminal_id'], 'branch_name' => $row['branch_name'],];
             }
 
+            // echo '<pre>';
+            //         print_r($atm_rows);
+            //         echo '</pre>';
 
+
+
+
+
+            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('bootstrap-select.min.s.css'), true), '" />', "\n";
+            echo "\t", '<script type="text/javascript" src="', plugin_file('bootstrap-select.min.s.js'), '"></script>', "\n";
+            echo "\t", '<link rel="stylesheet" type="text/css" href="', string_sanitize_url(plugin_file('atm_monitoring_custom_css.css'), true), '" />', "\n";
+
+
+            echo '<tr>';
+            echo '<th class="category">';
+            echo '<span class="required">*</span><label for="terminal_id">Terminal ID</label>';
+            echo '<td>';
+            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
+
+            echo '<option selected value="' . $atm_tobe_updated["terminal_id"] . '">' .  $atm_tobe_updated["terminal_id"] . '</option>';
+            echo '<option disabled value="">Select Terminal ID</option>';
+
+            foreach ($atm_rows as $terminal_id) {
+                echo '<option value="' . $terminal_id['terminal_id'] . '">' . $terminal_id['terminal_id'] . '</option>';
+            }
+            echo '</select>';
+            echo '<div class="input-sm" ><span> - OR - </span></div>';
+            echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
+
+
+            echo '<option selected value="' . $atm_tobe_updated["terminal_id"] . '">' . $atm_tobe_updated["branch_name"] . '</option>';
+            echo '<option disabled value="">Select Terminal ID</option>';
+
+            foreach ($atm_rows as $branch_row) {
+                echo '<option value="' . $branch_row['terminal_id'] . '">' . $branch_row['branch_name'] . '</option>';
+            }
+            echo '</select>';
+            echo '</td>';
+            echo '</tr>';
         }
+    }
+
+    function process_updated_data($event, $u_issue, $o_issue)
+    {
+
+        require_once('api_atm.php');
+        require_once('atm_helper.php');
+        if (isProjectATMmonitoring()) {
+            require_once('api_atm.php');
+            $p_terminal_id = gpc_get("terminal_id");
+            echo '<pre>';
+            print_r($p_terminal_id);
+            echo '</pre>';
+            $t_query_id = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id . '"';
+            $t_result_id = db_query($t_query_id);
+            $t_result_id = db_fetch_array($t_result_id);
+
+            $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
+                        SET atm_id=' . $t_result_id["id"] . ',
+                        WHERE bug_id=' . $u_issue->id;
+            echo '<pre>';
+            print_r($t_query);
+            echo '</pre>';
+            db_query($t_query);
+
+
+            return $u_issue;
+        }
+
+        return $u_issue;
     }
 
     function schema()
