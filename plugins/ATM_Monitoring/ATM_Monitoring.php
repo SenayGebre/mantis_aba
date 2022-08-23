@@ -65,6 +65,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
 
     function alert_message()
+   
     {
         echo '<script type="text/javascript">
     alert_message();
@@ -128,15 +129,19 @@ class ATM_MonitoringPlugin extends MantisPlugin
             $t_atms = [];
             $r_atm = atm_get_by_terminal_id($p_terminal_id);
 
-            array_push($t_atms, $r_atm);
+                array_push($t_atms, $r_atm);
 
             $t_issue->atm = $t_atms;
             // echo '<pre>';
             // print_r($t_issue);
             // echo '</pre>';
 
-            return $t_issue;
-        } 
+                return $t_issue;
+            }  
+            
+        return $t_issue;
+        
+    }
             
         return $t_issue;
         
@@ -144,6 +149,10 @@ class ATM_MonitoringPlugin extends MantisPlugin
     function store_data($event, $t_issue)
     {
         $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+
+        if ('ATM Monitoring' === $current_project['name']) {
+            $t_project_id = helper_get_current_project();
         $current_project = project_cache_row($t_project_id);
 
         if ('ATM Monitoring' === $current_project['name']) {
@@ -180,7 +189,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</tr>';
         }
     }
-    function update_atm($event, $issue_id)
+    function update_atm($event,  $issue_id)
     {
         $t_project_id = helper_get_current_project();
         $current_project = project_cache_row($t_project_id);
@@ -196,7 +205,11 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
         $t_result_atm_id = db_query($t_query_atm_id);
-        $atm_tobe_updated = db_fetch_array($t_result_atm_id);
+        $atm_tobe_updated =  db_fetch_array($t_result_id);
+
+        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
+        $t_result_atm_id = db_query($t_query_atm_id);
+        $atm_tobe_updated = db_fetch_array($t_result_atm_atm_id);
         // $t_result_id = null;
         //   echo '<pre>';
         // print_r(db_fetch_array($t_result_id));
@@ -251,6 +264,35 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</td>';
             echo '</tr>';
         }
+    }
+    function process_updated_data($event, $u_issue, $o_issue){
+
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+
+        if ('ATM Monitoring' === $current_project['name']) {
+            require_once('api_atm.php');
+            $p_terminal_id = gpc_get("terminal_id");           
+            echo '<pre>';
+            print_r($p_terminal_id );
+            echo '</pre>';
+            $t_query_id = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id.'"';
+            $t_result_id = db_query($t_query_id);
+            $t_result_id = db_fetch_array($t_result_id);
+            
+            $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
+                        SET atm_id=' .$t_result_id["id"] . ',
+                        WHERE bug_id=' . $u_issue->id;
+            echo '<pre>';
+            print_r($t_query);
+            echo '</pre>';
+    db_query($t_query);
+        
+
+            return $u_issue;
+        } 
+            
+        return $u_issue;
     }
     function process_updated_data($event, $u_issue, $o_issue){
 
