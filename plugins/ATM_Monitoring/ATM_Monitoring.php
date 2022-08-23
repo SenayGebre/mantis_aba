@@ -193,6 +193,35 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         }
     }
+    function process_updated_data($event, $u_issue, $o_issue)
+    {
+
+        require_once('api_atm.php');
+        require_once('atm_helper.php');
+        if (isProjectATMmonitoring()) {
+            require_once('api_atm.php');
+            $p_terminal_id = gpc_get("terminal_id");
+            echo '<pre>';
+            print_r($p_terminal_id);
+            echo '</pre>';
+            $t_query_id = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id . '"';
+            $t_result_id = db_query($t_query_id);
+            $t_result_id = db_fetch_array($t_result_id);
+
+            $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
+                        SET atm_id=' . $t_result_id["id"] . ',
+                        WHERE bug_id=' . $u_issue->id;
+            echo '<pre>';
+            print_r($t_query);
+            echo '</pre>';
+            db_query($t_query);
+
+
+            return $u_issue;
+        }
+
+        return $u_issue;
+    }
 
     function schema()
     {
