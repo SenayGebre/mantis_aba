@@ -67,7 +67,7 @@ echo $f_atm_id;
 atm_ensure_exists($f_atm_id);
 $t_atm_row = atm_get($f_atm_id);
 
-$d_branches_result = getAllBranches();
+$d_branches_result = atm_get_atm_branches();
 
 $d_branches = [];
 while ($row = db_fetch_array($d_branches_result)) {

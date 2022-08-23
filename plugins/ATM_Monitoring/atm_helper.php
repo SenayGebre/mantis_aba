@@ -29,7 +29,7 @@ function atm_select($terminal_id = null)
         if (isProjectATMmonitoring()) {
 
         $terminal_rows = atmGetTerminals();
-        $branch_rows = getAllBranches();
+        $branch_rows = atm_get_atm_branches();
 
 
 

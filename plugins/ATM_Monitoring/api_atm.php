@@ -513,15 +513,26 @@ function atm_count($p_terminal_id_filter)
 	return (int)db_result($t_result);
 }
 
-function getAllBranches() {
+// function getAllBranches() {
+// 	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
+
+// 	return db_query($t_query);
+// }
+
+// function getATMBranches() {
+// 	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
+
+// 	return db_query($t_query);
+// }
+
+function atm_get_branches() {
 	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
 
 	return db_query($t_query);
 }
 
-function atm_get_branches() {
-	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
-
+function atm_get_atm_branches() {
+	$t_query = 'SELECT * FROM {projecT} WHERE EXISTS ( SELECT '.plugin_table('atm').'.branch_id FROM '.plugin_table('atm').' WHERE  '.plugin_table('atm').'.branch_id = {project}.id )';
 	return db_query($t_query);
 }
 
