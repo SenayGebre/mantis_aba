@@ -78,30 +78,38 @@ class ATM_MonitoringPlugin extends MantisPlugin
     }
     function process_data($event, $t_issue)
     {
+
+        echo '<h1>Senayyyasdfhsdafjl dasklfjsdalkfj asdlfjsldakfjl</h1>';
         require_once('api_atm.php');
         require_once('atm_helper.php');
         if (isProjectATMmonitoring()) {
+            // echo '<h1>'.!empty(gpc_get("terminal_id")) ? true : false.'</h1>';
 
-
-            $p_terminal_id = gpc_get("terminal_id");
-
-
-
+            
+            if(!empty(gpc_isset("terminal_id")) && !is_blank(gpc_get("terminal_id"))) {
+                $p_terminal_id = gpc_get("terminal_id");
+                $p_atm = atm_get_by_terminal_id($p_terminal_id);
+            } else if(!empty(gpc_get("branch_id")) && !is_blank(gpc_get("branch_id"))) {
+                $p_atm = atm_get_atm_by_branch_id(gpc_get("branch_id"));
+            }
+            
+            
+            
+            
+            
+            
+            
+            
             $t_atms = [];
-            $r_atm = atm_get_by_terminal_id($p_terminal_id);
+            
+            if(isset($p_atm) && !empty($p_atm)) {
+                array_push($t_atms, $p_atm);
+    
+                $t_issue->atm = $t_atms;
+            }
+            
 
-            array_push($t_atms, $r_atm);
-
-            $t_issue->atm = $t_atms;
         }
-
-
-
-
-
-        // echo '<pre>';
-        // print_r($t_issue);
-        // echo '</pre>';
 
         return $t_issue;
     }
@@ -116,71 +124,58 @@ class ATM_MonitoringPlugin extends MantisPlugin
             $p_user_id = auth_get_current_user_id();
 
             mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
-            mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
-            mci_atm_set_for_issue($t_issue->id, $t_issue->atm, $p_user_id);
         }
     }
-    function view_details($event, $t_issue)
-    {
-        $d_query = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id =' . $t_issue;
-        $d_result_atm_id = db_query($d_query);
-        $t_row = db_fetch_array($d_result_atm_id);
-        if (!empty($t_row)) {
+    function view_details($event, $t_issue_id) {
+        require_once('api_atm.php');
 
-            $d_query_2 = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id =' . $t_row['atm_id'];
-            $d_result_terminal_id = db_query($d_query_2);
-            $t_row_2 = db_fetch_array($d_result_terminal_id);
-
-
-
-            echo '<th class="bug-summary category">Terminal ID</th>';
-            // echo '<td class="bug-summary" colspan="5">', string_display_links($t_row['terminal_id']), '</td>';
-            echo '<td class="bug-summary" colspan="5"><a href="' . plugin_page('view_atm_page') . '?atm_id=' . $t_row_2['id'] . '">' . string_display_links($t_row_2['terminal_id']) . '</a></td>';
-
-            echo '</tr>';
-            echo '<th class="bug-summary category">Branch Name</th>';
-            echo '<td class="bug-summary" colspan="5">', string_display_links($t_row_2['branch_name']), '</td>';
-            echo '</tr>';
-        }
-    }
-    function update_atm($event, $issue_id)
-    {
-        require_once('atm_helper.php');
-        require_once('atm_helper.php');
-
-        if (false) {
-
-            $t_query = 'SELECT * FROM ' . plugin_table('atm');
-            $t_result = db_query($t_query);
-
-            $terminal_id = null;
-            $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $issue_id;
-            $t_result_id = db_query($t_query_id);
-            $t_result_id = db_fetch_array($t_result_id);
-            // $t_result_id = null;
-            //   echo '<pre>';
-            // print_r(db_fetch_array($t_result_id));
-            // echo '</pre>';
-
-            // echo  db_fetch_array($t_result_id);
-
-            $terminal_id_rows = array();
-            $branch_name_rows = array();
-            while ($row = db_fetch_array($t_result)) {
-                if ($t_result_id['atm_id'] === $row['id']) {
-                    $terminal_id = $row['terminal_id'];
+        $t_terminal_id = get_terminal_id_by_issue_id($t_issue_id)['atm_id'];
+        
+        if (!empty($t_terminal_id)) {
+            $t_atm = atm_get_by_terminal_id($t_terminal_id);
+            if(isset($t_atm) && !empty($t_atm)) {
+                if($t_atm['branch_id'] !== null && !is_blank($t_atm['branch_id'])) {
+                    $d_branch = atm_get_branch_by_id($t_atm['branch_id']);
                 }
-                $terminal_id_rows[] = $row['terminal_id'];
-                $branch_name_rows[] = array('terminal_id' => $row['terminal_id'], 'branch_name' => $row['branch_name'],);
+            }
+            
+            // echo '<pre>'; print_r($t_row_2); echo '</pre>';
+
+            if(isset($t_atm) && !empty($t_atm)) {
+            echo '<th class="bug-summary category">Terminal ID</th>';
+            // echo '<td class="bug-summary" colspan="5"    >', string_display_links($t_row['terminal_id']), '</td>';
+            echo '<td class="bug-summary" colspan="5"><a href="' . plugin_page('view_atm_page') . '?atm_id=' . $t_atm['id'] . '">' . string_display_links($t_atm['terminal_id']) . '</a></td>';
             }
 
-
-            // atm_select($branch_name_rows, $terminal_id_rows, $terminal_id);
+            if(isset($d_branch) && !empty($d_branch)) {
+                echo '<tr>';
+                echo '<th class="bug-summary category">Branch Name</th>';
+                echo '<td class="bug-summary" colspan="5">', string_display_links($d_branch['name']), '</td>';
+                echo '</tr>';
+            }
         }
     }
     function manage_atm_menu()
     {
         return array('<a href="' . plugin_page('manage_atm_page') . '">' . plugin_lang_get('manage_atm_page') . '</a>');
+    }
+
+    function update_atm($event, $issue_id)
+    {
+        require_once('api_atm.php');
+        require_once('atm_helper.php');
+
+        if (isProjectATMmonitoring()) {
+
+            $t_terminal_id = get_terminal_id_by_issue_id($issue_id)['atm_id'];
+            $t_atm = atm_get_by_terminal_id($t_terminal_id);
+            
+            if(isset($t_atm) && !empty($t_atm)) {
+                atm_select($t_atm['terminal_id']);
+            }
+
+
+        }
     }
 
     function schema()
@@ -232,7 +227,6 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'atm_edit_own_threshold' => REPORTER,
             'atm_separator' => ',',
             'default_manage_tag_prefix' => 'ALL',
-
         );
     }
 }
