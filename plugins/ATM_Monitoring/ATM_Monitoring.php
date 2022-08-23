@@ -129,7 +129,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             $t_atms = [];
             $r_atm = atm_get_by_terminal_id($p_terminal_id);
 
-            array_push($t_atms, $r_atm);
+                array_push($t_atms, $r_atm);
 
             $t_issue->atm = $t_atms;
             // echo '<pre>';
@@ -165,6 +165,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             }
         }
     }
+    }
 
     function view_details($event, $t_issue)
     {
@@ -189,7 +190,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             echo '</tr>';
         }
     }
-    function update_atm($event,  $issue_id)
+    function update_atm($event,   $issue_id)
     {
         $t_project_id = helper_get_current_project();
         $current_project = project_cache_row($t_project_id);
@@ -353,4 +354,4 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
         );
     }
-}
+
