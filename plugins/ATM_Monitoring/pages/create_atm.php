@@ -56,19 +56,7 @@ $t_atm_user = auth_get_current_user_id();
 
 
 if( !is_null( $f_atm_terminal_id ) ) {
-
-	$t_atms = atm_parse_string( $f_atm_terminal_id );
-		
-	foreach ( $t_atms as $t_atm_row ) {
-		switch( $t_atm_row['id'] ) {
-			case -1:
-				atm_create( $t_atm_row['terminal_id'], $t_atm_user, $f_atm_branch_id, $f_atm_model, $f_atm_ip, $f_atm_port, $f_atm_country,$f_atm_city,$f_atm_spec_loc );
-				break;
-			case -2:
-				error_parameters( $t_atm_row['terminal_id'] );
-				trigger_error( ERROR_TERMINAL_ID_INVALID, ERROR );
-		}
-	}
+	atm_create( $f_atm_terminal_id, $t_atm_user, $f_atm_branch_id, $f_atm_model, $f_atm_ip, $f_atm_port, $f_atm_country,$f_atm_city,$f_atm_spec_loc );
 }
 
 form_security_purge( 'create_atm' );

@@ -312,9 +312,16 @@ function atm_cmp_terminal_id(array $p_atm1, array $p_atm2)
  */
 function atm_parse_string($p_string)
 {
-	if(str_contains($p_string, plugin_config_get('atm_separator'))) {
-		return false;
-	}
+
+	// if(!str_contains($p_string, plugin_config_get('atm_separator'))) {
+	// 	$t_atm_row = atm_get_by_terminal_id($p_string);
+	// 	echo '<pre>';
+	// 		  print_r($t_atm_row);
+	// 		  echo '</pre>';
+
+	// 	$t_atms[] = $t_atm_row;
+	// 	return $t_atms;
+	// }
 
 	$t_atms = array();
 
@@ -688,6 +695,7 @@ function atm_create(
 	$p_city = '',
 	$p_specifc_location = ''
 ) {
+
 	atm_ensure_can_create($p_user_id);
 
 	atm_ensure_terminal_id_is_valid($p_terminal_id);
