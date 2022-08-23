@@ -312,7 +312,7 @@ function atm_cmp_terminal_id(array $p_atm1, array $p_atm2)
  */
 function atm_parse_string($p_string)
 {
-	if(str_contains($p_string, plugin_config_get('atm_separator'))) {
+	if(!str_contains($p_string, plugin_config_get('atm_separator'))) {
 		return false;
 	}
 

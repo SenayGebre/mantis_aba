@@ -48,6 +48,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_REPORT_BUG' => 'store_data',
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
             'EVENT_UPDATE_BUG_FORM' => 'update_atm',
+            'EVENT_UPDATE_BUG_DATA' => 'process_updated_data',
             'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
             'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
         );
@@ -152,6 +153,30 @@ class ATM_MonitoringPlugin extends MantisPlugin
     
     function update_atm($event, $issue_id)
     {
+        $t_project_id = helper_get_current_project();
+        $current_project = project_cache_row($t_project_id);
+        $terminal_id = null;
+        $branch_name = null;
+
+        $t_query = 'SELECT * FROM ' . plugin_table('atm');
+        $t_result = db_query($t_query);
+
+        $t_query_id = 'SELECT atm_id FROM ' . plugin_table('bug_atm') . ' WHERE bug_id=' . $issue_id;
+        $t_result_id = db_query($t_query_id);
+        $t_result_id = db_fetch_array($t_result_id);
+
+        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
+        $t_result_atm_id = db_query($t_query_atm_id);
+        $atm_tobe_updated =  db_fetch_array($t_result_atm_id);
+
+        $t_query_atm_id = 'SELECT * FROM ' . plugin_table('atm') . ' WHERE id=' . $t_result_id["atm_id"];
+        $t_result_atm_id = db_query($t_query_atm_id);
+        $atm_tobe_updated = db_fetch_array($t_result_atm_atm_id);
+        // $t_result_id = null;
+        //   echo '<pre>';
+        // print_r(db_fetch_array($t_result_id));
+        // echo '</pre>';
+
         require_once('api_atm.php');
         require_once('atm_helper.php');
 
@@ -166,6 +191,35 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
 
         }
+    }
+    function process_updated_data($event, $u_issue, $o_issue)
+    {
+
+        require_once('api_atm.php');
+        require_once('atm_helper.php');
+        if (isProjectATMmonitoring()) {
+            require_once('api_atm.php');
+            $p_terminal_id = gpc_get("terminal_id");
+            echo '<pre>';
+            print_r($p_terminal_id);
+            echo '</pre>';
+            $t_query_id = 'SELECT id FROM ' . plugin_table('atm') . ' WHERE terminal_id="' . $p_terminal_id . '"';
+            $t_result_id = db_query($t_query_id);
+            $t_result_id = db_fetch_array($t_result_id);
+
+            $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
+                        SET atm_id=' . $t_result_id["id"] . ',
+                        WHERE bug_id=' . $u_issue->id;
+            echo '<pre>';
+            print_r($t_query);
+            echo '</pre>';
+            db_query($t_query);
+
+
+            return $u_issue;
+        }
+
+        return $u_issue;
     }
 
     function schema()
