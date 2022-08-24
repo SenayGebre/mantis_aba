@@ -181,22 +181,13 @@ class ATM_MonitoringPlugin extends MantisPlugin
     {
 
         require_once('api_atm.php');
-        require_once('atm_helper.php');
+        
 
         if (isProjectATMmonitoring()) {
         
-            $p_terminal_id = gpc_get("terminal_id");
+            update_report($u_issue);
+
             
-            $t_result_id = atm_id_get_by_terminal_id($p_terminal_id);
-
-            $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
-                        SET atm_id=' . $t_result_id["id"] . '
-                        WHERE bug_id=' . $u_issue->id;
-            
-            db_query($t_query);
-
-
-            return $u_issue;
         }
 
         return $u_issue;

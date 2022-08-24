@@ -524,6 +524,16 @@ function atm_count($p_terminal_id_filter)
 
 // 	return db_query($t_query);
 // }
+function update_report($updated_issue){
+    $p_terminal_id = gpc_get("terminal_id");
+            
+    $t_result_id = atm_id_get_by_terminal_id($p_terminal_id);
+    $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
+                        SET atm_id=' . $t_result_id["id"] . '
+                        WHERE bug_id=' . $updated_issue->id;
+            
+            db_query($t_query);
+}
 
 function atm_get_branches() {
 	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
