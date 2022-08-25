@@ -533,7 +533,7 @@ function atm_get_branches() {
 }
 
 function get_parent_branch(){
-	$t_query = 'SELECT {project}.id * FROM {project} WHERE {project}.name = "branches"';
+	$t_query = 'SELECT {project}.id * FROM {project} WHERE {project}.name = "Branches"';
 	return db_query($t_query);
 }
 
