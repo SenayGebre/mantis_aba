@@ -524,20 +524,26 @@ function atm_count($p_terminal_id_filter)
 
 // 	return db_query($t_query);
 // }
-function update_report($updated_issue){
-    $p_terminal_id = gpc_get("terminal_id");
+function update_report($updated_issue, $atm_id){
+    
             
-    $t_result_id = atm_id_get_by_terminal_id($p_terminal_id);
+   
     $t_query = 'UPDATE ' . plugin_table('bug_atm') . ' 
-                        SET atm_id=' . $t_result_id["id"] . '
+                        SET atm_id=' . $atm_id["id"] . '
                         WHERE bug_id=' . $updated_issue->id;
             
             db_query($t_query);
 }
 
 function atm_get_branches() {
-	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
+	$parent_branch_id = get_parent_branch();
+	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = '.$parent_branch_id.')';
 
+	return db_query($t_query);
+}
+
+function get_parent_branch(){
+	$t_query = 'SELECT {project}.id * FROM {project} WHERE {project}.name = "Branches"';
 	return db_query($t_query);
 }
 
