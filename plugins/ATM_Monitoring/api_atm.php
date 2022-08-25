@@ -536,8 +536,14 @@ function update_report($updated_issue){
 }
 
 function atm_get_branches() {
-	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = 2)';
+	$parent_branch_id = get_parent_branch();
+	$t_query = 'SELECT * FROM {project} WHERE {project}.id IN ( SELECT {project_hierarchy}.child_id FROM {project_hierarchy} WHERE {project_hierarchy}.parent_id = '.$parent_branch_id.')';
 
+	return db_query($t_query);
+}
+
+function get_parent_branch(){
+	$t_query = 'SELECT {project}.id * FROM {project} WHERE {project}.name = "Branches"';
 	return db_query($t_query);
 }
 
