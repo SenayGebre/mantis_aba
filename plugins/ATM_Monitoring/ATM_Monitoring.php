@@ -49,7 +49,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
             'EVENT_VIEW_BUG_DETAILS' => 'view_details',
             'EVENT_UPDATE_BUG_FORM' => 'update_atm',
             'EVENT_UPDATE_BUG_DATA' => 'process_updated_data',
-            // 'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
+            'EVENT_LAYOUT_RESOURCES' => 'atm_resources',
             'EVENT_LAYOUT_CONTENT_BEGIN' => 'alert_message',
         );
     }
@@ -58,9 +58,9 @@ class ATM_MonitoringPlugin extends MantisPlugin
         {
             
                 
-                // printf( "\t<script type='text/javascript' src=\"%s\"></script>\n",
-                //     plugin_file( 'alem.js' )
-                // );
+                printf( "\t<script type='text/javascript' src=\"%s\"></script>\n",
+                    plugin_file( 'alem.js' )
+                );
             
         }
 
@@ -74,8 +74,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
-        event_signal( 'EVENT_LAYOUT_RESOURCES' );
-        // require_api('http_api.php');
+        // event_signal( 'EVENT_LAYOUT_RESOURCES' );
+        require_api('http_api.php');
         require_once('atm_helper.php');
         // http_all_headers();
         // echo "<script>alert('hello')</script>";
