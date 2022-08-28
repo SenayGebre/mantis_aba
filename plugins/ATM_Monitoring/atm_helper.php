@@ -58,20 +58,22 @@ function atm_select($terminal_id = null, $branch_id = null)
         echo '</select>';
         echo '<div class="input-sm" ><span> - OR - </span></div>';
         echo '<select class="senselectpicker" data-live-search="true" name="branch_id" id="branch_id">';
-        if ($branch_id !== null) {
-            $branch_name_by_id = atm_get_branch_by_id($branch_id);
-            echo '<option disabled value="">Select Branch Name</option>';
-            echo '<option selected value="' . $branch_id . '">' . $branch_name_by_id["name"] . '</option>';
-        } else {
-            echo '<option disabled selected value="">Select Branch Name</option>';
-        }
+        // if ($branch_id !== null) {
+        //     $branch_name_by_id = atm_get_branch_by_id($branch_id);
+        //     echo '<option disabled value="">Select Branch Name</option>';
+        //     echo '<option selected value="' . $branch_id . '">' . $branch_name_by_id["name"] . '</option>';
+        // } else {
+        //     echo '<option disabled selected value="">Select Branch Name</option>';
+        // }
+        echo '<option disabled selected value="">Select Branch Name</option>';
+
        
-        foreach ($branch_rows as $branch) {
-            if ($branch["id"] === $branch_id){
-                continue;
-            }
-            echo '<option value="' . $branch['id'] . '">' . $branch['name'] . '</option>';
-        }
+        // foreach ($branch_rows as $branch) {
+        //     if ($branch["id"] === $branch_id){
+        //         continue;
+        //     }
+        //     echo '<option value="' . $branch['id'] . '">' . $branch['name'] . '</option>';
+        // }
         echo '</select>';
         echo '</td>';
         echo '</tr>';
