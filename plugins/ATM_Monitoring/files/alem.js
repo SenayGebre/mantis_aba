@@ -1,6 +1,16 @@
 
         $(document).ready( function() {
             // $('.some_class').hide();
+
+            $("#terminals_checkbox").change(function() {
+                console.log("sdfsdfd");
+                if(this.checked) {
+                    //I am checked
+                }else{
+                    //I'm not checked
+                }
+            });
+
                 $('#terminal_id').on('change', function() {
                     //    console.log('senay');
                         var terminal_id = this.value;
@@ -51,6 +61,13 @@
                         }
                         // console.log('Value of Radion: '.concat($(this).prev().val(), 'Name of radio: ', ));
                       });
+
+                    //   var selected = [];
+// $('#terminals_checkbox input:checked').each(function() {
+//     // console.log($(this).attr('name'));
+//     console.log('sfdsf');
+//     // selected.push($(this).attr('name'));
+// });
                     
 
         });

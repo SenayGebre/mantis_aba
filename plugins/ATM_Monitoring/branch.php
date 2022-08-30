@@ -11,7 +11,7 @@ $t_query = 'SELECT * FROM mantis_plugin_atm_monitoring_atm_table WHERE branch_id
 $terminal_list_qry = db_query($t_query);
 
 
-echo '<div>';
+echo '<div id="terminals_checkbox">';
 
 while($row = db_fetch_array($terminal_list_qry))
 {
