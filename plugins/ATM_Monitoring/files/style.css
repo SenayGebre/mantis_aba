@@ -70,6 +70,6 @@ input[type="radio"]{
   color: #fff;
 }
 
-.some_class, .senselectpicker{
+.branch_selection{
     display: none;
 }

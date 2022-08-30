@@ -1,5 +1,6 @@
 <?php
 
+require_api( 'http_api.php' );
 
 
 function atm_get_param($p_var_name, $p_default = null)
@@ -48,20 +49,20 @@ function atm_select($terminal_id = null, $branch_id = null)
         echo '</th>';
         echo '<td>';
         echo '<div class="wrapper_atm">
+      
     <input type="radio" name="atm_select" id="terminal_select" checked>
-    <input type="radio" name="atm_select" id="branch_select">
     <label for="terminal_select" class="atm_option terminal_select">
       <div class="atm_dot"></div>
       <span>Select by Terminal ID</span>
     </label>
+    <input type="radio" name="atm_select" id="branch_select">
     <label for="branch_select" class="atm_option branch_select">
       <div class="atm_dot"></div>
       <span>Select by Branch</span>
     </label>
   </div>';
-  echo '<div class="input-sm" ></div>';
-
-        echo '<select class="senselectpicker some_class" data-live-search="true" name="terminal_id" id="terminal_id">';
+        echo '<div class = terminal_selection>';
+        echo '<select class="senselectpicker" data-live-search="true" name="terminal_id" id="terminal_id">';
         if ($terminal_id !== null) {
             echo '<option selected value="' . $terminal_id . '">' . $terminal_id . '</option>';
             echo '<option disabled value="">Select Terminal ID</option>';
@@ -73,36 +74,29 @@ function atm_select($terminal_id = null, $branch_id = null)
             echo '<option value="' . $terminal['terminal_id'] . '">' . $terminal['terminal_id'] . '</option>';
         }
         echo '</select>';
-    //     echo '<label class="switch_atm">
-    //     <input type="checkbox">
-    //     <span class="slider_atm"></span>
-    //   </label>';
-
-    // echo '<input id="toggle-on" class="toggle toggle-left" name="toggle" value="false" type="radio" checked>
-    // <label for="toggle-on" class="btn">Yes</label>
-    // <input id="toggle-off" class="toggle toggle-right" name="toggle" value="true" type="radio">
-    // <label for="toggle-off" class="btn">No</label>';
+        echo '</div>';
 
     
-        echo '<div class="input-sm" ><span> - OR - </span></div>';
-        echo '<select class="senselectpicker sideContent" data-live-search="true" name="branch_idd" id="branch_idd">';
-        // if ($branch_id !== null) {
-        //     $branch_name_by_id = atm_get_branch_by_id($branch_id);
-        //     echo '<option disabled value="">Select Branch Name</option>';
-        //     echo '<option selected value="' . $branch_id . '">' . $branch_name_by_id["name"] . '</option>';
-        // } else {
-        //     echo '<option disabled selected value="">Select Branch Name</option>';
-        // }
-        echo '<option disabled selected value="">Select Branch Name</option>';
+        echo '<div class = "branch_selection">';
+        echo '<select class="senselectpicker" data-live-search="true" name="branch_idd" id="branch_idd">';
+        if ($branch_id !== null) {
+            $branch_name_by_id = atm_get_branch_by_id($branch_id);
+            echo '<option disabled value="">Select Branch Name</option>';
+            echo '<option selected value="' . $branch_id . '">' . $branch_name_by_id["name"] . '</option>';
+        } else {
+            echo '<option disabled selected value="">Select Branch Name</option>';
+        }
 
        
-        // foreach ($branch_rows as $branch) {
-        //     if ($branch["id"] === $branch_id){
-        //         continue;
-        //     }
-        //     echo '<option value="' . $branch['id'] . '">' . $branch['name'] . '</option>';
-        // }
+        foreach ($branch_rows as $branch) {
+            if ($branch["id"] === $branch_id){
+                continue;
+            }
+            echo '<option value="' . $branch['id'] . '">' . $branch['name'] . '</option>';
+        }
         echo '</select>';
+        echo '<div class="terminal_list"></div>';
+        echo '<div>';
         echo '</td>';
         echo '</tr>';
     }
@@ -119,3 +113,70 @@ function isProjectATMmonitoring()
         return false;
     }
 }
+
+// http_content_headers();
+// http_security_headers();
+
+
+
+
+
+
+// <script>
+    
+    // $(document).ready( function() {
+            // $('.some_class').hide();
+                // $('#terminal_id').on('change', function() {
+                //     //    console.log('senay');
+                //         var terminal_id = this.value;
+                //         // // console.log(country_id);
+                //         $.ajax({
+                //             url: './plugins/ATM_Monitoring/files/branch.php',
+//                 //             // url: 'branch.php',
+//                 //             type: "POST",
+//                 //             data: {
+//                 //                 terminal_data: terminal_id
+//                 //             },
+//                 //             success: function(result) {
+//                 //                 // $("select").removeClass("senselectpicker");
+//                 //                 $('.some_class').hide();
+//                 //                 console.log(result);
+//                 //             }
+//                 //         })
+//                 //     });
+
+//                     $('#branch_idd').on('change', function() {
+                  
+//                             console.log('senay');
+//                             var branch_id = $(this).val();
+
+//                             $.ajax({
+//                                 url: './plugins/ATM_Monitoring/branch.php',
+//                                 // url: 'branch.php',
+//                                 type: "POST",
+//                                 data: {
+//                                     branch_data: branch_id
+//                                 },
+//                                 success: function(result) {
+//                                     console.log(result);
+//                                     $('.terminal_list').html(result);
+//                                 }
+//                             })
+//                         });
+
+//                     $('.wrapper_atm label').click(function() {
+//                         if($(this).prev().attr('id') === "terminal_select") {
+//                             $('.branch_selection').hide();
+//                             $('.terminal_selection').show();
+
+//                         } else {
+//                             $('.branch_selection').show();
+
+//                             $('.terminal_selection').hide();
+//                         }
+//                         // console.log('Value of Radion: '.concat($(this).prev().val(), 'Name of radio: ', ));
+//                       });
+                    
+
+//         });
+// </script>
