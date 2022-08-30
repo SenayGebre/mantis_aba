@@ -80,7 +80,7 @@ function atm_select($terminal_id = null, $branch_id = null)
 
     
         echo '<div class = "branch_selection">';
-        echo '<select class="senselectpicker" data-live-search="true" name="branch_idd" id="branch_idd">';
+        echo '<select class="senselectpicker" data-live-search="true" name="branch_id" id="branch_id">';
         if ($branch_id !== null) {
             $branch_name_by_id = atm_get_branch_by_id($branch_id);
             echo '<option disabled value="">Select Branch Name</option>';
@@ -147,7 +147,7 @@ function isProjectATMmonitoring()
 //                 //         })
 //                 //     });
 
-//                     $('#branch_idd').on('change', function() {
+//                     $('#branch_id').on('change', function() {
                   
 //                             console.log('senay');
 //                             var branch_id = $(this).val();
@@ -166,18 +166,18 @@ function isProjectATMmonitoring()
 //                             })
 //                         });
 
-//                     $('.wrapper_atm label').click(function() {
-//                         if($(this).prev().attr('id') === "terminal_select") {
-//                             $('.branch_selection').hide();
-//                             $('.terminal_selection').show();
+                    // $('.wrapper_atm label').click(function() {
+                    //     if($(this).prev().attr('id') === "terminal_select") {
+                    //         $('.branch_selection').hide();
+                    //         $('.terminal_selection').show();
 
-//                         } else {
-//                             $('.branch_selection').show();
+                    //     } else {
+                    //         $('.branch_selection').show();
 
-//                             $('.terminal_selection').hide();
-//                         }
-//                         // console.log('Value of Radion: '.concat($(this).prev().val(), 'Name of radio: ', ));
-//                       });
+                    //         $('.terminal_selection').hide();
+                    //     }
+                    //     // console.log('Value of Radion: '.concat($(this).prev().val(), 'Name of radio: ', ));
+                    //   });
                     
 
 //         });

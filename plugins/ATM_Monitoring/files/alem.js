@@ -32,7 +32,7 @@
                         })
                     });
 
-                    $('#branch_idd').on('change', function() {
+                    $('#branch_id').on('change', function() {
                   
                             console.log('senay');
                             var branch_id = $(this).val();
