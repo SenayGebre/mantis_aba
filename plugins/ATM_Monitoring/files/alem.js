@@ -1,5 +1,6 @@
 
         $(document).ready( function() {
+            $('.some_class').hide();
                 $('#terminal_id').on('change', function() {
                     //    console.log('senay');
                         var terminal_id = this.value;
@@ -12,9 +13,11 @@
                                 terminal_data: terminal_id
                             },
                             success: function(result) {
-                                $('#branch_id').html(result);
+                                // $("select").removeClass("senselectpicker");
+                                // $('.some_class').hide();
                                 console.log(result);
                             }
                         })
                     });
+
         });

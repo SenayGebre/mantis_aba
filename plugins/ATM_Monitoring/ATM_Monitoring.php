@@ -61,6 +61,9 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 printf( "\t<script type='text/javascript' src=\"%s\"></script>\n",
                     plugin_file( 'alem.js' )
                 );
+                printf( "\t<link rel='stylesheet' type='text/css' href=\"%s\"\>\n",
+                plugin_file( "style.css" )
+                );
             
         }
 
