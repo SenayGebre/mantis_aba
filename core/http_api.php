@@ -249,7 +249,7 @@ function http_security_headers() {
 
 		}
 
-		http_csp_emit_header();
+		// http_csp_emit_header();
 	}
 }
 

@@ -548,7 +548,7 @@ function get_parent_branch(){
 }
 
 function atm_get_atm_branches() {
-	$t_query = 'SELECT * FROM {projecT} WHERE EXISTS ( SELECT '.plugin_table('atm').'.branch_id FROM '.plugin_table('atm').' WHERE  '.plugin_table('atm').'.branch_id = {project}.id )';
+	$t_query = 'SELECT * FROM {project} WHERE EXISTS ( SELECT '.plugin_table('atm').'.branch_id FROM '.plugin_table('atm').' WHERE  '.plugin_table('atm').'.branch_id = {project}.id )';
 	return db_query($t_query);
 }
 
