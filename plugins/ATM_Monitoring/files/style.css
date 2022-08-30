@@ -1,0 +1,113 @@
+
+.wrapper_atm{
+  display: inline-flex;
+  background: #fff;
+  height: 26px;
+  width: 500px;
+  align-items: center;
+  justify-content: center;
+}
+
+.branch_select{
+    content: "\a";
+    white-space: pre;
+}
+.wrapper_atm .atm_option{
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center
+  /* margin: 0 10px; */
+  /* cursor: pointer; */
+  /* padding: 0 10px; */
+}
+
+/* .wrapper .option .dot{
+    height: 20px;
+    width: 20px;
+    background: #c1c1c1;
+    border-radius: 50%;
+    position: relative;
+  }
+  .wrapper .option .dot::before{
+    position: absolute;
+    content: "";
+    top: 4px;
+    left: 4px;
+    width: 12px;
+    height: 12px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(1.5);
+  } */
+
+input[type="radio"]{
+  display: none;
+}
+#terminal_select:checked:checked ~ .terminal_select,
+#branch_select:checked:checked ~ .branch_select{
+  border-color: #5090C1;
+  background: #5090C1;
+}
+#terminal_select:checked:checked ~ .terminal_select .atm_dot,
+#branch_select:checked:checked ~ .branch_select .atm_dot{
+  background: #fff;
+}
+#terminal_select:checked:checked ~ .terminal_select .atm_dot::before,
+#branch_select:checked:checked ~ .branch_select .atm_dot::before{
+  opacity: 1;
+  transform: scale(1);
+}
+.wrapper .atm_option span{
+  font-size: 14px;
+  color: #808080;
+}
+#terminal_select:checked:checked ~ .terminal_select span,
+#branch_select:checked:checked ~ .branch_select span{
+  color: #fff;
+}
+
+.branch_selection{
+    display: none;
+}
+
+/* 
+######
+*/
+
+.atm_chip {
+  display: inline-block;
+  padding: 0 15px;
+  margin-right: 10px;
+  height: 30px;
+  /* line-height: 50px; */
+  background-color: #f1f1f1;
+}
+
+
+
+.addButton {
+  color: #888;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+.closebtn:hover {
+  color: #000;
+}
+
+.addButton:hover {
+  color: #000;
+}
+
+
+
+
+
+
