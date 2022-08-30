@@ -73,3 +73,41 @@ input[type="radio"]{
 .branch_selection{
     display: none;
 }
+
+/* 
+######
+*/
+
+.atm_chip {
+  display: inline-block;
+  padding: 0 15px;
+  margin-right: 10px;
+  height: 30px;
+  /* line-height: 50px; */
+  background-color: #f1f1f1;
+}
+
+
+
+.addButton {
+  color: #888;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+
+.closebtn:hover {
+  color: #000;
+}
+
+.addButton:hover {
+  color: #000;
+}
+
+
+
+
+
+

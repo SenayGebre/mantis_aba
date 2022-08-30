@@ -2,14 +2,16 @@
         $(document).ready( function() {
             // $('.some_class').hide();
 
-            $("#terminals_checkbox").change(function() {
-                console.log("sdfsdfd");
-                if(this.checked) {
-                    //I am checked
-                }else{
-                    //I'm not checked
-                }
-            });
+            let selected_atms =  [];
+
+           
+            
+            $(document).on('click','.atm_chip',function(){
+            console.log($(this).attr('id'));
+            selected_atms.append();
+
+            // code here
+        });
 
                 $('#terminal_id').on('change', function() {
                     //    console.log('senay');
