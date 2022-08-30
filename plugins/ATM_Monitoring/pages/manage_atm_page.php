@@ -28,11 +28,13 @@ $f_page_number = gpc_get_int('page_number', 1);
 $f_search = gpc_get_string('search', '');
 $d_branches_result = atm_get_branches();
 
+
 $d_branches = [];
 while($row = db_fetch_array($d_branches_result))
 {
 	$d_branches[] = $row;
 }
+
 
 
 

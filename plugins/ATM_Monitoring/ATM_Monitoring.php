@@ -54,15 +54,15 @@ class ATM_MonitoringPlugin extends MantisPlugin
         );
     }
 
-        function atm_resources()
-        {
+        // function atm_resources()
+        // {
             
                 
                 // printf( "\t<script type='text/javascript' src=\"%s\"></script>\n",
                 //     plugin_file( 'alem.js' )
                 // );
             
-        }
+        // }
 
     //     function alert_message()
     //     {
@@ -74,7 +74,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
-        event_signal( 'EVENT_LAYOUT_RESOURCES' );
+        // event_signal( 'EVENT_LAYOUT_RESOURCES' );
         // require_api('http_api.php');
         require_once('atm_helper.php');
         // http_all_headers();
