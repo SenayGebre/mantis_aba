@@ -215,8 +215,8 @@ class ATM_MonitoringPlugin extends MantisPlugin
         return array(
             array('CreateTableSQL', array(
                 plugin_table('atm'), "
-                id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
-	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
+                id					    I  		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT ,
+	            user_id				    I 		UNSIGNED NOTNULL DEFAULT '0',
                 terminal_id             C(40)   NOTNULL DEFAULT \" '' \",
                 branch_id               C(100)  DEFAULT NULL,
                 model                   C(64)   NOTNULL DEFAULT \" '' \",
@@ -225,21 +225,68 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 country                 C(128)  NOTNULL DEFAULT \" '' \",
                 city                    C(128)  NOTNULL DEFAULT \" '' \",
                 specifc_location        C(128)  NOTNULL DEFAULT \" '' \",
-                date_created			T		NOTNULL DEFAULT '" . db_null_date() . "',
-	            date_updated			T		NOTNULL DEFAULT '" . db_null_date() . "' ",
-                array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
+                date_created		    T 	    NOTNULL DEFAULT '" . db_null_date() . "',
+	            date_updated		    T 	    NOTNULL DEFAULT '" . db_null_date() . "' ",
+                array('mysql' => 'DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
             )),
 
             array('CreateTableSQL', array(
                 plugin_table('bug_atm'), "
-                id						I		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT,
+                id					    I 		UNSIGNED NOTNULL PRIMARY AUTOINCREMENT ,
                 atm_id                  C(40)   NOTNULL DEFAULT \" '' \",
-	            bug_id					I		UNSIGNED NOTNULL PRIMARY DEFAULT '0',
-	            user_id					I		UNSIGNED NOTNULL DEFAULT '0',
-	            date_attached			T		NOTNULL DEFAULT '" . db_null_date() . "'",
-                array('mysql' => 'ENGINE=MyISAM DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
+	            bug_id				    I 		UNSIGNED NOTNULL DEFAULT '0',
+	            user_id				    I 		UNSIGNED NOTNULL DEFAULT '0',
+	            date_attached		    T 	    NOTNULL DEFAULT '" . db_null_date() . "'",
+                array('mysql' => 'DEFAULT CHARSET=utf8', 'pgsql' => 'WITHOUT OIDS')
             )),
         );
+    }
+
+    function install()
+    {
+
+        $t_schema = $this->schema();
+        // echo 'senay';
+        
+        
+        // $t_query = 'CREATE TABLE IF NOT EXISTS '.$t_schema[0][1][0].' (TEAMNO      INTEGER NOT NULL PRIMARY KEY, EmployeeNO    INTEGER NOT NULL)';
+        // return db_query($t_query);
+        foreach($t_schema as $t_single_query) {
+            if($t_single_query[0] === 'CreateTableSQL') {
+                $table_prop = $t_single_query[1][1];
+                $to_be_replace = [' PRIMARY ',' AUTOINCREMENT ',' NOTNULL ',' C ',' XL ',' X ',' C2 ',' X2 ',' B ',' D ',' TS ',' T ',' L ',' R ',' I4 ','I ',' I1 ',' I2 ',' I8 ',' F ',' N ',' C(',' XL(',' X(',' C2(',' X2(',' B(',' D(',' TS(',' T(',' L(',' R(',' I4(',' I(',' I1(',' I2(',' I8(',' F(',' N('];
+                $new_values = [' PRIMARY KEY ',' AUTO_INCREMENT ',' NOT NULL ', ' VARCHAR ',' LONGTEXT ',' TEXT ',' VARCHAR ',' LONGTEXT ',' LONGBLOB ',' DATE ',' TS ',' DATETIME ',' TINYINT ',' INTEGER ',' INTEGER ',' INTEGER ',' TINYINT ',' SMALLINT ',' BIGINT ',' DOUBLE ',' NUMERIC ',' VARCHAR(',' LONGTEXT(',' TEXT(',' VARCHAR(',' LONGTEXT(',' LONGBLOB(',' DATE(',' TS(',' DATETIME(',' TINYINT(',' INTEGER(',' INTEGER(',' INTEGER(',' TINYINT(',' SMALLINT(',' BIGINT(',' DOUBLE(',' NUMERIC('];
+                $updated_data = str_replace($to_be_replace, $new_values, $table_prop);
+
+                
+
+
+                $t_query = 'CREATE TABLE IF NOT EXISTS '.$t_single_query[1][0].' ('.$updated_data.') '.$t_single_query[1][2]['mysql'].'';
+                db_query($t_query);
+            }
+            
+        }
+        return true;
+    }
+
+    function uninstall()
+    {
+
+        $t_schema = $this->schema();
+        foreach($t_schema as $t_single_query) {
+                
+                $t_query = 'DROP TABLE IF EXISTS '.$t_single_query[1][0];
+                echo '<pre>'; print_r($t_query); echo '</pre>';
+            
+                $d_result = db_query($t_query);
+            
+        }
+
+        return true;
+
+        // $t_query = 'CREATE TABLE IF NOT EXISTS man_man (TEAMNO      INTEGER NOT NULL PRIMARY KEY, EmployeeNO    INTEGER NOT NULL)';
+        //         $d_result = db_query($t_query);
+        
     }
 
 
