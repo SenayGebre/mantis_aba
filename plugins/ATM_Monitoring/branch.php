@@ -6,7 +6,9 @@ require_once(dirname(__DIR__).'/../core.php');
 
 $branch_id =   $_POST['branch_data'];
 
-$t_query = 'SELECT * FROM mantis_plugin_atm_monitoring_atm_table WHERE branch_id = '.$branch_id;
+$t_query = 'SELECT * FROM '.plugin_table('atm').' WHERE branch_id = '.$branch_id;
+
+// echo $t_query;
 
 $terminal_list_qry = db_query($t_query);
 

@@ -46,7 +46,7 @@
                                 },
                                 success: function(result) {
                                     console.log(result);
-                                    $('.terminal_list').html(result);
+                                    // $('.terminal_list').html(result);
                                 }
                             })
                         });

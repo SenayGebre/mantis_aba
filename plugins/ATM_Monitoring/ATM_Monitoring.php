@@ -265,7 +265,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
                 
 
 
-                $t_query = 'CREATE TABLE IF NOT EXISTS '.$t_single_query[1][0].' ('.$updated_data.') '.$t_single_query[1][2]['mysql'].'';
+                $t_query = 'CREATE TABLE IF NOT EXISTS '.($t_single_query[1][0]).' ('.$updated_data.') '.$t_single_query[1][2]['mysql'].'';
                 db_query($t_query);
             }
             
