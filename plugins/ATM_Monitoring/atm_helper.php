@@ -24,13 +24,16 @@ function atm_get_param($p_var_name, $p_default = null)
 function atm_select($terminal_id = null, $branch_id = null)
 {
     
+
+    
     
     require_once('api_atm.php');
     
     if (isProjectATMmonitoring()) {
         
         $terminal_rows = atmGetTerminals();
-        $branch_rows = atm_get_atm_branches();
+        
+        // $branch_rows = atm_get_atm_branches();
     
 
 

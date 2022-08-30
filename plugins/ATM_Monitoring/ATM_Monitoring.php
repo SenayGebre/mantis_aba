@@ -74,6 +74,7 @@ class ATM_MonitoringPlugin extends MantisPlugin
 
     function select_atm()
     {
+
     // echo "<script>alert('hello')</script>";
 
         // event_signal( 'EVENT_LAYOUT_RESOURCES' );
